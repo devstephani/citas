@@ -1,4 +1,41 @@
 <x-guest-layout>
+    <main>
+        <div class="contenedor__todo">
+            <div class="mt-5 caja__trasera">
+                <div class="h-36 w-96 caja__trasera-login">
+                    {{-- <h3>¿Ya tienes una cuenta?</h3>
+                    <p>Inicia sesión para entrar en la página</p>
+                    <button id="btn__iniciar-sesion">Iniciar Sesión</button> --}}
+                </div>
+                <div class="caja__trasera-register">
+                    <p>Indique su correo electrónico para recuperar su contraseña.</p>
+                </div>
+            </div>
+
+            <!--Formulario de Login y registro-->
+            <div class="contenedor__login-register">
+                <!--Login-->
+                <form method="POST" action="{{ route('password.email') }}">
+                    @csrf
+                    <h2>Recuperar contraseña</h2>
+
+                    <x-label for="email" value="{{ __('Email') }}" />
+                    <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')"
+                        required autofocus autocomplete="username" />
+                    <div class="text-center">
+                        <a class="font-italic isai5" href="{{ route('login') }}">Iniciar sesión </a>
+                    </div>
+                    <button>Enviar</button>
+                </form>
+
+            </div>
+
+        </div>
+    </main>
+</x-guest-layout>
+
+{{-- 
+<x-guest-layout>
     <x-authentication-card>
         <x-slot name="logo">
             <x-authentication-card-logo />
@@ -31,4 +68,4 @@
             </div>
         </form>
     </x-authentication-card>
-</x-guest-layout>
+</x-guest-layout> --}}

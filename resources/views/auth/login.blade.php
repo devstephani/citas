@@ -1,48 +1,80 @@
 <x-guest-layout>
-    <x-authentication-card>
-        <x-slot name="logo">
-            <x-authentication-card-logo />
-        </x-slot>
-
-        <x-validation-errors class="mb-4" />
-
-        @if (session('status'))
-            <div class="mb-4 font-medium text-sm text-green-600">
-                {{ session('status') }}
-            </div>
-        @endif
-
-        <form method="POST" action="{{ route('login') }}">
-            @csrf
-
-            <div>
-                <x-label for="email" value="{{ __('Email') }}" />
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
+    <main>
+        <div class="contenedor__todo">
+            <div class="mt-5 caja__trasera">
+                <div class="caja__trasera-login">
+                    <h3>¿Ya tienes una cuenta?</h3>
+                    <p>Inicia sesión para entrar en la página</p>
+                    <button id="btn__iniciar-sesion">Iniciar Sesión</button>
+                </div>
+                <div class="caja__trasera-register">
+                    <h3>¿Aún no tienes una cuenta?</h3>
+                    <p>Regístrate para que puedas iniciar sesión</p>
+                    <button id="btn__registrarse">Regístrarse</button>
+                </div>
             </div>
 
-            <div class="mt-4">
-                <x-label for="password" value="{{ __('Password') }}" />
-                <x-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="current-password" />
+            <!--Formulario de Login y registro-->
+            <div class="contenedor__login-register">
+                <!--Login-->
+                <form method="POST" action="{{ route('login') }}" class="formulario__login">
+                    @csrf
+                    <h2>Iniciar Sesión</h2>
+                    <input required type="email" placeholder="Correo Electronico" name="email"
+                        :value="old('email')">
+                    @error('email')
+                        <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+                            {{ $message }}
+                        </p>
+                    @enderror
+                    <input required type="password" placeholder="Contraseña" name="password">
+                    @error('password')
+                        <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+                            {{ $message }}
+                        </p>
+                    @enderror
+                    <div class="text-center">
+                        <a class="font-italic isai5" href="{{ route('password.request') }}">Olvidé mi contraseña </a>
+                    </div>
+                    <button>Entrar</button>
+                </form>
+
+                <!--Register-->
+                <form method="POST" action="{{ route('register') }}" class="formulario__register">
+                    @csrf
+                    <h2>Regístrarse</h2>
+                    <input required type="text" placeholder="Nombre" name="name" :value="old('name')">
+                    @error('name')
+                        <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+                            {{ $message }}
+                        </p>
+                    @enderror
+                    <input required type="email" placeholder="Correo Electronico" name="email"
+                        :value="old('email')">
+                    @error('email')
+                        <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+                            {{ $message }}
+                        </p>
+                    @enderror
+                    <input required type="password" placeholder="Contraseña" name="password"
+                        autocomplete="new-password">
+                    @error('password')
+                        <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+                            {{ $message }}
+                        </p>
+                    @enderror
+                    <input id="password_confirmation" class="block mt-1 w-full" type="password"
+                        placeholder="Confirmar contraseña" name="password_confirmation" required
+                        autocomplete="new-password" />
+                    @error('password_confirmation')
+                        <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+                            {{ $message }}
+                        </p>
+                    @enderror
+                    <button>Regístrarse</button>
+                </form>
             </div>
 
-            <div class="block mt-4">
-                <label for="remember_me" class="flex items-center">
-                    <x-checkbox id="remember_me" name="remember" />
-                    <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-                </label>
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
-                @if (Route::has('password.request'))
-                    <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
-                        {{ __('Forgot your password?') }}
-                    </a>
-                @endif
-
-                <x-button class="ms-4">
-                    {{ __('Log in') }}
-                </x-button>
-            </div>
-        </form>
-    </x-authentication-card>
+        </div>
+    </main>
 </x-guest-layout>
