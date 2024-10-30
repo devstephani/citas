@@ -42,23 +42,6 @@
 </head>
 
 <body class="font-sans antialiased">
-    {{-- <x-banner /> --}}
-
-    {{-- <div class="min-h-screen bg-gray-100"> --}}
-    {{-- @livewire('navigation-menu')
-
-        <!-- Page Heading -->
-        @if (isset($header))
-            <header class="bg-white shadow">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                    {{ $header }}
-                </div>
-            </header>
-        @endif --}}
-
-
-
-    <!-- Start Preloader Area -->
     <x-layout.preloader />
     <x-layout.navbar />
     <x-layout.sidebar-modal />
@@ -72,7 +55,7 @@
             <x-layout.admin.navbar />
             <x-layout.admin.sidebar />
 
-            <div class="pb-4 mt-16 sm:ml-64">
+            <div class="pb-4 mt-16 sm:ml-64 bg-neutral-100 min-h-[calc(100dvh-6.8dvh)]">
                 {{ $slot }}
             </div>
         </div>

@@ -1,5 +1,5 @@
 <div x-data="{ open: @entangle('showModal') }">
-    <x-button wire:click="toggle" class="gap-3">
+    <x-button wire:click="toggle" class="w-full sm:w-fit gap-3">
         <x-lucide-plus class="size-5" />
         Cliente
     </x-button>

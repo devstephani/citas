@@ -243,78 +243,80 @@
 
     @role('admin')
         <div class="relative overflow-x-auto">
-            <div class="flex justify-between">
+            <div class="flex flex-col sm:flex-row justify-between gap-3">
 
                 <x-search />
-                <div class="p-4 bg-white dark:bg-gray-900">
+                <div class="py-4 px-4 sm:p-4">
                     <livewire:package-modal />
                 </div>
             </div>
 
-            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                    <tr>
-                        <th scope="col" class="px-6 py-3">
-                            Imágen
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Nombre
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Descripción
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Servicios
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Precio
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Activo
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Acciones
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($packages as $package)
-                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                            <th scope="row"
-                                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                <img src="{{ asset('storage/' . $package->image) }}" class="size-20" />
+            <div class="p-4 overflow-x-auto shadow-md">
+                <table class="w-full text-sm text-left text-gray-400 bg-white rounded-md border border-neutral-400">
+                    <thead class="border-b text-xs text-gray-700 uppercase bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3">
+                                Imágen
                             </th>
-                            <td class="px-6 py-4">
-                                {{ $package->name }}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ $package->description }}
-                            </td>
-                            <td class="px-6 py-4">
-                                <ul class="flex flex-col gap-2">
-                                    @foreach ($package->services as $service)
-                                        <li class="list-disc">{{ $service->name }}</li>
-                                    @endforeach
-                                </ul>
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ $package->price }}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ $package->active }}
-                            </td>
-                            <td class="px-6 py-4">
-                                <div class="flex gap-3">
-                                    <x-lucide-pencil class="size-5 cursor-pointer"
-                                        wire:click="$dispatch('edit', { record: {{ $package->id }}})" />
-                                    <x-lucide-trash class="size-5 cursor-pointer"
-                                        onclick="delete_alert({{ $package->id }})" />
-                                </div>
-                            </td>
+                            <th scope="col" class="px-6 py-3">
+                                Nombre
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Descripción
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Servicios
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Precio
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Activo
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Acciones
+                            </th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach ($packages as $package)
+                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                <th scope="row"
+                                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    <img src="{{ asset('storage/' . $package->image) }}" class="size-20 rounded-md" />
+                                </th>
+                                <td class="px-6 py-4">
+                                    {{ $package->name }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ $package->description }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    <ul class="flex flex-col gap-2">
+                                        @foreach ($package->services as $service)
+                                            <li class="list-disc">{{ $service->name }}</li>
+                                        @endforeach
+                                    </ul>
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ $package->price }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ $package->active }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex gap-3">
+                                        <x-lucide-pencil class="size-5 hover:text-blue-600 cursor-pointer"
+                                            wire:click="$dispatch('edit', { record: {{ $package->id }}})" />
+                                        <x-lucide-trash class="size-5 hover:text-blue-600 cursor-pointer"
+                                            onclick="delete_alert({{ $package->id }})" />
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
 
             {{ $packages->links() }}
             @if (count($packages) === 0)
