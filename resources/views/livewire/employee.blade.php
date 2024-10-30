@@ -19,6 +19,9 @@
                             Correo
                         </th>
                         <th scope="col" class="px-6 py-3">
+                            Servicios
+                        </th>
+                        <th scope="col" class="px-6 py-3">
                             Activo
                         </th>
                         <th scope="col" class="px-6 py-3">
@@ -40,6 +43,17 @@
                                 {{ $employee->email }}
                             </td>
                             <td class="px-6 py-4">
+                                @if (count($employee->services) > 0)
+                                    <ul class="flex flex-col gap-2">
+                                        @foreach ($employee->services as $service)
+                                            <li class="list-disc">{{ $service->name }}</li>
+                                        @endforeach
+                                    </ul>
+                                @else
+                                    <p class="text-gray-600">Sin servicios</p>
+                                @endif
+                            </td>
+                            <td class="px-6 py-4">
                                 @if ($employee->active)
                                     <x-lucide-circle-check
                                         wire:click="$dispatch('toggle_active', { user: {{ $employee->id }} })"
@@ -51,7 +65,7 @@
                                 @endif
                             </td>
                             <td class="px-6 py-4">
-                                {{ $employee->created_at->format('d-m-Y g:i:s a') }}
+                                {{ $employee->created_at->format('d-m-Y') }}
                             </td>
                             <td class="px-6 py-4">
                                 <div class="flex gap-3">

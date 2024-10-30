@@ -22,11 +22,10 @@
                 <div class="flex flex-col items-center ms-3">
                     <div @click.outside="dropdown = false">
                         <button @click="dropdown = ! dropdown" type="button"
-                            class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
-                            aria-expanded="false" data-dropdown-toggle="dropdown-user">
+                            class="flex text-sm rounded-full focus:ring-2 focus:ring-neutral-700" aria-expanded="false"
+                            data-dropdown-toggle="dropdown-user">
                             <span class="sr-only">Open user menu</span>
-                            <img class="w-8 h-8 rounded-full"
-                                src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo">
+                            <x-lucide-circle-user-round class="size-8" />
                         </button>
                     </div>
                     <div x-show="dropdown" x-transition
