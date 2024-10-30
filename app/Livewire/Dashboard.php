@@ -12,10 +12,21 @@ use Livewire\Component;
 
 class Dashboard extends Component
 {
-    protected function rand_color()
-    {
-        return sprintf('#%06X', mt_rand(0, 0xFFFFFF));
-    }
+    protected $colors = ['#c8c8c8', '#f0c571', '#59a89c', '#0b81a2', '#e25759', '#9d2c00', '#7e4794', '#36b700', '#ffcd8e', '#ffb255', '#8fd7d7', '#00b0be'];
+    protected $months = [
+        'Ene',
+        'Feb',
+        'Mar',
+        'Abr',
+        'May',
+        'Jun',
+        'Jul',
+        'Ago',
+        'Sep',
+        'Oct',
+        'Nov',
+        'Dic',
+    ];
 
     #[Layout('layouts.app')]
     public function render()
@@ -50,31 +61,17 @@ class Dashboard extends Component
             ->orderBy('n_date')
             ->get();
 
-        $months = [
-            'Ene',
-            'Feb',
-            'Mar',
-            'Abr',
-            'May',
-            'Jun',
-            'Jul',
-            'Ago',
-            'Sep',
-            'Oct',
-            'Nov',
-            'Dic',
-        ];
         $client_bar_chart = (new ColumnChartModel())
             ->setTitle('Clientes registrados');
 
         foreach ($clients as $key => $value) {
-            $client_bar_chart->addColumn($months[$key], $value->qty, $this->rand_color());
+            $client_bar_chart->addColumn($this->months[$key], $value->qty, $this->colors[$key]);
         }
         $employee_bar_chart = (new ColumnChartModel())
             ->setTitle('Empleados registrados');
 
         foreach ($employees as $key => $value) {
-            $employee_bar_chart->addColumn($months[$key], $value->qty, $this->rand_color());
+            $employee_bar_chart->addColumn($this->months[$key], $value->qty, $this->colors[$key]);
         }
 
         return view('livewire.dashboard', [
