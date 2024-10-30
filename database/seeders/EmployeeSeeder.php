@@ -14,6 +14,12 @@ class EmployeeSeeder extends Seeder
      */
     public function run(): void
     {
+        User::create([
+            'active' => 1,
+            'name' =>  'Alexandra',
+            'email' => 'alexandra@gmail.com',
+            'password' => Hash::make(fake()->password()),
+        ])->assignRole('employee');
         for ($i = 0; $i < 40; $i++) {
             User::create([
                 'active' => fake()->boolean(),

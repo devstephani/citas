@@ -1,5 +1,5 @@
 <x-app-layout>
-    @role('client')
+    @if(is_null(Auth::user()) || Auth::user()->hasRole('client'))
         <x-home.slider />
         <x-home.check />
         <x-home.info />
@@ -9,5 +9,5 @@
         <x-home.city-view-slider />
         <x-home.rooms />
         <x-home.testimonials />
-    @endrole
+    @endif
 </x-app-layout>

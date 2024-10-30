@@ -46,9 +46,9 @@
     <x-layout.navbar />
     <x-layout.sidebar-modal />
 
-    @role('client')
+    @if(is_null(Auth::user()) || Auth::user()->hasRole('client'))
         {{ $slot }}
-    @endrole
+    @endif
 
     @role('admin')
         <div x-data="{ open: false, desktop: window.innerWidth >= 640 }" x-init="window.addEventListener('resize', () => desktop = window.innerWidth >= 640)">
@@ -61,15 +61,14 @@
         </div>
     @endrole
 
-    @role('client')
+    @if(is_null(Auth::user()) || Auth::user()->hasRole('client'))
         <x-home.footer />
 
         <div class="go-top">
             <i class='bx bx-chevrons-up bx-fade-up'></i>
             <i class='bx bx-chevrons-up bx-fade-up'></i>
         </div>
-    @endrole
-    {{-- </div> --}}
+    @endif
 
     <script src="{{ asset('js/jquery.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>

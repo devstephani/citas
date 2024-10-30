@@ -1,4 +1,4 @@
-@role('client')
+@if(is_null(Auth::user()) || Auth::user()->hasRole('client'))
     <div class="eorik-nav-style fixed-top">
         <div class="navbar-area">
             <!-- Menu For Mobile Device -->
@@ -104,4 +104,4 @@
             </div>
         </div>
     </div>
-@endrole
+@endif
