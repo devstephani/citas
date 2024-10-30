@@ -63,14 +63,29 @@
     <x-layout.navbar />
     <x-layout.sidebar-modal />
 
-    {{ $slot }}
+    @role('client')
+        {{ $slot }}
+    @endrole
 
-    <x-home.footer />
+    @role('admin')
+        <div x-data="{ open: false, desktop: window.innerWidth >= 640 }" x-init="window.addEventListener('resize', () => desktop = window.innerWidth >= 640)">
+            <x-layout.admin.navbar />
+            <x-layout.admin.sidebar />
 
-    <div class="go-top">
-        <i class='bx bx-chevrons-up bx-fade-up'></i>
-        <i class='bx bx-chevrons-up bx-fade-up'></i>
-    </div>
+            <div class="pb-4 mt-16 sm:ml-64">
+                {{ $slot }}
+            </div>
+        </div>
+    @endrole
+
+    @role('client')
+        <x-home.footer />
+
+        <div class="go-top">
+            <i class='bx bx-chevrons-up bx-fade-up'></i>
+            <i class='bx bx-chevrons-up bx-fade-up'></i>
+        </div>
+    @endrole
     {{-- </div> --}}
 
     <script src="{{ asset('js/jquery.min.js') }}"></script>
@@ -108,10 +123,31 @@
 
             });
         }
+
+        function delete_alert(id) {
+            Swal.fire({
+                title: 'Un registro será borrado',
+                text: '¿Desea eliminar el registro permanentemente?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: "#dc2626",
+                cancelButtonColor: "#a3a3a3",
+                confirmButtonText: 'Continuar',
+                cancelButtonText: 'Cancelar'
+            }).then(function(result) {
+                if (result.value) {
+                    Livewire.dispatch('delete', {
+                        record: id
+                    })
+                    swal.close()
+                }
+            })
+        }
     </script>
     @stack('modals')
-
     @livewireScripts
+    @include('popper::assets')
+    @livewireChartsScripts
 </body>
 
 </html>

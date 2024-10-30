@@ -1,5 +1,14 @@
 <x-guest-layout>
     <main>
+        @error('inactive')
+            <div class="mb-12 w-full">
+                <p
+                    class="z-50 block w-fit py-1.5 px-4 shadow-lg rounded-sm border border-neutral-400 mx-auto text-red-600 bg-white">
+                    {{ $message }}
+
+                </p>
+            </div>
+        @enderror
         <div class="contenedor__todo">
             <div class="mt-5 caja__trasera">
                 <div class="caja__trasera-login">

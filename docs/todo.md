@@ -8,6 +8,8 @@
 
 - Alerts
 
+# Pending
+
 ----------------------------------------------------------------------------------------
 Calendario (25$)
 - Registros de agendacion de servicios y paquetes
@@ -20,16 +22,6 @@ Calendario (25$)
 - Un paquete puede estar citado varias veces el mismo dia
 - Recordatorio via email a las 00 del dia y 1 hora antes del mismo
 ----------------------------------------------------------------------------------------
-Migrar todo el proyecto a laravel y liwewire - plantilla (20$)
-- Autenticacion (admin, empleado, cliente)
-- Roles
-- Permisos
-- Base de datos
-----------------------------------------------------------------------------------------
-Empleado (17$)
-- Nombre, email, contraseña
-- Servicios que ofrece
-
 Reportes
 - Asistencia de empleado (seleccionar empleado)
 - Asistencia de todos los empleados
@@ -40,20 +32,10 @@ Reportes
   - Fecha | Servicio o paquete | Costo
 - Pagos
   - Fecha | Servicio o paquete | Empleado | Costo
-
-Usuario
-- Formulario de registro
-- Registro de clientes que vayan al local y no tengan cuenta
 ----------------------------------------------------------------------------------------
 Facturacion (7$)
 - Finalizada la cita, el empleado da concluido el servicio y se manda un email con: servicio, fecha, duracion, costo y estado de pagado
 - Finalizada la cita, el admin da concluido el paquete y se manda un email con: servicio, fecha, duracion, costo y estado de pagado
-----------------------------------------------------------------------------------------
-Formulario de servicios y paquetes (12$)
-- Servicio
-  - Nombre, precio, descripcion, imagen, activo, descuento (se aplica cada 4 servicios en el historial del cliente)
-- Paquete
-  - Nombre, precio, descripcion, lista de servicios, imagen, activo
 ----------------------------------------------------------------------------------------
 Blog (20$)
 - Titulo
@@ -66,6 +48,12 @@ Blog (20$)
 - Acceso publico, interaccion autenticada
 - Orden de carga: fecha de creado
 - Inhabilitar
+
+----------------------------------------------------------------------------------------
+			COSTE TOTAL: 109$ - Descuento a 85$
+----------------------------------------------------------------------------------------
+
+# DONE
 ----------------------------------------------------------------------------------------
 Perfil (8$)
 - Modificar datos básicos
@@ -73,7 +61,25 @@ Perfil (8$)
 - Recuperar contraseña
 - Cambiar contraseña
 ----------------------------------------------------------------------------------------
-			COSTE TOTAL: 109$ - Descuento a 85$
+Usuario
+- Formulario de registro
+- Registro de clientes que vayan al local y no tengan cuenta
+----------------------------------------------------------------------------------------
+Migrar todo el proyecto a laravel y liwewire - plantilla (20$)
+- Autenticacion (admin, empleado, cliente)
+- Roles
+- Permisos
+- Base de datos
+----------------------------------------------------------------------------------------
+Formulario de servicios y paquetes (12$)
+- Servicio
+  - Nombre, precio, descripcion, imagen, activo, *pending* descuento (se aplica cada 4 servicios en el historial del cliente)
+- Paquete
+  - Nombre, precio, descripcion, lista de servicios, imagen, activo
+----------------------------------------------------------------------------------------
+Empleado (17$)
+- Nombre, email, contraseña
+- Servicios que ofrece
 ----------------------------------------------------------------------------------------
 
 Admin:

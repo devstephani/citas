@@ -1,6 +1,9 @@
 <?php
 
 use App\Livewire\Blog;
+use App\Livewire\Client;
+use App\Livewire\Dashboard;
+use App\Livewire\Employee;
 use App\Livewire\Packages;
 use App\Livewire\Services;
 use App\Livewire\Virtual;
@@ -26,11 +29,11 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('dashboard', Dashboard::class)->name('dashboard');
     Route::get('services', Services::class)->name('services');
     Route::get('packages', Packages::class)->name('packages');
     Route::get('virtual', Virtual::class)->name('virtual');
     Route::get('blog', Blog::class)->name('blog');
+    Route::get('employees', Employee::class)->name('employees');
+    Route::get('clients', Client::class)->name('clients');
 });

@@ -1,5 +1,7 @@
 <x-app-layout>
-    <x-page-title title="Perfil" />
+    @role('client')
+        <x-page-title title="Perfil" />
+    @endrole
 
     <div class="mt-8">
         <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
