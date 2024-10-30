@@ -2,6 +2,8 @@
 
 namespace App\Livewire;
 
+use App\Models\Package;
+use App\Models\Service;
 use App\Models\User;
 use Asantibanez\LivewireCharts\Models\ColumnChartModel;
 use Illuminate\Support\Facades\DB;
@@ -18,6 +20,15 @@ class Dashboard extends Component
     #[Layout('layouts.app')]
     public function render()
     {
+        $services_count = Service::count();
+        $packages_count = Package::count();
+        $employees_count = User::whereHas('roles', function ($q) {
+            $q->whereIn('name', ['employee']);
+        })->count();
+        $clients_count = User::whereHas('roles', function ($q) {
+            $q->whereIn('name', ['client']);
+        })->count();
+
         $clients = User::whereHas('roles', function ($q) {
             $q->whereIn('name', ['client']);
         })
@@ -69,6 +80,11 @@ class Dashboard extends Component
         return view('livewire.dashboard', [
             'client_bar_chart' => $client_bar_chart,
             'employee_bar_chart' => $employee_bar_chart,
+            'services_count' => $services_count,
+            'packages_count' => $packages_count,
+            'employees_count' => $employees_count,
+            'clients_count' => $clients_count,
+            '' => $packages_count
         ]);
     }
 }
