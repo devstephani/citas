@@ -4,7 +4,7 @@
         <x-home.check />
         <x-home.info />
         <x-home.personal />
-        <x-home.services />
+        <x-home.services :packages="$packages" />
         <x-home.mackup />
         <x-home.testimonials />
     @endif

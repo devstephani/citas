@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LandingPageController;
 use App\Livewire\Blog;
 use App\Livewire\Client;
 use App\Livewire\Dashboard;
@@ -20,10 +21,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('dashboard');
-})->name('home');
+// Route::get('/', function () {
+//     return view('dashboard');
+// })->name('home');
 
+Route::get('/', LandingPageController::class)->name('home');
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
