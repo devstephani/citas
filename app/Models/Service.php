@@ -11,11 +11,11 @@ class Service extends Model
     use HasFactory;
     use SoftDeletes;
 
-    protected $fillable = ['name', 'description', 'image', 'active', 'price', 'type', 'user_id'];
+    protected $fillable = ['name', 'description', 'image', 'active', 'price', 'type', 'employee_id'];
 
     public function employee()
     {
-        return $this->belongsTo(User::class, 'user_id', 'id', 'user');
+        return $this->belongsTo(Employee::class, 'employee_id', 'id', 'employee');
     }
 
     public function packages()

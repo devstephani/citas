@@ -2,7 +2,7 @@
     <div class="container">
         <div class="section-title">
             <span>Testimonials</span>
-            <h2>What customers say</h2>
+            <h2>Nuestros clientes dicen</h2>
         </div>
         <div class="testimonials-wrap owl-carousel owl-theme">
             <div class="single-testimonials">

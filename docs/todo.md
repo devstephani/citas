@@ -10,6 +10,11 @@
 
 # Pending
 
+- Respaldo y restauración de base de datos
+- Validaciones
+- Calendario y blog
+- Vistas de empleado
+
 ----------------------------------------------------------------------------------------
 Calendario (25$)
 - Registros de agendacion de servicios y paquetes

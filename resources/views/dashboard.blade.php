@@ -3,8 +3,12 @@
         <x-home.slider />
         <x-home.check />
         <x-home.info />
-        <x-home.personal />
-        <x-home.services :packages="$packages" />
+        @if (count($personal) > 0)
+            <x-home.personal :personal="$personal" />
+        @endif
+        @if (count($packages) > 0)
+            <x-home.services :packages="$packages" />
+        @endif
         <x-home.mackup />
         <x-home.testimonials />
     @endif

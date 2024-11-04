@@ -2,7 +2,7 @@
     <div class="container">
         <div class="section-title">
             <span>BELLEZA</span>
-            <h2>Makeup</h2>
+            <h2>Blog</h2>
         </div>
         <div class="row">
             <div class="col-lg-4 col-md-6">

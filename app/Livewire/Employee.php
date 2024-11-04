@@ -2,7 +2,6 @@
 
 namespace App\Livewire;
 
-use App\Models\User;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -25,13 +24,10 @@ class Employee extends Component
     #[Layout('layouts.app')]
     public function render()
     {
-        $data = User::where(function ($query) {
-            $query->where('name', 'like', '%' . $this->query . '%')
-                ->orWhere('email', 'like', '%' . $this->query . '%');
-        })
-            ->with('roles')
-            ->whereHas('roles', function ($q) {
-                $q->whereIn('name', ['employee']);
+        $data = \App\Models\Employee::with('user')
+            ->whereHas('user', function ($query) {
+                $query->where('name', 'like', '%' . $this->query . '%')
+                    ->orWhere('email', 'like', '%' . $this->query . '%');
             })
             ->orderByDesc('created_at')
             ->paginate($this->pagination);

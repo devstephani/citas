@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Employee;
 use App\Models\Service;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -21,11 +22,12 @@ class ServiceSeeder extends Seeder
             'active' => 1,
             'price' => 20,
             'type' => 'Estandar',
-            'user_id' => User::with('roles')
+            // 'user_id' => Employee::with('user', 'roles')
+            'employee_id' => User::with('roles', 'employee')
                 ->whereHas('roles', function ($q) {
                     $q->whereIn('name', ['employee']);
                 })
-                ->first()->id
+                ->first()->employee->id
         ]);
     }
 }

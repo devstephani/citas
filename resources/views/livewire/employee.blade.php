@@ -14,6 +14,9 @@
                     <thead class="border-b text-xs text-gray-700 uppercase bg-gray-50">
                         <tr>
                             <th scope="col" class="px-6 py-3">
+                                Foto
+                            </th>
+                            <th scope="col" class="px-6 py-3">
                                 Nombre
                             </th>
                             <th scope="col" class="px-6 py-3">
@@ -38,10 +41,14 @@
                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                 <th scope="row"
                                     class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    {{ $employee->name }}
+                                    <img src="{{ $employee->get_image() }}" class="size-20 rounded-md" />
+                                </th>
+                                <th scope="row"
+                                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    {{ $employee->user->name }}
                                 </th>
                                 <td class="px-6 py-4">
-                                    {{ $employee->email }}
+                                    {{ $employee->user->email }}
                                 </td>
                                 <td class="px-6 py-4">
                                     @if (count($employee->services) > 0)
@@ -55,13 +62,13 @@
                                     @endif
                                 </td>
                                 <td class="px-6 py-4">
-                                    @if ($employee->active)
+                                    @if ($employee->user->active)
                                         <x-lucide-circle-check
-                                            wire:click="$dispatch('toggle_active', { user: {{ $employee->id }} })"
+                                            wire:click="$dispatch('toggle_active', { employee: {{ $employee->id }} })"
                                             class="cursor-pointer size-5 text-green-700" />
                                     @else
                                         <x-lucide-circle-slash
-                                            wire:click="$dispatch('toggle_active', { user: {{ $employee->id }} })"
+                                            wire:click="$dispatch('toggle_active', { employee: {{ $employee->id }} })"
                                             class="cursor-pointer size-5 text-red-700" />
                                     @endif
                                 </td>

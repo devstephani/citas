@@ -26,7 +26,7 @@ class ServiceModal extends Component
     {
         $path = $this->image->store('public/services');
 
-        $service = Service::create([
+        Service::create([
             'name' => $this->name,
             'description' => $this->description,
             'active' => 1,

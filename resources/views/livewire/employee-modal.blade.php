@@ -34,6 +34,12 @@
                             autocomplete="off" class="w-full" />
                         <x-input-error for="password" class="mt-2" />
                     </div>
+                    <div class="block">
+                        <x-label value="Descripción" for="description" />
+                        <x-textarea wire:model.lazy="description" id="description" name="description" class="w-full"
+                            required></x-textarea>
+                        <x-input-error for="description" class="mt-2" />
+                    </div>
                     @if ($id > 0)
                         <div class="block">
                             <x-label value="Activo" for="active" />
@@ -44,6 +50,21 @@
                             <x-input-error for="active" class="mt-2" />
                         </div>
                     @endif
+
+                    <x-label value="Imágen" for="photo" />
+
+                    <x-input type="file" wire:model="photo" />
+
+                    <x-input-error for="photo" class="mt-2" />
+                    @if (($photo && $id < 1) || ($photo && $prevImg !== $photo))
+                        <img src="{{ $photo->temporaryUrl() }}">
+                    @endif
+                    @if ($prevImg === $photo && $id > 0)
+                        <img src="{{ asset('storage/' . $photo) }}">
+                    @endif
+                    <div wire:loading wire:target="photo">
+                        <p class="text-gray-600">Cargando imágen, por favor espere...</p>
+                    </div>
                 </article>
 
                 @if ($id > 0)
