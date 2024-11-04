@@ -66,9 +66,9 @@
                         @endforeach
                     </tbody>
                 </table>
+                {{ $clients->links() }}
             </div>
 
-            {{ $clients->links() }}
             @if (count($clients) === 0)
                 <p class="text-center">No se encontraron registros</p>
             @endif

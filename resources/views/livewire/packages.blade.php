@@ -316,9 +316,9 @@
                         @endforeach
                     </tbody>
                 </table>
+                {{ $packages->links() }}
             </div>
 
-            {{ $packages->links() }}
             @if (count($packages) === 0)
                 <p class="text-center">No se encontraron registros</p>
             @endif

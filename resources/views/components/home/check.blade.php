@@ -8,7 +8,7 @@
                         <div class="form-group">
                             <div class="input-group date" id="datetimepicker-1">
                                 <i class="flaticon-calendar"></i>
-                                <input type="text" class="form-control" id="f_reserva" name="f_reserva"
+                                <input type="text" class="form-control !text-lg" id="f_reserva" name="f_reserva"
                                     value="{{ \Carbon\Carbon::now()->format('Y-M-D') }}">
                                 <span class="input-group-addon">
                                     <i class="glyphicon glyphicon-th"></i>

@@ -53,7 +53,6 @@ class PackageModal extends Component
             $this->service_ids = array_diff($this->service_ids, [$id]);
         } else {
             $this->service_ids[] = $id;
-            dd($this->service_ids);
         }
     }
 

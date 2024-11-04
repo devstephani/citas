@@ -51,7 +51,7 @@ class ServiceModal extends Component
     }
 
 
-    public function edit(Service $record)
+    public function edit(service $record)
     {
         $this->showModal = true;
         $this->id = $record->id;

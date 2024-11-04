@@ -4,7 +4,7 @@
         Paquete
     </x-button>
 
-    <x-modal id="employee-modal" maxWidth="md" wire:model="showModal">
+    <x-modal id="package-modal" maxWidth="md" wire:model="showModal">
         <div class="px-6 py-4">
             <div class="text-lg font-medium text-gray-900">
                 @if ($id > 0)
@@ -40,7 +40,7 @@
                             class="w-full" no_default>
                             @foreach ($services as $service)
                                 <option value="{{ $service->id }}"
-                                    {{ in_array($service->id, $services->toArray()) && 'selected' }}>
+                                    {{ in_array($service->id, $services->toArray()) ? 'selected' : '' }}>
                                     {{ $service->name }}
                                 </option>
                             @endforeach

@@ -1,7 +1,7 @@
 <section class="eorik-slider-area">
     <div class="eorik-slider owl-carousel owl-theme">
         @php
-            $sliders = ['img/sliders/cp1.jpg', 'img/sliders/fondo_1.jpeg', 'img/sliders/pigmento.jpg'];
+            $sliders = ['img/sliders/cp1.webp', 'img/sliders/fondo_1.webp', 'img/sliders/pigmento.webp'];
         @endphp
         @foreach ($sliders as $slider)
             <div class="eorik-slider-item" style="background-image: url({{ asset($slider) }}">

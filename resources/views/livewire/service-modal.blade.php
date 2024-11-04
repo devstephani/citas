@@ -4,7 +4,7 @@
         Servicio
     </x-button>
 
-    <x-modal id="employee-modal" maxWidth="md" wire:model="showModal">
+    <x-modal id="service-modal" maxWidth="md" wire:model="showModal">
         <div class="px-6 py-4">
             <div class="text-lg font-medium text-gray-900">
                 @if ($id > 0)
@@ -45,7 +45,8 @@
                         <x-select wire:click="select_employee($event.target.value)" wire:model.lazy="employee_id"
                             id="employee_id" name="employee_id" required class="w-full">
                             @foreach ($employees as $employee)
-                                <option value="{{ $employee->id }}" {{ $employee->id == $employee_id && 'selected' }}>
+                                <option value="{{ $employee->id }}"
+                                    {{ $employee->id == $employee_id ? 'selected' : '' }}>
                                     {{ $employee->name }}
                                 </option>
                             @endforeach
@@ -56,8 +57,8 @@
                         <div class="block">
                             <x-label value="Activo" for="active" />
                             <x-select wire:model.lazy="active" id="active" name="active" required class="w-full">
-                                <option value="0" @selected(0 == $active)>Inactivo</option>
-                                <option value="1" @selected(1 == $active)>Activo</option>
+                                <option value="0">Inactivo</option>
+                                <option value="1">Activo</option>
                             </x-select>
                             <x-input-error for="active" class="mt-2" />
                         </div>

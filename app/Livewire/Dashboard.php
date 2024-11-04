@@ -74,7 +74,7 @@ class Dashboard extends Component
             $employee_bar_chart->addColumn($this->months[$key], $value->qty, $this->colors[$key]);
         }
 
-        return view('livewire.dashboard', [
+        return view('livewire.home', [
             'client_bar_chart' => $client_bar_chart,
             'employee_bar_chart' => $employee_bar_chart,
             'services_count' => $services_count,

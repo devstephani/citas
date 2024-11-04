@@ -396,9 +396,9 @@
                         @endforeach
                     </tbody>
                 </table>
+                {{ $services->links() }}
             </div>
 
-            {{ $services->links() }}
             @if (count($services) === 0)
                 <p class="text-center">No se encontraron registros</p>
             @endif

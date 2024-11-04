@@ -4,7 +4,7 @@
         Cliente
     </x-button>
 
-    <x-modal id="employee-modal" maxWidth="md" wire:model="showModal">
+    <x-modal id="client-modal" maxWidth="md" wire:model="showModal">
         <div class="px-6 py-4">
             <div class="text-lg font-medium text-gray-900">
                 @if ($id > 0)
@@ -38,8 +38,8 @@
                         <div class="block">
                             <x-label value="Activo" for="active" />
                             <x-select wire:model.lazy="active" id="active" name="active" required class="w-full">
-                                <option value="0" @selected(old('acive') == $active)>Inactivo</option>
-                                <option value="1" @selected(old('acive') == $active)>Activo</option>
+                                <option value="0" @selected(0 == $active)>Inactivo</option>
+                                <option value="1" @selected(1 == $active)>Activo</option>
                             </x-select>
                             <x-input-error for="active" class="mt-2" />
                         </div>

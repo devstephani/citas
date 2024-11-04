@@ -80,9 +80,9 @@
                         @endforeach
                     </tbody>
                 </table>
-            </div>
 
-            {{ $employees->links() }}
+                {{ $employees->links() }}
+            </div>
             @if (count($employees) === 0)
                 <p class="text-center">No se encontraron registros</p>
             @endif
