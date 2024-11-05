@@ -54,9 +54,9 @@ class ClientModal extends Component
         $this->resetUI();
     }
 
-    public function delete(User $user)
+    public function delete(User $record)
     {
-        $user->delete();
+        $record->delete();
         $this->resetUI();
     }
 

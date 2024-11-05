@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('image');
             $table->text('content');
             $table->boolean('active')->default(1);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

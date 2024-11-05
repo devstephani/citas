@@ -4,13 +4,13 @@ use App\Http\Controllers\LandingPageController;
 use App\Livewire\Blog;
 use App\Livewire\Client;
 use App\Livewire\Dashboard;
+use App\Livewire\DeletedRecords;
 use App\Livewire\Employee;
 use App\Livewire\Packages;
 use App\Livewire\Post;
 use App\Livewire\PostView;
 use App\Livewire\Services;
 use App\Livewire\Virtual;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -40,4 +40,5 @@ Route::middleware([
     Route::get('employees', Employee::class)->name('employees');
     Route::get('clients', Client::class)->name('clients');
     Route::get('posts', Post::class)->name('posts');
+    Route::get('trash', DeletedRecords::class)->name('trash');
 });

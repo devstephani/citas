@@ -5,8 +5,27 @@
                 <div class="flex flex-col">
                     <h1 class="text-2xl">{{ $post->title }}</h1>
                     <span>Publicado {{ $post->created_at->diffForHumans() }}</span>
+                    @if (Auth::user()->hasRole('admin'))
+                        <div class="flex gap-3">
+                            @php
+                                $reactions = $post->get_reactions();
+                            @endphp
+                            <p class="inline-flex items-center gap-3">
+                                {{ $reactions[0] }}
+                                <x-lucide-thumbs-up class="size-4" />
+                            </p>
+                            <p class="inline-flex items-center gap-3">
+                                {{ $reactions[1] }}
+                                <x-lucide-thumbs-down class="size-4" />
+                            </p>
+                            <p class="inline-flex items-center gap-3">
+                                {{ count($post->comments) }}
+                                <x-lucide-message-circle class="size-4" />
+                            </p>
+                        </div>
+                    @endif
                 </div>
-                <a href="{{ route('home') }}">
+                <a href="{{ Auth::user()->hasRole('admin') ? route('posts') : route('home') }}">
                     <x-button type="button" class="w-fit">
                         <x-lucide-arrow-left class="size-5" />
                         Volver
@@ -14,24 +33,26 @@
                 </a>
             </div>
 
-            <div class="flex gap-3">
-                <x-button type="button" wire:click="dispatch('toggle_rate', { rate: 1 })"
-                    class="bg-transparent border focus:ring-0 border-neutral-400 !rounded-full">
-                    <x-lucide-thumbs-up @class([
-                        'size-5',
-                        'text-black' => $my_rate === null || $my_rate === 0,
-                        'text-blue-600' => $my_rate === 1,
-                    ]) />
-                </x-button>
-                <x-button type="button" wire:click="dispatch('toggle_rate', { rate: 0 })"
-                    class="bg-transparent border focus:ring-0 border-neutral-400 !rounded-full">
-                    <x-lucide-thumbs-down @class([
-                        'size-5',
-                        'text-black' => $my_rate === null || $my_rate === 1,
-                        'text-red-600' => $my_rate === 0,
-                    ]) />
-                </x-button>
-            </div>
+            @if (!Auth::user()->hasRole('admin'))
+                <div class="flex gap-3">
+                    <x-button type="button" wire:click="dispatch('toggle_rate', { rate: 1 })"
+                        class="bg-transparent border focus:ring-0 border-neutral-400 !rounded-full">
+                        <x-lucide-thumbs-up @class([
+                            'size-5',
+                            'text-black' => $my_rate === null || $my_rate === 0,
+                            'text-blue-600' => $my_rate === 1,
+                        ]) />
+                    </x-button>
+                    <x-button type="button" wire:click="dispatch('toggle_rate', { rate: 0 })"
+                        class="bg-transparent border focus:ring-0 border-neutral-400 !rounded-full">
+                        <x-lucide-thumbs-down @class([
+                            'size-5',
+                            'text-black' => $my_rate === null || $my_rate === 1,
+                            'text-red-600' => $my_rate === 0,
+                        ]) />
+                    </x-button>
+                </div>
+            @endif
         </div>
 
         <div class="mt-4 mb-8 max-w-[70ch] text-wrap break-words">
@@ -51,6 +72,11 @@
                             <div class="flex justify-between">
                                 <h6>{{ $comment->user->name }}</h6>
 
+                                @if (Auth::user()->hasRole('admin'))
+                                    <x-lucide-trash class="size-4 cursor-pointer hover:text-blue-600"
+                                        onclick="delete_alert({{ $comment->id }})" />
+                                @endif
+
                                 @if ($comment->id === $comment_id)
                                     <div class="flex gap-3">
                                         <x-lucide-pencil class="size-4 cursor-pointer hover:text-blue-600"
@@ -66,7 +92,7 @@
                         </li>
                     @endforeach
                 </ul>
-                @if ($first_comment || $can_comment)
+                @if (!Auth::user()->hasRole('admin') && ($first_comment || $can_comment))
                     <div class="mt-5 block">
                         <x-label value="Comentario" for="comment" />
                         <x-textarea wire:model.lazy="comment" id="comment" name="comment" class="w-full"

@@ -19,9 +19,6 @@
                                     <p>
                                         {{ $post->created_at->diffForHumans() }}
                                     </p>
-                                    <p>
-                                        Comentarios ({{ count($post->comments) }})
-                                    </p>
                                 </div>
                                 <div class="-mt-5 flex gap-3">
                                     @php
@@ -34,6 +31,10 @@
                                     <p class="inline-flex items-center gap-3">
                                         {{ $reactions[1] }}
                                         <x-lucide-thumbs-down class="size-4" />
+                                    </p>
+                                    <p class="inline-flex items-center gap-3">
+                                        {{ count($post->comments) }}
+                                        <x-lucide-message-circle class="size-4" />
                                     </p>
                                 </div>
                                 <h3>{{ $post->title }}</h3>

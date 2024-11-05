@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('post_id')->constrained();
             $table->text('content');
             $table->boolean('active')->default(1);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

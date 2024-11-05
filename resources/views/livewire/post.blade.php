@@ -22,6 +22,9 @@
                             Activo
                         </th>
                         <th scope="col" class="px-6 py-3">
+                            Interacción
+                        </th>
+                        <th scope="col" class="px-6 py-3">
                             Publicado
                         </th>
                         <th scope="col" class="px-6 py-3">
@@ -51,10 +54,32 @@
                                 @endif
                             </td>
                             <td class="px-6 py-4">
+                                <div class="flex flex-col gap-3">
+                                    @php
+                                        $reactions = $post->get_reactions();
+                                    @endphp
+                                    <p class="inline-flex items-center gap-3">
+                                        {{ $reactions[0] }}
+                                        <x-lucide-thumbs-up class="size-4" />
+                                    </p>
+                                    <p class="inline-flex items-center gap-3">
+                                        {{ $reactions[1] }}
+                                        <x-lucide-thumbs-down class="size-4" />
+                                    </p>
+                                    <p class="inline-flex items-center gap-3">
+                                        {{ count($post->comments) }}
+                                        <x-lucide-message-circle class="size-4" />
+                                    </p>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
                                 {{ $post->created_at->format('d-m-Y') }}
                             </td>
                             <td class="px-6 py-4">
                                 <div class="flex gap-3">
+                                    <a href="{{ route('post.id', $post->id) }}">
+                                        <x-lucide-eye class="size-5 hover:text-blue-600 cursor-pointer" />
+                                    </a>
                                     <x-lucide-pencil class="size-5 hover:text-blue-600 cursor-pointer"
                                         wire:click="$dispatch('edit', { record: {{ $post->id }}})" />
                                     <x-lucide-trash class="size-5 hover:text-blue-600 cursor-pointer"

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->boolean('rate');
             $table->foreignId('user_id')->constrained();
             $table->foreignId('post_id')->constrained();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

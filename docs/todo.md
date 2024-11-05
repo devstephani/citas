@@ -12,9 +12,9 @@
 
 - Respaldo y restauración de base de datos
 - Validaciones
-- Calendario y blog
+- Calendario
 - Vistas de empleado
-- softdelete
+- Borrar, inhabilitar comentarios
 
 ----------------------------------------------------------------------------------------
 Calendario (25$)

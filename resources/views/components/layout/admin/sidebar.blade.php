@@ -63,6 +63,16 @@
                     <span class="ms-3 ">Blog</span>
                 </a>
             </li>
+            <li>
+                <a href="{{ route('trash') }}" @class([
+                    'flex items-center p-2 rounded-lg hover:bg-neutral-200',
+                    'bg-neutral-200' => Route::is('trash'),
+                ])>
+
+                    <x-lucide-trash class="size-5 " />
+                    <span class="ms-3 ">Papelera</span>
+                </a>
+            </li>
         </ul>
     </div>
 </aside>

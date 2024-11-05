@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('discount');
             $table->boolean('active');
             $table->foreignId('category_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

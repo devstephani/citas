@@ -67,11 +67,11 @@
                     </tbody>
                 </table>
                 {{ $clients->links() }}
+                @if (count($clients) === 0)
+                    <p class="text-center">No se encontraron registros</p>
+                @endif
             </div>
 
-            @if (count($clients) === 0)
-                <p class="text-center">No se encontraron registros</p>
-            @endif
         </div>
     @endrole
 </div>
