@@ -20,6 +20,13 @@
                     </div>
 
                     <div class="block">
+                        <x-label value="Descripción" for="description" />
+                        <x-textarea wire:model.lazy="description" id="description" name="description" class="w-full"
+                            required></x-textarea>
+                        <x-input-error for="description" class="mt-2" />
+                    </div>
+
+                    <div class="block">
                         <x-label value="Imágen" for="image" />
 
                         <x-input type="file" wire:model="image" />

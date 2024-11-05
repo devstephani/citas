@@ -14,7 +14,6 @@
 - Validaciones
 - Calendario
 - Vistas de empleado
-- Borrar, inhabilitar comentarios
 
 ----------------------------------------------------------------------------------------
 Calendario (25$)

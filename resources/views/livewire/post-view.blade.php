@@ -56,6 +56,7 @@
         </div>
 
         <div class="mt-4 mb-8 max-w-[70ch] text-wrap break-words">
+            <p class="text-justify mb-5">{{ $post->description }}</p>
             {!! $post->content !!}
         </div>
 
@@ -73,8 +74,19 @@
                                 <h6>{{ $comment->user->name }}</h6>
 
                                 @if (Auth::user()->hasRole('admin'))
-                                    <x-lucide-trash class="size-4 cursor-pointer hover:text-blue-600"
-                                        onclick="delete_alert({{ $comment->id }})" />
+                                    <div class="flex gap-3">
+                                        <x-lucide-trash class="size-4 cursor-pointer hover:text-blue-600"
+                                            onclick="delete_alert({{ $comment->id }})" />
+                                        @if ($comment->active)
+                                            <x-lucide-circle-check
+                                                wire:click="$dispatch('toggle_comment_active', { record: {{ $comment->id }} })"
+                                                class="cursor-pointer size-5 text-green-700" />
+                                        @else
+                                            <x-lucide-circle-slash
+                                                wire:click="$dispatch('toggle_comment_active', { record: {{ $comment->id }} })"
+                                                class="cursor-pointer size-5 text-red-700" />
+                                        @endif
+                                    </div>
                                 @endif
 
                                 @if ($comment->id === $comment_id)

@@ -11,15 +11,25 @@ use Livewire\Component;
 class PostView extends Component
 {
     public $post, $my_rate, $user_id, $comment, $comment_id, $first_comment, $can_comment;
-    protected $listeners = ['toggle_rate', 'delete'];
+    protected $listeners = ['toggle_rate', 'delete', 'toggle_comment_active'];
 
     public function mount($id)
     {
         $this->post = Post::find($id);
+        if (empty($this->post)) {
+            return redirect()->route('home');
+        }
+
         $this->user_id = Auth::user()->id ?? 0;
         $this->comment_id = $this->post->comments()->where('user_id', $this->user_id ?? 0)->first()->id ?? 0;
         $this->first_comment = $this->comment_id <= 0;
         $this->can_comment = false;
+
+        if (Auth::user()->hasRole('admin')) {
+            $this->post->comments = $this->post->comments()->get();
+        } else {
+            $this->post->comments = $this->post->comments()->where('active', 1)->get();
+        }
     }
 
     public function toggle_rate(int $rate)
@@ -64,6 +74,13 @@ class PostView extends Component
             $this->can_comment = true;
             $this->comment = Comment::find($this->comment_id)->first()->content;
         }
+    }
+
+    public function toggle_comment_active(Comment $record)
+    {
+        $record->update([
+            'active' => ! $record->active
+        ]);
     }
 
     public function delete(Comment $record)

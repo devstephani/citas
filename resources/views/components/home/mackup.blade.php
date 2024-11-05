@@ -33,14 +33,12 @@
                                         <x-lucide-thumbs-down class="size-4" />
                                     </p>
                                     <p class="inline-flex items-center gap-3">
-                                        {{ count($post->comments) }}
+                                        {{ $post->comments()->where('active', 1)->count() }}
                                         <x-lucide-message-circle class="size-4" />
                                     </p>
                                 </div>
                                 <h3>{{ $post->title }}</h3>
-                                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fuga veritatis veniam
-                                    corrupti
-                                    perferendis.</p>
+                                <p>{{ $post->description }}</p>
                                 <a class="read-more" href="{{ route('post.id', $post->id) }}">
                                     Leer más
                                     <i class="flaticon-right"></i>

@@ -13,7 +13,7 @@ class PostModal extends Component
     use WithFileUploads;
 
     public $showModal = false;
-    public $message, $title, $active, $prevImg;
+    public $message, $title, $active, $prevImg, $description;
     public $id = null;
 
     #[Validate('image|max:1024')]
@@ -29,7 +29,8 @@ class PostModal extends Component
         MPost::create([
             'title' => $this->title,
             'content' => $this->message,
-            'image' => $path
+            'image' => $path,
+            'description' => $this->description
         ]);
 
         $this->resetUI();
@@ -50,6 +51,7 @@ class PostModal extends Component
         $this->title = $record->title;
         $this->message = $record->content;
         $this->active = $record->active;
+        $this->description = $record->description;
 
         $this->dispatch('updateTinyMCE', ['content' => $this->message]);
     }
@@ -71,6 +73,7 @@ class PostModal extends Component
             'title' => $this->title,
             'content' => $this->message,
             'active' => $this->active,
+            'description' => $this->description
         ]);
 
         $this->resetUI();
@@ -100,6 +103,7 @@ class PostModal extends Component
         $this->active = '';
         $this->image = '';
         $this->prevImg = '';
+        $this->description = '';
         $this->showModal = false;
         $this->dispatch('refreshParent')->to(Post::class);
     }
