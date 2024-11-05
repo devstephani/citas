@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\LandingPageController;
+use App\Livewire\Backup;
 use App\Livewire\Blog;
 use App\Livewire\Client;
 use App\Livewire\Dashboard;
@@ -41,4 +42,5 @@ Route::middleware([
     Route::get('clients', Client::class)->name('clients');
     Route::get('posts', Post::class)->name('posts');
     Route::get('trash', DeletedRecords::class)->name('trash');
+    Route::get('backup', Backup::class)->name('backup');
 });
