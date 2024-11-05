@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
 use App\Models\Employee;
 use App\Models\Package;
+use App\Models\Post;
 use Illuminate\Http\Request;
 
 class LandingPageController extends Controller
@@ -11,7 +13,7 @@ class LandingPageController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function __invoke(Request $request)
+    public function __invoke()
     {
         $packages = Package::where('active', '=', 1)
             ->paginate(5);
@@ -20,10 +22,22 @@ class LandingPageController extends Controller
                 $q->where('active', '=', 1);
             })
             ->get();
+        $posts = Post::where('active',  1)
+            ->orderByDesc('created_at')
+            ->paginate(10);
+
+        $comments = Comment::where('active', 1)
+            ->inRandomOrder()
+            ->take(10)
+            ->get();
+
+        $comments = count($comments) > 3 ? $comments : [];
 
         return view('dashboard', [
             'packages' => $packages,
-            'personal' => $personal
+            'personal' => $personal,
+            'posts' => $posts,
+            'comments' => $comments
         ]);
     }
 }

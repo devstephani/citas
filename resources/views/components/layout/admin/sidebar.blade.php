@@ -53,6 +53,16 @@
                     <span class="ms-3 ">Clientes</span>
                 </a>
             </li>
+            <li>
+                <a href="{{ route('posts') }}" @class([
+                    'flex items-center p-2 rounded-lg hover:bg-neutral-200',
+                    'bg-neutral-200' => Route::is('posts'),
+                ])>
+
+                    <x-lucide-message-square class="size-5 " />
+                    <span class="ms-3 ">Blog</span>
+                </a>
+            </li>
         </ul>
     </div>
 </aside>

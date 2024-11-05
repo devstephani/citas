@@ -39,6 +39,7 @@
 
     <!-- Styles -->
     @livewireStyles
+    @stack('scripts')
 </head>
 
 <body class="font-sans antialiased">
@@ -46,7 +47,7 @@
     <x-layout.navbar />
     <x-layout.sidebar-modal />
 
-    @if(is_null(Auth::user()) || Auth::user()->hasRole('client'))
+    @if (is_null(Auth::user()) || Auth::user()->hasRole('client'))
         {{ $slot }}
     @endif
 
@@ -61,7 +62,7 @@
         </div>
     @endrole
 
-    @if(is_null(Auth::user()) || Auth::user()->hasRole('client'))
+    @if (is_null(Auth::user()) || Auth::user()->hasRole('client'))
         <x-home.footer />
 
         <div class="go-top">
@@ -128,7 +129,6 @@
     </script>
     @stack('modals')
     @livewireScripts
-    @include('popper::assets')
     @livewireChartsScripts
 </body>
 

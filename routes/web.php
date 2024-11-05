@@ -6,8 +6,11 @@ use App\Livewire\Client;
 use App\Livewire\Dashboard;
 use App\Livewire\Employee;
 use App\Livewire\Packages;
+use App\Livewire\Post;
+use App\Livewire\PostView;
 use App\Livewire\Services;
 use App\Livewire\Virtual;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,11 +24,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', function () {
-//     return view('dashboard');
-// })->name('home');
-
 Route::get('/', LandingPageController::class)->name('home');
+Route::get('posts/{id}', PostView::class)->name('post.id');
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
@@ -38,4 +39,5 @@ Route::middleware([
     Route::get('blog', Blog::class)->name('blog');
     Route::get('employees', Employee::class)->name('employees');
     Route::get('clients', Client::class)->name('clients');
+    Route::get('posts', Post::class)->name('posts');
 });

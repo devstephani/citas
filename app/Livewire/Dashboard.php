@@ -6,6 +6,7 @@ use App\Models\Package;
 use App\Models\Service;
 use App\Models\User;
 use Asantibanez\LivewireCharts\Models\ColumnChartModel;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -27,6 +28,13 @@ class Dashboard extends Component
         'Nov',
         'Dic',
     ];
+
+    public function mount()
+    {
+        if (Auth::user()->hasRole('client')) {
+            return redirect('/');
+        }
+    }
 
     #[Layout('layouts.app')]
     public function render()
@@ -81,7 +89,6 @@ class Dashboard extends Component
             'packages_count' => $packages_count,
             'employees_count' => $employees_count,
             'clients_count' => $clients_count,
-            '' => $packages_count
         ]);
     }
 }

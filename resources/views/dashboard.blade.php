@@ -9,7 +9,11 @@
         @if (count($packages) > 0)
             <x-home.services :packages="$packages" />
         @endif
-        <x-home.mackup />
-        <x-home.testimonials />
+        @if (count($posts) > 0)
+            <x-home.mackup :posts="$posts" />
+        @endif
+        @if (count($comments) > 0)
+            <x-home.testimonials :comments="$comments" />
+        @endif
     @endif
 </x-app-layout>

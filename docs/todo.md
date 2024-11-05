@@ -14,6 +14,7 @@
 - Validaciones
 - Calendario y blog
 - Vistas de empleado
+- softdelete
 
 ----------------------------------------------------------------------------------------
 Calendario (25$)
@@ -42,6 +43,11 @@ Facturacion (7$)
 - Finalizada la cita, el empleado da concluido el servicio y se manda un email con: servicio, fecha, duracion, costo y estado de pagado
 - Finalizada la cita, el admin da concluido el paquete y se manda un email con: servicio, fecha, duracion, costo y estado de pagado
 ----------------------------------------------------------------------------------------
+			COSTE TOTAL: 109$ - Descuento a 85$
+----------------------------------------------------------------------------------------
+
+# DONE
+----------------------------------------------------------------------------------------
 Blog (20$)
 - Titulo
 - Fecha de creacion
@@ -53,12 +59,6 @@ Blog (20$)
 - Acceso publico, interaccion autenticada
 - Orden de carga: fecha de creado
 - Inhabilitar
-
-----------------------------------------------------------------------------------------
-			COSTE TOTAL: 109$ - Descuento a 85$
-----------------------------------------------------------------------------------------
-
-# DONE
 ----------------------------------------------------------------------------------------
 Perfil (8$)
 - Modificar datos básicos

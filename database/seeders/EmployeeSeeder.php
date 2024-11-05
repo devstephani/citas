@@ -21,7 +21,7 @@ class EmployeeSeeder extends Seeder
         ])->assignRole('employee')
             ->employee()
             ->create([
-                'description' => 'Lashista, Trabaja en la area de cejas,pestañas y epilacion coorporal.',
+                'description' => 'Lashista, Trabaja en el área de cejas, pestañas y depilación coorporal.',
                 'photo' => 'stefy.jpg'
             ]);
 
@@ -33,7 +33,7 @@ class EmployeeSeeder extends Seeder
         ])->assignRole('employee')
             ->employee()
             ->create([
-                'description' => 'Maquillador profesional y creador de contenido en el area de la Belleza de la mujer sobre (Makeup).',
+                'description' => 'Maquillador profesional y creador de contenido en el área de la Belleza de la mujer sobre (Makeup).',
                 'photo' => 'jose.jpg'
             ]);
 

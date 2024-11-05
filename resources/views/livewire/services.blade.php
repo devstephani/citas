@@ -382,7 +382,15 @@
                                     {{ $service->price }}
                                 </td>
                                 <td class="px-6 py-4">
-                                    {{ $service->active }}
+                                    @if ($service->active)
+                                        <x-lucide-circle-check
+                                            wire:click="$dispatch('toggle_active', { service: {{ $service->id }} })"
+                                            class="cursor-pointer size-5 text-green-700" />
+                                    @else
+                                        <x-lucide-circle-slash
+                                            wire:click="$dispatch('toggle_active', { service: {{ $service->id }} })"
+                                            class="cursor-pointer size-5 text-red-700" />
+                                    @endif
                                 </td>
                                 <td class="px-6 py-4">
                                     <div class="flex gap-3">

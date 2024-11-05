@@ -22,12 +22,7 @@ class ServiceSeeder extends Seeder
             'active' => 1,
             'price' => 20,
             'type' => 'Estandar',
-            // 'user_id' => Employee::with('user', 'roles')
-            'employee_id' => User::with('roles', 'employee')
-                ->whereHas('roles', function ($q) {
-                    $q->whereIn('name', ['employee']);
-                })
-                ->first()->employee->id
+            'employee_id' => Employee::first()->id
         ]);
     }
 }
