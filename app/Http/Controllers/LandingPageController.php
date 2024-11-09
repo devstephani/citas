@@ -6,7 +6,6 @@ use App\Models\Comment;
 use App\Models\Employee;
 use App\Models\Package;
 use App\Models\Post;
-use Illuminate\Http\Request;
 
 class LandingPageController extends Controller
 {
