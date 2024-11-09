@@ -1,4 +1,3 @@
-- Table: https://github.com/Okipa/laravel-table
 - Roles: https://spatie.be/docs/laravel-permission/v6/installation-laravel
 - Alerts: https://sweetalert2.github.io/
 - Auth: Jetstream
@@ -11,7 +10,135 @@
 # Pending
 
 - Respaldo y restauración de base de datos
+  - No hace respaldo al darle al btn
 - Validaciones
+  - PostView -> save_comment()
+    - Min: 1
+    - Max: 200
+    - Alphanumeric + spaces
+    - Required
+  - ServiceModal -> [save(), update()]
+    - Name
+      - Min: 4
+      - Max: 80
+      - Alphanumeric + spaces
+      - Required
+      - Unique
+    - Description
+      - Min: 10
+      - Max: 150
+      - Alphanumeric + spaces
+      - Required
+    - Active
+      - Required
+      - Boolean
+    - Price
+      - Required
+      - Min: 0.1
+      - Max: 1000
+      - Numeric
+    - Type (Migrar a tabla)
+      - Required
+      - Between
+    - Image
+      - Mimetypes
+      - Max
+      - Required
+  - PackageModal -> [save(), update()]
+    - Name
+      - Min: 4
+      - Max: 80
+      - Alphanumeric + spaces
+      - Required
+      - Unique
+    - Description
+      - Min: 10
+      - Max: 150
+      - Alphanumeric + spaces
+      - Required
+    - Active
+      - Required
+      - Boolean
+    - Price
+      - Required
+      - Min: 0.1
+      - Max: 1000
+      - Numeric
+    - Image
+      - Mimetypes
+      - Max
+      - Required
+  - PostModal -> [save(), update()]
+    - Title
+      - Min: 4
+      - Max: 80
+      - Alphanumeric + spaces
+      - Required
+      - Unique
+    - Description
+      - Min: 40
+      - Max: 2000
+      - Alphanumeric + spaces
+      - Required
+    - Content
+      - Min: 10
+      - Max: 150
+      - Alphanumeric + spaces
+      - Required
+    - Active
+      - Required
+      - Boolean
+    - Image
+      - Mimetypes
+      - Max
+      - Required
+  - EmployeeModal -> [save(), update()]
+    - Name
+      - Min: 4
+      - Max: 80
+      - Alphanumeric + spaces
+      - Required
+    - Email
+      - Unique
+      - Email
+      - Required
+    - Active
+      - Required
+      - Boolean
+    - Password
+      - Required
+      - Password
+      - Min: 4
+      - Max: 12
+      - Numeric
+    - Description
+      - Required
+      - Min: 8
+      - Max: 120
+      - Required
+    - Photo
+      - Mimetypes
+      - Max
+      - Required
+  - ClientModal -> [save(), update()]
+    - Name
+      - Min: 4
+      - Max: 80
+      - Alphanumeric + spaces
+      - Required
+    - Email
+      - Unique
+      - Email
+      - Required
+    - Active
+      - Required
+      - Boolean
+    - Password
+      - Required
+      - Password
+      - Min: 4
+      - Max: 12
+      - Numeric
 - Calendario
 - Vistas de empleado
 
@@ -47,41 +174,40 @@ Facturacion (7$)
 
 # DONE
 ----------------------------------------------------------------------------------------
-Blog (20$)
+✔ Blog (20$)
 - Titulo
 - Fecha de creacion
 - Contenido
   - Imagenes, texto, enlaces
 - Comentarios
 - Me gustas y no me gustas
-- Guardar como favorito
 - Acceso publico, interaccion autenticada
 - Orden de carga: fecha de creado
 - Inhabilitar
 ----------------------------------------------------------------------------------------
-Perfil (8$)
+✔ Perfil (8$)
 - Modificar datos básicos
  - Nombre, email, contraseña
 - Recuperar contraseña
 - Cambiar contraseña
 ----------------------------------------------------------------------------------------
-Usuario
+✔ Usuario
 - Formulario de registro
 - Registro de clientes que vayan al local y no tengan cuenta
 ----------------------------------------------------------------------------------------
-Migrar todo el proyecto a laravel y liwewire - plantilla (20$)
+✔ Migrar todo el proyecto a laravel y liwewire - plantilla (20$)
 - Autenticacion (admin, empleado, cliente)
 - Roles
 - Permisos
 - Base de datos
 ----------------------------------------------------------------------------------------
-Formulario de servicios y paquetes (12$)
+✔ Formulario de servicios y paquetes (12$)
 - Servicio
   - Nombre, precio, descripcion, imagen, activo, *pending* descuento (se aplica cada 4 servicios en el historial del cliente)
 - Paquete
   - Nombre, precio, descripcion, lista de servicios, imagen, activo
 ----------------------------------------------------------------------------------------
-Empleado (17$)
+✔ Empleado (17$)
 - Nombre, email, contraseña
 - Servicios que ofrece
 ----------------------------------------------------------------------------------------
