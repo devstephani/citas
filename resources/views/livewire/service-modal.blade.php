@@ -30,8 +30,13 @@
                     </div>
                     <div class="block">
                         <x-label value="Tipo" for="type" />
-                        <x-input wire:model.lazy="type" type="text" id="type" name="type" required
-                            class="w-full" />
+                        <x-select wire:model.lazy="type" id="type" name="type" required class="w-full">
+                            @foreach (App\Enum\Service\TypeEnum::cases() as $enum)
+                                <option value="{{ $enum->value }}" {{ $enum->value === $type ? 'selected' : '' }}>
+                                    {{ $enum->name }}
+                                </option>
+                            @endforeach
+                        </x-select>
                         <x-input-error for="type" class="mt-2" />
                     </div>
                     <div class="block">

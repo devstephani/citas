@@ -373,10 +373,10 @@
                                     {{ $service->description }}
                                 </td>
                                 <td class="px-6 py-4">
-                                    {{ $service->employee->name }}
+                                    {{ $service->employee->user->name }}
                                 </td>
                                 <td class="px-6 py-4">
-                                    {{ $service->type }}
+                                    {{ $service->type->name }}
                                 </td>
                                 <td class="px-6 py-4">
                                     {{ $service->price }}

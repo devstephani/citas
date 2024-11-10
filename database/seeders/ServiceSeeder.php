@@ -2,10 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Enum\Service\TypeEnum;
 use App\Models\Employee;
 use App\Models\Service;
-use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class ServiceSeeder extends Seeder
@@ -21,7 +20,7 @@ class ServiceSeeder extends Seeder
             'image' => 'cp1.jpg',
             'active' => 1,
             'price' => 20,
-            'type' => 'Estandar',
+            'type' => TypeEnum::Trenzado,
             'employee_id' => Employee::first()->id
         ]);
     }

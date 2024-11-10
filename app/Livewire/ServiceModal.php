@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Enum\Service\TypeEnum;
 use App\Models\Service;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
@@ -31,9 +32,9 @@ class ServiceModal extends Component
             'description' => $this->description,
             'active' => 1,
             'price' => $this->price,
-            'type' => $this->type,
+            'type' => TypeEnum::from($this->type),
             'image' => $path,
-            'user_id' => $this->employee_id
+            'employee_id' => $this->employee_id
         ]);
 
         $this->resetUI();
@@ -62,7 +63,7 @@ class ServiceModal extends Component
         $this->image = $record->image;
         $this->prevImg = $record->image;
         $this->active = $record->active;
-        $this->employee_id = $record->user_id;
+        $this->employee_id = $record->employee_id;
     }
 
     public function update()
@@ -82,9 +83,9 @@ class ServiceModal extends Component
             'name' => $this->name,
             'description' => $this->description,
             'price' => $this->price,
-            'type' => $this->type,
+            'type' => TypeEnum::from($this->type->value),
             'active' => $this->active,
-            'user_id' => $this->employee_id
+            'employee_id' => $this->employee_id
         ]);
 
         $this->resetUI();
@@ -114,6 +115,7 @@ class ServiceModal extends Component
         $this->description = '';
         $this->type = '';
         $this->price = '';
+        $this->employee_id = null;
         $this->image = '';
         $this->prevImg = '';
         $this->active = '';
