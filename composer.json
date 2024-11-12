@@ -18,7 +18,6 @@
         "laravel/tinker": "^2.8",
         "livewire/livewire": "^3.0",
         "mallardduck/blade-lucide-icons": "^1.23",
-        "spatie/laravel-backup": "^8.8",
         "spatie/laravel-permission": "^6.9",
         "tinymce/tinymce": "^7.4"
     },
