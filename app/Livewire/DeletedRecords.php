@@ -100,6 +100,7 @@ class DeletedRecords extends Component
 
         return view('livewire.deleted-records', [
             'records' => $data,
+            'title' => 'Papelera'
         ]);
     }
 }

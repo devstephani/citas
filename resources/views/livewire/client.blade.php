@@ -1,3 +1,7 @@
+@section('page-title')
+    {{ $title }}
+@endsection
+
 <div>
     @role('admin')
         <div class="relative overflow-x-auto">

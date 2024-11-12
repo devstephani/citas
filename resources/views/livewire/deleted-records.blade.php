@@ -1,3 +1,7 @@
+@section('page-title')
+    {{ $title }}
+@endsection
+
 <div>
     <div class="relative overflow-x-auto">
         <div class="p-4 overflow-x-auto shadow-md">

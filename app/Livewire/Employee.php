@@ -20,7 +20,6 @@ class Employee extends Component
         $this->dispatch('$refresh');
     }
 
-
     #[Layout('layouts.app')]
     public function render()
     {
@@ -33,7 +32,8 @@ class Employee extends Component
             ->paginate($this->pagination);
 
         return view('livewire.employee', [
-            'employees' => $data
+            'employees' => $data,
+            'title' => 'Empleados'
         ]);
     }
 }

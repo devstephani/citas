@@ -1,6 +1,10 @@
+@section('page-title')
+    {{ $title }}
+@endsection
+
 <div>
     <div class="relative overflow-x-auto">
-        <div class="flex flex-col sm:flex-row justify-between gap-3">
+        <div class="flex flex-col sm:flex-row justify-end gap-3">
             <div class="py-4 px-4 sm:p-4">
                 <x-button wire:click="save()">
                     <x-lucide-save class="size-5" />

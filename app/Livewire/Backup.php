@@ -82,7 +82,8 @@ class Backup extends Component
         }
 
         return view('livewire.backup', [
-            'backups' => $backups
+            'backups' => $backups,
+            'title' => 'Respaldo'
         ]);
     }
 }

@@ -1,3 +1,7 @@
+@section('page-title')
+    {{ $title }}
+@endsection
+
 <div>
     @role('admin')
         <div class="relative overflow-x-auto">
@@ -89,10 +93,10 @@
                 </table>
 
                 {{ $employees->links() }}
+                @if (count($employees) === 0)
+                    <p class="text-center">No se encontraron registros</p>
+                @endif
             </div>
-            @if (count($employees) === 0)
-                <p class="text-center">No se encontraron registros</p>
-            @endif
         </div>
     @endrole
 </div>

@@ -1,3 +1,7 @@
+@section('page-title')
+    {{ $title }}
+@endsection
+
 <div>
     @role('client')
         <x-page-title :title="$title" :subtitle="$subtitle" />

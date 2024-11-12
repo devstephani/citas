@@ -37,7 +37,7 @@ class Services extends Component
 
 
         return view('livewire.services', [
-            'services' => $data
+            'services' => $data,
         ]);
     }
 }

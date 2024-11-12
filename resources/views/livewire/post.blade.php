@@ -1,3 +1,7 @@
+@section('page-title')
+    {{ $title }}
+@endsection
+
 <div>
     <div class="relative overflow-x-auto">
         <div class="flex flex-col sm:flex-row justify-between gap-3">

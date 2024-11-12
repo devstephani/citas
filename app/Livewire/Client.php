@@ -37,7 +37,8 @@ class Client extends Component
             ->paginate($this->pagination);
 
         return view('livewire.client', [
-            'clients' => $data
+            'clients' => $data,
+            'title' => 'Clientes'
         ]);
     }
 }

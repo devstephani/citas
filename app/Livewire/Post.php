@@ -30,7 +30,8 @@ class Post extends Component
             ->paginate($this->pagination);
 
         return view('livewire.post', [
-            'posts' => $data
+            'posts' => $data,
+            'title' => 'Blog'
         ]);
     }
 }
