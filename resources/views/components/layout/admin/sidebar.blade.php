@@ -33,26 +33,28 @@
                     <span class="ms-3 ">Paquetes</span>
                 </a>
             </li>
-            <li>
-                <a href="{{ route('employees') }}" @class([
-                    'flex items-center p-2 rounded-lg hover:bg-neutral-200',
-                    'bg-neutral-200' => Route::is('employees'),
-                ])>
+            @role('admin')
+                <li>
+                    <a href="{{ route('employees') }}" @class([
+                        'flex items-center p-2 rounded-lg hover:bg-neutral-200',
+                        'bg-neutral-200' => Route::is('employees'),
+                    ])>
 
-                    <x-lucide-user class="size-5 " />
-                    <span class="ms-3 ">Empleados</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('clients') }}" @class([
-                    'flex items-center p-2 rounded-lg hover:bg-neutral-200',
-                    'bg-neutral-200' => Route::is('clients'),
-                ])>
+                        <x-lucide-user class="size-5 " />
+                        <span class="ms-3 ">Empleados</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('clients') }}" @class([
+                        'flex items-center p-2 rounded-lg hover:bg-neutral-200',
+                        'bg-neutral-200' => Route::is('clients'),
+                    ])>
 
-                    <x-lucide-users class="size-5 " />
-                    <span class="ms-3 ">Clientes</span>
-                </a>
-            </li>
+                        <x-lucide-users class="size-5 " />
+                        <span class="ms-3 ">Clientes</span>
+                    </a>
+                </li>
+            @endrole
             <li>
                 <a href="{{ route('posts') }}" @class([
                     'flex items-center p-2 rounded-lg hover:bg-neutral-200',
@@ -63,26 +65,30 @@
                     <span class="ms-3 ">Blog</span>
                 </a>
             </li>
-            <li>
-                <a href="{{ route('trash') }}" @class([
-                    'flex items-center p-2 rounded-lg hover:bg-neutral-200',
-                    'bg-neutral-200' => Route::is('trash'),
-                ])>
+            @role('admin')
+                <li>
+                    <a href="{{ route('trash') }}" @class([
+                        'flex items-center p-2 rounded-lg hover:bg-neutral-200',
+                        'bg-neutral-200' => Route::is('trash'),
+                    ])>
 
-                    <x-lucide-trash class="size-5 " />
-                    <span class="ms-3 ">Papelera</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('backup') }}" @class([
-                    'flex items-center p-2 rounded-lg hover:bg-neutral-200',
-                    'bg-neutral-200' => Route::is('backup'),
-                ])>
+                        <x-lucide-trash class="size-5 " />
+                        <span class="ms-3 ">Papelera</span>
+                    </a>
+                </li>
+            @endrole
+            @role('admin')
+                <li>
+                    <a href="{{ route('backup') }}" @class([
+                        'flex items-center p-2 rounded-lg hover:bg-neutral-200',
+                        'bg-neutral-200' => Route::is('backup'),
+                    ])>
 
-                    <x-lucide-database-backup class="size-5 " />
-                    <span class="ms-3 ">Respaldos</span>
-                </a>
-            </li>
+                        <x-lucide-database-backup class="size-5 " />
+                        <span class="ms-3 ">Respaldos</span>
+                    </a>
+                </li>
+            @endrole
         </ul>
     </div>
 </aside>
