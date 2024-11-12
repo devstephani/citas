@@ -29,6 +29,12 @@
                         <x-input-error for="description" class="mt-2" />
                     </div>
                     <div class="block">
+                        <x-label value="Precio" for="price" />
+                        <x-input wire:model.lazy="price" type="number" id="price" name="price" required
+                            class="w-full" />
+                        <x-input-error for="price" class="mt-2" />
+                    </div>
+                    <div class="block">
                         <x-label value="Tipo" for="type" />
                         <x-select wire:model.lazy="type" id="type" name="type" required class="w-full">
                             @foreach (App\Enum\Service\TypeEnum::cases() as $enum)
@@ -38,12 +44,6 @@
                             @endforeach
                         </x-select>
                         <x-input-error for="type" class="mt-2" />
-                    </div>
-                    <div class="block">
-                        <x-label value="Precio" for="price" />
-                        <x-input wire:model.lazy="price" type="number" id="price" name="price" required
-                            class="w-full" />
-                        <x-input-error for="price" class="mt-2" />
                     </div>
                     <div class="block">
                         <x-label value="Empleado" for="employee_id" />
@@ -71,7 +71,7 @@
 
                     <x-label value="Imágen" for="image" />
 
-                    <x-input type="file" wire:model="image" />
+                    <x-input type="file" wire:model="image" accept=".jpg" />
 
                     <x-input-error for="image" class="mt-2" />
                     @if (($image && $id < 1) || ($image && $prevImg !== $image))

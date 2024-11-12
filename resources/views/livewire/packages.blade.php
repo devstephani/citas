@@ -317,11 +317,10 @@
                     </tbody>
                 </table>
                 {{ $packages->links() }}
+                @if (count($packages) === 0)
+                    <p class="text-center">No se encontraron registros</p>
+                @endif
             </div>
-
-            @if (count($packages) === 0)
-                <p class="text-center">No se encontraron registros</p>
-            @endif
         </div>
     @endrole
 </div>
