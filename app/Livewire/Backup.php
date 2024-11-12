@@ -3,8 +3,7 @@
 namespace App\Livewire;
 
 use Carbon\Carbon;
-use Exception;
-use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
@@ -12,6 +11,8 @@ use Livewire\Component;
 
 class Backup extends Component
 {
+    protected $dump_path = "C:/laragon/bin/mysql/mysql-8.0.30-winx64/bin/mysqldump";
+    protected $destination_path = "C:/laragon/www/manicurista/storage/app/public/backups";
     protected $listeners = ['save', 'download'];
 
     public function get_size($size)
@@ -33,35 +34,28 @@ class Backup extends Component
 
     public function save()
     {
-        try {
-            Artisan::call('backup:run --only-db');
-            $output = Artisan::output();
+        $file_name = Carbon::now()->format('Y-m-d-H-i-s');
 
-            dd($output);
-            return 'La base de datos ha sido exportada correctamente';
-        } catch (Exception $e) {
-            return 'Hubo un error, por favor intente de nuevo';
-        }
+        File::ensureDirectoryExists($this->destination_path);
+        shell_exec("$this->dump_path -h localhost -u root manicurista > $this->destination_path/$file_name.sql");
     }
 
     public function download($record)
     {
         $file_name = $record;
-        $file = config('laravel-backup.backup.name') . $file_name;
-        $disk = Storage::disk(config('laravel.backup.backup.destination.disks'));
+        $disk = Storage::disk('backups');
 
-        if ($disk->exists($file)) {
-            $stream = $disk->readStream($file);
-
-            $download_file = sprintf('Respaldo base de datos %s', basename($file));
+        if ($disk->exists($file_name)) {
+            $stream = $disk->readStream($file_name);
+            $download_file_name = explode('/', $file_name)[1];
 
             return Response::stream(function () use ($stream) {
                 fpassthru($stream);
                 fclose($stream);
             }, 200, [
-                'Content-Type' => $disk->mimeType($file),
-                'Content-Length' => $disk->size($file),
-                'Content-disposition' => "attachment; filename={$download_file}",
+                'Content-Type' => $disk->mimeType($file_name),
+                'Content-Length' => $disk->size($file_name),
+                'Content-disposition' => "attachment; filename={$download_file_name}",
             ]);
         } else {
             return 'El respaldo que intenta descargar no existe, pruebe creando una copia de seguridad u otro respaldo';
@@ -72,15 +66,15 @@ class Backup extends Component
     public function render()
     {
         $backups = [];
-        $disk = Storage::disk(config('laravel.backup.backup.destination.disks'));
-        $files = $disk->files('/Browslashes Stefy');
+        $disk = Storage::disk('backups');
+        $files = $disk->files('/backups');
 
         foreach ($files as $key => $file) {
             $data = explode('/', $file);
             $date = explode('.', $data[1])[0];
+
             $backups[$key] = [
                 'index' => ++$key,
-                'name' => $data[0],
                 'key' => $file,
                 'date' => Carbon::createFromFormat('Y-m-d-H-i-s', $date)->format('d/m/Y - h:i a'),
                 'size' => $this->get_size($disk->size($file))

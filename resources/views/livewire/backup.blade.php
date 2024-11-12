@@ -14,13 +14,10 @@
                 <thead class="border-b text-xs text-gray-700 uppercase bg-gray-50">
                     <tr>
                         <th scope="col" class="px-6 py-3">
-                            Nombre
+                            Creado
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Peso
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Creado
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Acciones
@@ -31,13 +28,10 @@
                     @foreach ($backups as $backup)
                         <tr class="">
                             <td class="px-6 py-4">
-                                {{ $backup['name'] }}
+                                {{ $backup['date'] }}
                             </td>
                             <td class="px-6 py-4">
                                 {{ $backup['size'] }}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ $backup['date'] }}
                             </td>
                             <td class="px-6 py-4">
                                 <div class="flex gap-3">
