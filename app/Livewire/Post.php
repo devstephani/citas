@@ -19,6 +19,13 @@ class Post extends Component
         $this->dispatch('$refresh');
     }
 
+    public function mount()
+    {
+        if (auth()->user()->hasRole('client')) {
+            return redirect()->route('home');
+        }
+    }
+
     #[Layout('layouts.app')]
     public function render()
     {

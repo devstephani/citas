@@ -62,6 +62,16 @@ class Backup extends Component
         }
     }
 
+    public function mount()
+    {
+        if (auth()->user()->hasRole('client')) {
+            return redirect()->route('home');
+        }
+        if (auth()->user()->hasRole('employee')) {
+            return redirect()->route('dashboard');
+        }
+    }
+
     #[Layout('layouts.app')]
     public function render()
     {
