@@ -17,7 +17,7 @@ class PostModal extends Component
     public $message, $title, $active, $prevImg, $description;
     public $id = null;
 
-    #[Validate('image|max:1024|mimetypes:image/jpg')]
+    #[Validate('required|image|max:1024|mimes:jpg|extensions:jpg')]
     public $image;
 
     protected $listeners = ['edit', 'toggle', 'toggle_active', 'delete'];
@@ -53,6 +53,11 @@ class PostModal extends Component
             'email.unique' => 'Este correo se encuentra registrado',
             'active.required' => 'Debe seleccionar alguna opción',
             'active.boolean' => 'La opción seleccionada debe ser "Si" o "No"',
+            'image.required' => 'Debe añadir una imágen',
+            'image.image' => 'Debe ser una imágen',
+            'image.max' => 'Debe pesar máximo 1 MB',
+            'image.mimes' => 'Debe tener formato JPG',
+            'image.extensions' => 'Debe tener formato JPG',
         ];
     }
 

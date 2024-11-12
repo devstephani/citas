@@ -19,7 +19,7 @@ class ServiceModal extends Component
     public $id = null;
     public $name, $description, $active, $price, $type, $prevImg, $employee_id;
 
-    #[Validate('required|image|max:1024|mimes:jpg')]
+    #[Validate('required|image|max:1024|mimes:jpg|extensions:jpg')]
     public $image;
 
     protected $listeners = ['edit', 'toggle', 'toggle_active', 'delete'];

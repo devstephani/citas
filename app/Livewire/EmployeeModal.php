@@ -19,7 +19,7 @@ class EmployeeModal extends Component
     public $id = null;
     public $name, $email, $password, $active, $prevImg, $description;
 
-    #[Validate('image|max:1024|mimetypes:image/jpg')]
+    #[Validate('required|image|max:1024|mimes:jpg|extensions:jpg')]
     public $photo;
 
     protected $listeners = ['edit', 'toggle', 'toggle_active', 'delete'];
@@ -33,7 +33,6 @@ class EmployeeModal extends Component
                 return $query->where('email', $this->email);
             })->ignore($this->id)],
             'active' => ['boolean', Rule::excludeIf($this->id == null)],
-
             'password' => ['required', Password::min(4)->max(12)->numbers()->letters()],
         ];
     }
@@ -59,6 +58,11 @@ class EmployeeModal extends Component
             'password.max' => 'Debe ser máximo :min caracteres',
             'password.numbers' => 'Debe ser contener al menos 1 número',
             'password.letters' => 'Debe ser contener al menos 1 letra',
+            'photo.required' => 'Debe añadir una imágen',
+            'photo.image' => 'Debe ser una imágen',
+            'photo.max' => 'Debe pesar máximo 1 MB',
+            'photo.mimes' => 'Debe tener formato JPG',
+            'photo.extensions' => 'Debe tener formato JPG',
         ];
     }
 
