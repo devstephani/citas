@@ -36,12 +36,17 @@
                             {{ $message }}
                         </p>
                     @enderror
-                    <input required type="password" placeholder="Contraseña" name="password">
-                    @error('password')
-                        <p class="mt-2 text-sm text-red-600 dark:text-red-500">
-                            {{ $message }}
-                        </p>
-                    @enderror
+                    <div x-data="{ type: 'password' }" class="block mt-1 w-full relative">
+                        <input id="password" x-bind:type="type" placeholder="Contraseña" name="password"
+                            class="[]" style="msdisplay: none" required autocomplete="new-password" />
+                        <x-lucide-eye class="cursor-pointer absolute top-8 right-2 size-5"
+                            x-on:click="type = (type === 'password' ? 'text' : 'password')" />
+                        @error('password')
+                            <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+                                {{ $message }}
+                            </p>
+                        @enderror
+                    </div>
                     <div class="text-center">
                         <a class="font-italic isai5" href="{{ route('password.request') }}">Olvidé mi contraseña </a>
                     </div>

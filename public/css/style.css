@@ -9496,4 +9496,7 @@ Gallery Area Style
   transform: scale(2.3) rotate(4deg);
 }
 
+input::-ms-reveal, input::-ms-clear {
+  display: none;
+}
 /*# sourceMappingURL=style.css.map */
