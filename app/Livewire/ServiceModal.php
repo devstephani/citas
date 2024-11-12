@@ -19,7 +19,7 @@ class ServiceModal extends Component
     public $id = null;
     public $name, $description, $active, $price, $type, $prevImg, $employee_id;
 
-    #[Validate('image|max:1024|mimetypes:image/jpg')]
+    #[Validate('required|image|max:1024|mimes:jpg')]
     public $image;
 
     protected $listeners = ['edit', 'toggle', 'toggle_active', 'delete'];
@@ -27,14 +27,14 @@ class ServiceModal extends Component
     public function rules()
     {
         return [
-            'name' => ['required', 'min:4', 'max:80', 'regex:/^[a-zA-Z\s]+$/', Rule::unique('services')->where(function ($query) {
+            'name' => ['required', 'regex:/^[a-zA-Z\s]+$/', 'min:4', 'max:80', Rule::unique('services')->where(function ($query) {
                 return $query->where('name', $this->name);
             })->ignore($this->id)],
             'description' => 'required|min:10|max:150|regex:/^[a-zA-Z\s]+$/',
-            'active' => 'required|boolean',
+            'active' => ['boolean', Rule::excludeIf($this->id == null)],
             'price' => 'required|min:0.1|max:1000|numeric',
-            'type' => ['required', 'in:' . TypeEnum::cases()]
-
+            'type' => ['required', Rule::in(array_column(TypeEnum::cases(), 'value'))],
+            'employee_id' => ['required', 'exists:employees,id']
         ];
     }
 
@@ -58,6 +58,13 @@ class ServiceModal extends Component
             'price.numeric' => 'Debe ser un número',
             'type.required' => 'Debe seleccionar una opción',
             'type.in' => 'Debe seleccionar una opción de la lista',
+            'employee_id.required' => 'Debe seleccionar una opción',
+            'employee_id.exists' => 'El empleado seleccionado no está registrado',
+            'image.required' => 'Debe añadir una imágen',
+            'image.image' => 'Debe ser una imágen',
+            'image.max' => 'Debe pesar máximo 1 MB',
+            'image.mimes' => 'Debe tener formato JPG',
+            'image.extensions' => 'Debe tener formato JPG',
         ];
     }
 
@@ -65,6 +72,7 @@ class ServiceModal extends Component
     {
         $this->validate();
         $path = $this->image->store('public/services');
+
 
         Service::create([
             'name' => $this->name,

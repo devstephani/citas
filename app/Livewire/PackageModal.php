@@ -19,20 +19,22 @@ class PackageModal extends Component
     public $service_ids = [];
     public $name, $description, $active, $price, $prevImg;
 
-    #[Validate('image|max:1024')]
+    #[Validate('required|image|max:1024|mimes:jpg|extensions:jpg')]
     public $image;
 
     protected $listeners = ['edit', 'toggle', 'toggle_active', 'delete'];
 
     public function rules()
     {
+        $services = Service::pluck('id')->toArray();
         return [
             'name' => ['required', 'min:4', 'max:80', 'regex:/^[a-zA-Z\s]+$/', Rule::unique('packages')->where(function ($query) {
                 return $query->where('name', $this->name);
             })->ignore($this->id)],
             'description' => 'required|min:10|max:150|regex:/^[a-zA-Z\s]+$/',
-            'active' => 'required|boolean',
+            'active' => ['boolean', Rule::excludeIf($this->id == null)],
             'price' => 'required|min:0.1|max:1000|numeric',
+            'service_ids' => ['required', Rule::in($services)]
         ];
     }
 
@@ -56,11 +58,20 @@ class PackageModal extends Component
             'price.min' => 'Debe ser al menos :min',
             'price.max' => 'Debe ser máximo :min',
             'price.numeric' => 'Debe ser un número',
+            'image.required' => 'Debe añadir una imágen',
+            'image.image' => 'Debe ser una imágen',
+            'image.max' => 'Debe pesar máximo 1 MB',
+            'image.mimes' => 'Debe tener formato JPG',
+            'image.extensions' => 'Debe tener formato JPG',
+            'service_ids.required' => 'Debe seleccionar al menos 1 opción',
+            'service_ids.notIn' => 'Debe seleccionar una opción en la lista'
         ];
     }
 
     public function save()
     {
+        dd('here', $this, $this->getErrorBag);
+        dd($this->getErrorBag(), $this->validate());
         $this->validate();
         $path = $this->image->store('public/packages');
 

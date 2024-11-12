@@ -28,7 +28,8 @@ class PostModal extends Component
             'title' => 'required|min:4|max:80|regex:/^[a-zA-Z\s]+$/',
             'description' => 'required|min:40|max:2000|regex:/^[a-zA-Z\s]+$/',
             'content' => 'required|min:10|max:150|regex:/^[a-zA-Z\s]+$/',
-            'active' => 'required|boolean',
+            'active' => ['boolean', Rule::excludeIf($this->id == null)],
+
         ];
     }
 
