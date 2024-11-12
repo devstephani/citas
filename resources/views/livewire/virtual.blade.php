@@ -1,3 +1,7 @@
+@section('page-title')
+    Probador virtual
+@endsection
+
 <div>
     <x-page-title :title="$title" :subtitle="$subtitle" />
 
