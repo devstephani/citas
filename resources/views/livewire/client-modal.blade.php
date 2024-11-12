@@ -18,20 +18,20 @@
                 <article class="mb-4 flex flex-col gap-4">
                     <div class="block">
                         <x-label value="Nombre" for="name" />
-                        <x-input wire:model.lazy="name" type="text" id="name" name="name" class="w-full"
-                            autofocus autocomplete="off" required />
+                        <x-input placeholder="Ej: José Navarra" wire:model.lazy="name" type="text" id="name"
+                            name="name" class="w-full" autofocus autocomplete="off" required />
                         <x-input-error for="name" class="mt-2" />
                     </div>
                     <div class="block">
                         <x-label value="Correo" for="email" />
-                        <x-input wire:model.lazy="email" type="email" id="email" name="email" class="w-full"
-                            autocomplete="off" required />
+                        <x-input placeholder="Ej: correo@email.com" wire:model.lazy="email" type="email"
+                            id="email" name="email" class="w-full" autocomplete="off" required />
                         <x-input-error for="email" class="mt-2" />
                     </div>
                     <div class="block">
                         <x-label value="Contraseña" for="password" />
-                        <x-input wire:model.lazy="password" type="password" id="password" name="password" required
-                            autocomplete="off" class="w-full" />
+                        <x-input placeholder="Ej: *********" wire:model.lazy="password" type="password" id="password"
+                            name="password" required autocomplete="off" class="w-full" />
                         <x-input-error for="password" class="mt-2" />
                     </div>
                     @if ($id > 0)

@@ -14,14 +14,16 @@
                 <article class="mb-4 flex flex-col gap-4">
                     <div class="block">
                         <x-label value="Nombre" for="title" />
-                        <x-input wire:model.lazy="title" type="text" id="title" name="title" class="w-full"
-                            autofocus autocomplete="off" required />
+                        <x-input placeholder="Ej: Tips para un mejor maquillaje" wire:model.lazy="title" type="text"
+                            id="title" name="title" class="w-full" autofocus autocomplete="off" required />
                         <x-input-error for="title" class="mt-2" />
                     </div>
 
                     <div class="block">
                         <x-label value="Descripción" for="description" />
-                        <x-textarea wire:model.lazy="description" id="description" name="description" class="w-full"
+                        <x-textarea
+                            placeholder="Ej: Hablaremos un poco sobre nuestros tips y consejos para tener un maquillaje espectacular"
+                            wire:model.lazy="description" id="description" name="description" class="w-full"
                             required></x-textarea>
                         <x-input-error for="description" class="mt-2" />
                     </div>
