@@ -54,7 +54,7 @@
         {{ $slot }}
     @endif
 
-    @role('admin')
+    @hasanyrole(['admin', 'employee'])
         <div x-data="{ open: false, desktop: window.innerWidth >= 640 }" x-init="window.addEventListener('resize', () => desktop = window.innerWidth >= 640)">
             <x-layout.admin.navbar />
             <x-layout.admin.sidebar />
