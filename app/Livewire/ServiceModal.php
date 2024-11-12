@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Illuminate\Validation\Rule;
 
 class ServiceModal extends Component
 {
@@ -18,13 +19,51 @@ class ServiceModal extends Component
     public $id = null;
     public $name, $description, $active, $price, $type, $prevImg, $employee_id;
 
-    #[Validate('image|max:1024')]
+    #[Validate('image|max:1024|mimetypes:image/jpg')]
     public $image;
 
     protected $listeners = ['edit', 'toggle', 'toggle_active', 'delete'];
 
+    public function rules()
+    {
+        return [
+            'name' => ['required', 'min:4', 'max:80', 'regex:/^[a-zA-Z\s]+$/', Rule::unique('services')->where(function ($query) {
+                return $query->where('name', $this->name);
+            })->ignore($this->id)],
+            'description' => 'required|min:10|max:150|regex:/^[a-zA-Z\s]+$/',
+            'active' => 'required|boolean',
+            'price' => 'required|min:0.1|max:1000|numeric',
+            'type' => ['required', 'in:' . TypeEnum::cases()]
+
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'name.required' => 'Debe indicar el nombre',
+            'name.regex' => 'Solo se aceptan letras',
+            'name.min' => 'Debe contener al menos :min caracteres',
+            'name.max' => 'Debe contener máximo :max caracteres',
+            'name.unique' => 'Este nombre se encuentra registrado',
+            'description.required' => 'Debe indicar la descripción',
+            'description.regex' => 'Solo se aceptan letras',
+            'description.min' => 'Debe contener al menos :min caracteres',
+            'description.max' => 'Debe contener máximo :max caracteres',
+            'active.required' => 'Debe seleccionar alguna opción',
+            'active.boolean' => 'La opción seleccionada debe ser "Si" o "No"',
+            'price.required' => 'Debe indicar el precio',
+            'price.min' => 'Debe ser al menos :min',
+            'price.max' => 'Debe ser máximo :min',
+            'price.numeric' => 'Debe ser un número',
+            'type.required' => 'Debe seleccionar una opción',
+            'type.in' => 'Debe seleccionar una opción de la lista',
+        ];
+    }
+
     public function save()
     {
+        $this->validate();
         $path = $this->image->store('public/services');
 
         Service::create([
@@ -68,6 +107,7 @@ class ServiceModal extends Component
 
     public function update()
     {
+        $this->validate();
         $service = Service::find($this->id);
 
         if ($this->image !== $this->prevImg) {

@@ -13,6 +13,23 @@ class PostView extends Component
     public $post, $my_rate, $user_id, $comment, $comment_id, $first_comment, $can_comment;
     protected $listeners = ['toggle_rate', 'delete', 'toggle_comment_active'];
 
+    public function rules()
+    {
+        return [
+            'content' => 'required|min:3|max:200|regex:/^[a-zA-Z\s]+$/'
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'content.required' => 'Debe añadir un comentario',
+            'content.regex' => 'Solo se aceptan letras',
+            'content.min' => 'Debe contener al menos :min caracteres',
+            'content.max' => 'Debe contener máximo :max caracteres',
+        ];
+    }
+
     public function mount($id)
     {
         $this->post = Post::find($id);
@@ -55,6 +72,7 @@ class PostView extends Component
 
     public function save_comment()
     {
+        $this->validate();
         $this->comment_id = $this->post->comments()->create([
             'user_id' => $this->user_id,
             'content' => $this->comment
