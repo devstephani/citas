@@ -1,3 +1,7 @@
+@section('page-title')
+    Inicio de sesión
+@endsection
+
 <x-guest-layout>
     <main>
         @error('inactive')

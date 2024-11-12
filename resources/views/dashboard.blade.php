@@ -1,3 +1,7 @@
+@section('page-title')
+    Inicio
+@endsection
+
 <x-app-layout>
     @if (is_null(Auth::user()) || Auth::user()->hasRole('client'))
         <x-home.slider />
