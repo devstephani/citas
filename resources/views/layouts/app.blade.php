@@ -63,7 +63,7 @@
                 {{ $slot }}
             </div>
         </div>
-    @endrole
+    @endhasallroles
 
     @if (is_null(Auth::user()) || Auth::user()->hasRole('client'))
         <x-home.footer />

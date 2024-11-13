@@ -245,7 +245,7 @@
         </section>
     @endrole
 
-    @role('admin')
+    @hasanyrole(['admin', 'employee'])
         <div class="relative overflow-x-auto">
             <div class="flex flex-col sm:flex-row justify-between gap-3">
 
@@ -273,6 +273,9 @@
                             </th>
                             <th scope="col" class="px-6 py-3">
                                 Precio
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Publicado por
                             </th>
                             <th scope="col" class="px-6 py-3">
                                 Activo
@@ -306,14 +309,27 @@
                                     {{ $package->price }}
                                 </td>
                                 <td class="px-6 py-4">
-                                    {{ $package->active }}
+                                    {{ $package->user->name }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    @if ($package->active)
+                                        <x-lucide-circle-check
+                                            wire:click="$dispatch('toggle_active', { package: {{ $package->id }} })"
+                                            class="cursor-pointer size-5 text-green-700" />
+                                    @else
+                                        <x-lucide-circle-slash
+                                            wire:click="$dispatch('toggle_active', { package: {{ $package->id }} })"
+                                            class="cursor-pointer size-5 text-red-700" />
+                                    @endif
                                 </td>
                                 <td class="px-6 py-4">
                                     <div class="flex gap-3">
                                         <x-lucide-pencil class="size-5 hover:text-blue-600 cursor-pointer"
                                             wire:click="$dispatch('edit', { record: {{ $package->id }}})" />
-                                        <x-lucide-trash class="size-5 hover:text-blue-600 cursor-pointer"
-                                            onclick="delete_alert({{ $package->id }})" />
+                                        @role('admin')
+                                            <x-lucide-trash class="size-5 hover:text-blue-600 cursor-pointer"
+                                                onclick="delete_alert({{ $package->id }})" />
+                                        @endrole
                                     </div>
                                 </td>
                             </tr>
@@ -326,5 +342,5 @@
                 @endif
             </div>
         </div>
-    @endrole
+    @endhasallroles
 </div>

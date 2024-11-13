@@ -20,6 +20,7 @@ return new class extends Migration
             $table->boolean('active');
             $table->float('price', 5, 2);
             $table->foreignId('employee_id')->constrained();
+            $table->foreignId('user_id')->constrained();
             $table->softDeletes();
             $table->timestamps();
         });

@@ -10,7 +10,19 @@ class Package extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['name', 'description', 'active', 'price', 'image'];
+    protected $fillable = [
+        'name',
+        'description',
+        'active',
+        'price',
+        'image',
+        'user_id'
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function services()
     {

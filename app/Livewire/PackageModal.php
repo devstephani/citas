@@ -70,8 +70,6 @@ class PackageModal extends Component
 
     public function save()
     {
-        dd('here', $this, $this->getErrorBag);
-        dd($this->getErrorBag(), $this->validate());
         $this->validate();
         $path = $this->image->store('public/packages');
 
@@ -81,6 +79,7 @@ class PackageModal extends Component
             'active' => 1,
             'price' => $this->price,
             'image' => $path,
+            'user_id' => auth()->user()->id
         ]);
 
         $package->services()->sync($this->service_ids);

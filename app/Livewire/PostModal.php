@@ -70,7 +70,8 @@ class PostModal extends Component
             'title' => $this->title,
             'content' => $this->message,
             'image' => $path,
-            'description' => $this->description
+            'description' => $this->description,
+            'user_id' => auth()->user()->id
         ]);
 
         $this->resetUI();

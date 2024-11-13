@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('description');
             $table->boolean('active');
             $table->float('price', 5, 2);
+            $table->foreignId('user_id')->constrained();
             $table->softDeletes();
             $table->timestamps();
         });

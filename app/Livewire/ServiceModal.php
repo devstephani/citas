@@ -81,7 +81,8 @@ class ServiceModal extends Component
             'price' => $this->price,
             'type' => TypeEnum::from($this->type),
             'image' => $path,
-            'employee_id' => $this->employee_id
+            'employee_id' => $this->employee_id,
+            'user_id' => auth()->user()->id
         ]);
 
         $this->resetUI();

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('description');
             $table->text('content');
             $table->boolean('active')->default(1);
+            $table->foreignId('user_id')->constrained();
             $table->softDeletes();
             $table->timestamps();
         });

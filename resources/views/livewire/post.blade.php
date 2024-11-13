@@ -23,13 +23,16 @@
                             Título
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Activo
-                        </th>
-                        <th scope="col" class="px-6 py-3">
                             Interacción
                         </th>
                         <th scope="col" class="px-6 py-3">
+                            Publicado por
+                        </th>
+                        <th scope="col" class="px-6 py-3">
                             Publicado
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Activo
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Acciones
@@ -45,17 +48,6 @@
                             </th>
                             <td class="px-6 py-4">
                                 {{ $post->title }}
-                            </td>
-                            <td class="px-6 py-4">
-                                @if ($post->active)
-                                    <x-lucide-circle-check
-                                        wire:click="$dispatch('toggle_active', { record: {{ $post->id }} })"
-                                        class="cursor-pointer size-5 text-green-700" />
-                                @else
-                                    <x-lucide-circle-slash
-                                        wire:click="$dispatch('toggle_active', { record: {{ $post->id }} })"
-                                        class="cursor-pointer size-5 text-red-700" />
-                                @endif
                             </td>
                             <td class="px-6 py-4">
                                 <div class="flex flex-col gap-3">
@@ -77,6 +69,20 @@
                                 </div>
                             </td>
                             <td class="px-6 py-4">
+                                {{ $post->user->name }}
+                            </td>
+                            <td class="px-6 py-4">
+                                @if ($post->active)
+                                    <x-lucide-circle-check
+                                        wire:click="$dispatch('toggle_active', { record: {{ $post->id }} })"
+                                        class="cursor-pointer size-5 text-green-700" />
+                                @else
+                                    <x-lucide-circle-slash
+                                        wire:click="$dispatch('toggle_active', { record: {{ $post->id }} })"
+                                        class="cursor-pointer size-5 text-red-700" />
+                                @endif
+                            </td>
+                            <td class="px-6 py-4">
                                 {{ $post->created_at->format('d-m-Y') }}
                             </td>
                             <td class="px-6 py-4">
@@ -86,8 +92,10 @@
                                     </a>
                                     <x-lucide-pencil class="size-5 hover:text-blue-600 cursor-pointer"
                                         wire:click="$dispatch('edit', { record: {{ $post->id }}})" />
-                                    <x-lucide-trash class="size-5 hover:text-blue-600 cursor-pointer"
-                                        onclick="delete_alert({{ $post->id }})" />
+                                    @role('admin')
+                                        <x-lucide-trash class="size-5 hover:text-blue-600 cursor-pointer"
+                                            onclick="delete_alert({{ $post->id }})" />
+                                    @endrole
                                 </div>
                             </td>
                         </tr>

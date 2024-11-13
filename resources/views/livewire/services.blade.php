@@ -323,7 +323,7 @@
         </section>
     @endrole
 
-    @role('admin')
+    @hasanyrole(['admin', 'employee'])
         <div class="relative overflow-x-auto">
             <div class="flex flex-col sm:flex-row justify-between gap-3">
 
@@ -356,6 +356,9 @@
                                 Precio
                             </th>
                             <th scope="col" class="px-6 py-3">
+                                Publicado por
+                            </th>
+                            <th scope="col" class="px-6 py-3">
                                 Activo
                             </th>
                             <th scope="col" class="px-6 py-3">
@@ -386,6 +389,9 @@
                                     {{ $service->price }}
                                 </td>
                                 <td class="px-6 py-4">
+                                    {{ $service->user->name }}
+                                </td>
+                                <td class="px-6 py-4">
                                     @if ($service->active)
                                         <x-lucide-circle-check
                                             wire:click="$dispatch('toggle_active', { service: {{ $service->id }} })"
@@ -400,8 +406,10 @@
                                     <div class="flex gap-3">
                                         <x-lucide-pencil class="size-5 hover:text-blue-600 cursor-pointer"
                                             wire:click="$dispatch('edit', { record: {{ $service->id }}})" />
-                                        <x-lucide-trash class="size-5 hover:text-blue-600 cursor-pointer"
-                                            onclick="delete_alert({{ $service->id }})" />
+                                        @role('admin')
+                                            <x-lucide-trash class="size-5 hover:text-blue-600 cursor-pointer"
+                                                onclick="delete_alert({{ $service->id }})" />
+                                        @endrole
                                     </div>
                                 </td>
                             </tr>
@@ -415,5 +423,5 @@
                 <p class="text-center">No se encontraron registros</p>
             @endif
         </div>
-    @endrole
+    @endhasallroles
 </div>

@@ -15,8 +15,14 @@ class Post extends Model
         'content',
         'active',
         'image',
-        'description'
+        'description',
+        'user_id'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function comments()
     {

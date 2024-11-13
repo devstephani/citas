@@ -12,12 +12,25 @@ class Service extends Model
     use HasFactory;
     use SoftDeletes;
 
-    protected $fillable = ['name', 'description', 'image', 'active', 'price', 'type', 'employee_id'];
+    protected $fillable = [
+        'name',
+        'description',
+        'image',
+        'active',
+        'price',
+        'type',
+        'employee_id',
+        'user_id'
+    ];
 
     protected $casts = [
         'type' => TypeEnum::class
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function employee()
     {
