@@ -8,11 +8,14 @@
 
 - Alerts
 - Configurar Backup path.
-
-# Pending
-
+- Probador virtual (layout)
 - Calendario
+- Re-name (modules, views)
+
+# WIP
+
 - Vistas de empleado
+  - Re-agendar
 
 ----------------------------------------------------------------------------------------
 Calendario (25$)
