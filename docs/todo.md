@@ -2,6 +2,7 @@
 - Alerts: https://sweetalert2.github.io/
 - Auth: Jetstream
 - Livewire
+- Calendar: https://github.com/omnia-digital/livewire-calendar
 - Logs: https://github.com/jeremykenedy/laravel-logger
 
 # TODO
@@ -11,11 +12,7 @@
 - Probador virtual (layout)
 - Calendario
 - Re-name (modules, views)
-
-# WIP
-
-- Vistas de empleado
-  - Re-agendar
+- Añadir citas borradas
 
 ----------------------------------------------------------------------------------------
 Calendario (25$)
@@ -27,7 +24,7 @@ Calendario (25$)
 - Un servicio puede estar citado varias veces el mismo dia
 - Un paquete no puede estar citado a la misma hora de un servicio que lo contenga
 - Un paquete puede estar citado varias veces el mismo dia
-- Recordatorio via email a las 00 del dia y 1 hora antes del mismo
+- [-] Recordatorio via email a las 00 del dia y 1 hora antes del mismo
 ----------------------------------------------------------------------------------------
 Reportes
 - Asistencia de empleado (seleccionar empleado)
