@@ -426,11 +426,11 @@
                     </tbody>
                 </table>
                 {{ $services->links() }}
+                @if (count($services) === 0)
+                    <p class="text-center">No se encontraron registros</p>
+                @endif
             </div>
 
-            @if (count($services) === 0)
-                <p class="text-center">No se encontraron registros</p>
-            @endif
         </div>
     @endhasallroles
 </div>

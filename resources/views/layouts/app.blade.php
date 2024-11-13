@@ -132,6 +132,7 @@
     </script>
     @stack('modals')
     @livewireScripts
+    @livewireCalendarScripts
     @livewireChartsScripts
 </body>
 

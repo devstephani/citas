@@ -1,5 +1,8 @@
-@if(is_null(Auth::user()) || Auth::user()->hasRole('client'))
-    <div class="eorik-nav-style fixed-top">
+@if (is_null(Auth::user()) || Auth::user()->hasRole('client'))
+    <div @class([
+        'eorik-nav-style fixed-top z-10',
+        'bg-black' => Route::is('appointments'),
+    ])>
         <div class="navbar-area">
             <!-- Menu For Mobile Device -->
             <div class="mobile-nav">
@@ -90,7 +93,8 @@
                                             <form method="POST" action="{{ route('logout') }}" x-data>
                                                 @csrf
 
-                                                <x-dropdown-link href="{{ route('logout') }}" @click.prevent="$root.submit();">
+                                                <x-dropdown-link href="{{ route('logout') }}"
+                                                    @click.prevent="$root.submit();">
                                                     {{ __('Cerrar sesión') }}
                                                 </x-dropdown-link>
                                             </form>

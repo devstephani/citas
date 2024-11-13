@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\LandingPageController;
+use App\Livewire\AppointmentsComponent;
 use App\Livewire\Backup;
 use App\Livewire\Blog;
 use App\Livewire\Client;
@@ -43,4 +44,5 @@ Route::middleware([
     Route::get('posts', Post::class)->name('posts');
     Route::get('trash', DeletedRecords::class)->name('trash');
     Route::get('backup', Backup::class)->name('backup');
+    Route::get('appointments', AppointmentsComponent::class)->name('appointments');
 });

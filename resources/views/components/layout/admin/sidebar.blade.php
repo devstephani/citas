@@ -14,6 +14,16 @@
                 </a>
             </li>
             <li>
+                <a href="{{ route('appointments') }}" @class([
+                    'flex items-center p-2 rounded-lg hover:bg-neutral-200',
+                    'bg-neutral-200' => Route::is('appointments'),
+                ])>
+
+                    <x-lucide-calendar class="size-5 " />
+                    <span class="ms-3 ">Citas</span>
+                </a>
+            </li>
+            <li>
                 <a href="{{ route('services') }}" @class([
                     'flex items-center p-2 rounded-lg hover:bg-neutral-200',
                     'bg-neutral-200' => Route::is('services'),

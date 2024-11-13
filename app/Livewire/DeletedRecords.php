@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Appointment;
 use App\Models\Comment;
 use App\Models\Employee;
 use App\Models\Package;
@@ -43,6 +44,10 @@ class DeletedRecords extends Component
                 break;
             case 'Comentario':
                 Comment::withTrashed()
+                    ->find($record)->restore();
+                break;
+            case 'Cita':
+                Appointment::withTrashed()
                     ->find($record)->restore();
                 break;
 
@@ -88,6 +93,9 @@ class DeletedRecords extends Component
         $comments = Comment::onlyTrashed()
             ->orderByDesc('created_at')
             ->get();
+        $appointments = Appointment::onlyTrashed()
+            ->orderByDesc('created_at')
+            ->get();
 
         foreach ($clients as $client) {
             $data[] = ['id' => $client->id, 'model' => 'Cliente', 'title' => $client->name, 'deleted_at' => $client->deleted_at];
@@ -106,6 +114,9 @@ class DeletedRecords extends Component
         }
         foreach ($comments as $comment) {
             $data[] = ['id' => $comment->id, 'model' => 'Comentario', 'title' => $comment->content, 'deleted_at' => $comment->deleted_at];
+        }
+        foreach ($appointments as $appointment) {
+            $data[] = ['id' => $appointment->id, 'model' => 'Cita', 'title' => $appointment->service->name ?? $appointment->package->name, 'deleted_at' => $appointment->deleted_at];
         }
 
         return view('livewire.deleted-records', [

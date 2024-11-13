@@ -35,7 +35,7 @@
                         <x-input-error for="price" class="mt-2" />
                     </div>
                     <div class="block">
-                        <x-label value="Paquetes" for="service_ids" />
+                        <x-label value="Servicios" for="service_ids" />
                         <x-select wire:model.lazy="service_ids" id="service_ids" name="service_ids[]" multiple required
                             class="w-full" no_default>
                             @foreach ($services as $service)

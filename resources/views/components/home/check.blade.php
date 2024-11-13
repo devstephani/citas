@@ -1,6 +1,13 @@
 <div class="check-area mb-minus-70">
     <div class="container">
-        <form class="check-form" id="formulario" action="">
+        <div class="check-btn check-content mb-0">
+            <a href="{{ route('appointments') }}" class="default-btn">
+                Agendar cita
+                <i class="flaticon-right"></i>
+            </a>
+            <a>
+        </div>
+        {{-- <form class="check-form" id="formulario" action="">
             <div class="row align-items-center">
                 <div class="col-lg-3 col-sm-6">
                     <div class="check-content">
@@ -52,6 +59,6 @@
                     </div>
                 </div>
             </div>
-        </form>
+        </form> --}}
     </div>
 </div>

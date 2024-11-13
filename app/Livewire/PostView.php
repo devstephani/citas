@@ -90,7 +90,7 @@ class PostView extends Component
             $this->comment = '';
         } else {
             $this->can_comment = true;
-            $this->comment = Comment::find($this->comment_id)->first()->content;
+            $this->comment = Comment::find($this->comment_id)->content;
         }
     }
 

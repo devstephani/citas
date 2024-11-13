@@ -34,7 +34,7 @@ class PackageModal extends Component
             'description' => 'required|min:10|max:150|regex:/^[a-zA-Z\s]+$/',
             'active' => ['boolean', Rule::excludeIf($this->id == null)],
             'price' => 'required|min:0.1|max:1000|numeric',
-            'service_ids' => ['required', Rule::in($services)]
+            'service_ids' => ['required', 'exists:services,id']
         ];
     }
 
@@ -64,7 +64,7 @@ class PackageModal extends Component
             'image.mimes' => 'Debe tener formato JPG',
             'image.extensions' => 'Debe tener formato JPG',
             'service_ids.required' => 'Debe seleccionar al menos 1 opción',
-            'service_ids.notIn' => 'Debe seleccionar una opción en la lista'
+            'service_ids.exists' =>  'El servicio seleccionado no está registrado',
         ];
     }
 

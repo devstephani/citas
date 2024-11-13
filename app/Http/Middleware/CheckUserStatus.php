@@ -27,7 +27,7 @@ class CheckUserStatus
                 return redirect()->route('login')->withErrors(['inactive' => 'Su cuenta se encuentra inactiva.']);
             }
 
-            if ($request->routeIs('logout')) {
+            if ($request->routeIs('logout') && Auth::user()->hasRole('employee')) {
                 $employee = Auth::user()->employee->id;
                 $today = now()->format('Y-m-d');
                 $attendanceExists = Attendance::where('employee_id', $employee)
