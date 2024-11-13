@@ -392,15 +392,24 @@
                                     {{ $service->user->name }}
                                 </td>
                                 <td class="px-6 py-4">
-                                    @if ($service->active)
-                                        <x-lucide-circle-check
-                                            wire:click="$dispatch('toggle_active', { service: {{ $service->id }} })"
-                                            class="cursor-pointer size-5 text-green-700" />
-                                    @else
-                                        <x-lucide-circle-slash
-                                            wire:click="$dispatch('toggle_active', { service: {{ $service->id }} })"
-                                            class="cursor-pointer size-5 text-red-700" />
-                                    @endif
+                                    @role('admin')
+                                        @if ($service->active)
+                                            <x-lucide-circle-check
+                                                wire:click="$dispatch('toggle_active', { service: {{ $service->id }} })"
+                                                class="cursor-pointer size-5 text-green-700" />
+                                        @else
+                                            <x-lucide-circle-slash
+                                                wire:click="$dispatch('toggle_active', { service: {{ $service->id }} })"
+                                                class="cursor-pointer size-5 text-red-700" />
+                                        @endif
+                                    @endrole
+                                    @role('employee')
+                                        @if ($service->active)
+                                            <x-lucide-circle-check class="size-5 text-green-700" />
+                                        @else
+                                            <x-lucide-circle-slash class="size-5 text-red-700" />
+                                        @endif
+                                    @endrole
                                 </td>
                                 <td class="px-6 py-4">
                                     <div class="flex gap-3">

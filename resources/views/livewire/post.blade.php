@@ -72,15 +72,24 @@
                                 {{ $post->user->name }}
                             </td>
                             <td class="px-6 py-4">
-                                @if ($post->active)
-                                    <x-lucide-circle-check
-                                        wire:click="$dispatch('toggle_active', { record: {{ $post->id }} })"
-                                        class="cursor-pointer size-5 text-green-700" />
-                                @else
-                                    <x-lucide-circle-slash
-                                        wire:click="$dispatch('toggle_active', { record: {{ $post->id }} })"
-                                        class="cursor-pointer size-5 text-red-700" />
-                                @endif
+                                @role('admin')
+                                    @if ($post->active)
+                                        <x-lucide-circle-check
+                                            wire:click="$dispatch('toggle_active', { record: {{ $post->id }} })"
+                                            class="cursor-pointer size-5 text-green-700" />
+                                    @else
+                                        <x-lucide-circle-slash
+                                            wire:click="$dispatch('toggle_active', { record: {{ $post->id }} })"
+                                            class="cursor-pointer size-5 text-red-700" />
+                                    @endif
+                                @endrole
+                                @role('employee')
+                                    @if ($service->active)
+                                        <x-lucide-circle-check class="size-5 text-green-700" />
+                                    @else
+                                        <x-lucide-circle-slash class="size-5 text-red-700" />
+                                    @endif
+                                @endrole
                             </td>
                             <td class="px-6 py-4">
                                 {{ $post->created_at->format('d-m-Y') }}
