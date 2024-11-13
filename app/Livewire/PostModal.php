@@ -4,7 +4,6 @@ namespace App\Livewire;
 
 use App\Models\Post as MPost;
 use Illuminate\Support\Facades\Storage;
-use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Validation\Rule;
@@ -16,8 +15,6 @@ class PostModal extends Component
     public $showModal = false;
     public $message, $title, $active, $prevImg, $description;
     public $id = null;
-
-    #[Validate('required|image|max:1024|mimes:jpg')]
     public $image;
 
     protected $listeners = ['edit', 'toggle', 'toggle_active', 'delete'];
@@ -25,11 +22,14 @@ class PostModal extends Component
     public function rules()
     {
         return [
-            'title' => 'required|min:4|max:80|regex:/^[a-zA-Z\s]+$/',
-            'description' => 'required|min:12|max:2000|regex:/^[a-zA-Z\s]+$/',
+            'title' => 'required|min:4|max:80|regex:/^[a-zA-Z0-9\s]+$/',
+            'description' => 'required|min:12|max:2000|regex:/^[a-zA-Z0-9\s]+$/',
             'message' => 'required|min:10|max:150',
             'active' => ['boolean', Rule::excludeIf($this->id == null)],
-
+            'image'  => [
+                'nullable',
+                Rule::when(!is_string($this->image), 'required|image|max:1024|mimes:jpg')
+            ],
         ];
     }
 
@@ -90,6 +90,8 @@ class PostModal extends Component
         $this->id = $record->id;
         $this->title = $record->title;
         $this->message = $record->content;
+        $this->image = $record->image;
+        $this->prevImg = $record->image;
         $this->active = $record->active;
         $this->description = $record->description;
 

@@ -19,7 +19,7 @@ class ClientModal extends Component
     public function rules()
     {
         return [
-            'name' => 'required|min:4|max:80|regex:/^[a-zA-Z\s]+$/',
+            'name' => 'required|min:4|max:80|regex:/^[a-zA-Z0-9\s]+$/',
             'email' => ['required', 'email', Rule::unique('users')->where(function ($query) {
                 return $query->where('email', $this->email);
             })->ignore($this->id)],
