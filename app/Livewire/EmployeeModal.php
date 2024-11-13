@@ -15,14 +15,15 @@ use Illuminate\Validation\Rules\Password;
 class EmployeeModal extends Component
 {
     use WithFileUploads;
-    public $showModal = false;
-    public $id = null;
+    public $showModal = false, $show_attendance_modal = false;
+    public $id = null, $employee_attendances, $employee;
     public $name, $email, $password, $active, $prevImg, $description;
+    public $current_date, $initial_date, $attendance_date;
 
     #[Validate('required|image|max:1024|mimes:jpg|extensions:jpg')]
     public $photo;
 
-    protected $listeners = ['edit', 'toggle', 'toggle_active', 'delete'];
+    protected $listeners = ['edit', 'toggle', 'toggle_active', 'delete', 'see_attendances'];
 
     public function rules()
     {
@@ -89,6 +90,7 @@ class EmployeeModal extends Component
     {
         $this->resetUI();
         $this->showModal = ! $this->showModal;
+        $this->show_attendance_modal = false;
     }
 
     public function edit(MEmployee $record)
@@ -151,6 +153,41 @@ class EmployeeModal extends Component
         $this->dispatch('refreshParent')->to(Employee::class);
     }
 
+    public function updatedAttendanceDate()
+    {
+        $this->fetch_attendances();
+    }
+
+    public function fetch_attendances()
+    {
+        if ($this->employee) {
+            $today = now()->format('Y-m-d');
+            $date = $this->attendance_date ?? $today;
+
+            $this->initial_date = $this->employee->attendances()
+                ->orderBy('created_at')
+                ->first();
+
+            $this->initial_date = !empty($this->initial_date)
+                ? $this->initial_date->created_at->format('Y-m-d')
+                : $today;
+
+            $this->employee_attendances = $this->employee->attendances()
+                ->whereDate('created_at', $date)
+                ->orderByDesc('created_at')
+                ->get();
+
+            $this->name = $this->employee->user->name;
+        }
+    }
+
+    public function see_attendances(MEmployee $record)
+    {
+        $this->employee = $record;
+        $this->fetch_attendances();
+        $this->show_attendance_modal = true;
+    }
+
     public function resetUI()
     {
         $this->name = '';
@@ -167,6 +204,10 @@ class EmployeeModal extends Component
 
     public function render()
     {
+        if (empty($this->current_date)) {
+            $this->current_date = now()->format('Y-m-d');
+        }
+
         return view('livewire.employee-modal');
     }
 }
