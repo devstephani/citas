@@ -31,7 +31,7 @@
                     <div class="block">
                         <x-label value="Imágen" for="image" />
 
-                        <x-input type="file" wire:model="image" />
+                        <x-input type="file" wire:model="image" accept=".jpg" />
 
                         <x-input-error for="image" class="mt-2" />
                         @if (($image && $id < 1) || ($image && $prevImg !== $image))

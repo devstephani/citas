@@ -16,11 +16,11 @@ class AppointmentsCalendar extends LivewireCalendar
     {
         $query = Auth::user()->hasRole('client')
             ?  Appointment::where('user_id', Auth::user()->id)
-            ->where('status', 0)
+            ->whereIn('status', [0, 1])
             ->get()
             : (Auth::user()->hasRole('employee')
                 ? Appointment::where(function ($query) {
-                    $query->where('status', 0)
+                    $query-whereIn('status', [0, 1])
                         ->whereHas('service', function ($q) {
                             $q->where('employee_id', Auth::user()->employee->id);
                         })->orWhereHas('package', function ($q) {
@@ -29,14 +29,13 @@ class AppointmentsCalendar extends LivewireCalendar
                             });
                         });
                 })->get()
-                : Appointment::where('status', 0)->get());
+                : Appointment::whereIn('status', [0, 1])->get());
 
         return $query
             ->map(function (Appointment $appointment) {
                 return [
                     'id' => $appointment->id,
                     'title' => $appointment->service->name ?? $appointment->package->name,
-                    // 'description' => $appointment->service->description ?? $appointment->package->description,
                     'description' => Carbon::createFromFormat('Y-m-d h:i:s', $appointment->picked_date)->format('h:i:s a'),
                     'date' => $appointment->picked_date,
                 ];

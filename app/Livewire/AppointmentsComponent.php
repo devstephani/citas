@@ -74,7 +74,7 @@ class AppointmentsComponent extends Component
             'selected_package' => ['nullable', new OneRequired('selected_service'), 'exists:packages,id'],
             'selected_time' => ['required', 'date_format:h:i:s'],
             'status' => [
-                Rule::when(Auth::user()->hasRole('admin') && $this->id > 0, 'required|boolean')
+                Rule::when(Auth::user()->hasRole('admin') && $this->id > 0, 'required|integer|min:0|max:2')
             ],
             'client_id' => [
                 'sometimes',
@@ -92,7 +92,9 @@ class AppointmentsComponent extends Component
             'selected_time.date_format' => 'El formato de la hora es incorrecto',
             'client_id.exists' => 'El cliente seleccionado no está registrado',
             'status.required' => 'Debe seleccionar una opción',
-            'status.boolean' => 'Debe selecionar una opción de la lista'
+            'status.integer' => 'Debe ser una opción de la lista',
+            'status.min' => 'Debe ser una opción de la lista',
+            'status.max' => 'Debe ser una opción de la lista'
         ];
     }
 

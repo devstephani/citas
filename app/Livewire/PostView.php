@@ -11,22 +11,22 @@ use Livewire\Component;
 class PostView extends Component
 {
     public $post, $my_rate, $user_id, $comment, $comment_id, $first_comment, $can_comment;
-    protected $listeners = ['toggle_rate', 'delete', 'toggle_comment_active'];
+    protected $listeners = ['toggle_rate', 'delete', 'toggle_comment_active', 'update_comment'];
 
     public function rules()
     {
         return [
-            'content' => 'required|min:3|max:200|regex:/^[a-zA-Z\s]+$/'
+            'comment' => 'required|min:3|max:200|regex:/^[a-zA-Z\s]+$/'
         ];
     }
 
     public function messages()
     {
         return [
-            'content.required' => 'Debe añadir un comentario',
-            'content.regex' => 'Solo se aceptan letras',
-            'content.min' => 'Debe contener al menos :min caracteres',
-            'content.max' => 'Debe contener máximo :max caracteres',
+            'comment.required' => 'Debe añadir un comentario',
+            'comment.regex' => 'Solo se aceptan letras',
+            'comment.min' => 'Debe contener al menos :min caracteres',
+            'comment.max' => 'Debe contener máximo :max caracteres',
         ];
     }
 
@@ -75,6 +75,19 @@ class PostView extends Component
         $this->validate();
         $this->comment_id = $this->post->comments()->create([
             'user_id' => $this->user_id,
+            'content' => $this->comment
+        ]);
+
+        $this->can_comment = false;
+        $this->first_comment = false;
+        $this->comment = '';
+    }
+
+    public function update_comment()
+    {
+        $record = Comment::find($this->comment_id);
+        $this->validate();
+        $record->update([
             'content' => $this->comment
         ]);
 

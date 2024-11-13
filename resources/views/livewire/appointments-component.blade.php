@@ -2,10 +2,6 @@
     Citas
 @endsection
 
-@if ($errors->getMessages())
-    @dd($errors->getMessages())
-@endif
-
 <div class="p-8 mt-20">
     <div x-data="{ open: @entangle('show_modal'), selectedService: false, selectedPackage: false }">
         <x-modal id="appointment-modal" maxWidth="md" wire:click="show_modal = true" wire:model="show_modal"
@@ -99,13 +95,17 @@
 
                             <x-input-error for="selected_time" class="mt-2" />
                         </div>
-                        @if (Auth::user()->hasRole('admin') && $id >= 1)
+                        @if ($id >= 1)
                             <div class="col-span-full">
                                 <x-label value="Estado" for="status" />
-                                <x-select wire:model.lazy="status" id="status" name="status" required
-                                    class="w-full">
+                                <x-select wire:model.lazy="status" id="status" name="status" required :disabled="!Auth::user()->hasAnyRole(['admin', 'employee']) && $id > 0" @class([
+                                    'w-full',
+                                    'bg-neutral-200' =>
+                                        !Auth::user()->hasAnyRole(['admin', 'employee']) && $id > 0,
+                                ])>
                                     <option value="0" {{ $status === 0 ? 'selected' : '' }}>Pendiente</option>
-                                    <option value="1" {{ $status === 1 ? 'selected' : '' }}>Pagado</option>
+                                    <option value="1" {{ $status === 1 ? 'selected' : '' }}>Confirmada</option>
+                                    <option value="2" {{ $status === 2 ? 'selected' : '' }}>Pagada</option>
                                 </x-select>
                                 <x-input-error for="status" class="mt-2" />
                             </div>
@@ -138,7 +138,7 @@
     <livewire:appointments-calendar week-starts-at="1" initialMonth="11" />
 
     @if (Auth::user()->hasRole('admin'))
-        <div class="p-4 overflow-x-auto shadow-md">
+        <div class="mt-8 overflow-x-auto shadow-md">
             <table class="w-full text-sm text-left text-gray-400 bg-white rounded-md border border-neutral-400">
                 <thead class="border-b text-xs text-gray-700 uppercase bg-gray-50">
                     <tr>
@@ -169,11 +169,11 @@
                                 {{ $appointment->service->price ?? $appointment->package->price }}
                             </td>
                             <td @class([
-                                'px-6 py-4',
-                                'text-green-500' => $appointment->status,
-                                'text-red-500' => !$appointment->status,
+                                'px-6 py-4 font-bold',
+                                'text-green-500' => $appointment->status === 2,
+                                'text-red-500' => $appointment->status === 0,
                             ])>
-                                {{ $appointment->status ? 'Pagado' : 'Pendiente' }}
+                                {{ $appointment->status === 0 ? 'Pendiente' : ($appointment->status === 1 ? 'Confirmada' : 'Pagada') }}
                             </td>
                             <td class="px-6 py-4">
                                 {{ $appointment->user->name }}
