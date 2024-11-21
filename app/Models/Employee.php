@@ -24,7 +24,6 @@ class Employee extends Model
             ? asset('img/presentacion/' . $this->photo)
             : asset('storage/' . $this->photo);
 
-
         return $src;
     }
 

@@ -2,9 +2,9 @@
 	'use strict';
 
 	// Mean Menu JS
-	jQuery('.mean-menu').meanmenu({
-		meanScreenWidth: "991"
-	});
+	// jQuery('.mean-menu').meanmenu({
+	// 	meanScreenWidth: "991"
+	// });
 
 	// Preloader JS
 	jQuery(window).on('load', function () {
@@ -347,38 +347,38 @@
 	});
 
 	// Date Picker 1 JS
-	$('#datetimepicker-1').datepicker({
-		format: 'yyyy-mm-dd',
-		value: new Date(),
-		weekStart: 0,
-		todayBtn: "linked",
-		language: "es",
-		orientation: "bottom auto",
-		keyboardNavigation: false,
-		autoclose: true
-	});
+	// $('#datetimepicker-1').datepicker({
+	// 	format: 'yyyy-mm-dd',
+	// 	value: new Date(),
+	// 	weekStart: 0,
+	// 	todayBtn: "linked",
+	// 	language: "es",
+	// 	orientation: "bottom auto",
+	// 	keyboardNavigation: false,
+	// 	autoclose: true
+	// });
 
 	// Date Picker 2 JS
-	$('#datetimepicker-2').datepicker({
-		format: 'HH:MM:SS AA',
-		value: new Date(),
-		weekStart: 0,
-		todayBtn: "linked",
-		language: "es",
-		orientation: "bottom auto",
-		keyboardNavigation: false,
-		autoclose: true
-	});
+	// $('#datetimepicker-2').datepicker({
+	// 	format: 'HH:MM:SS AA',
+	// 	value: new Date(),
+	// 	weekStart: 0,
+	// 	todayBtn: "linked",
+	// 	language: "es",
+	// 	orientation: "bottom auto",
+	// 	keyboardNavigation: false,
+	// 	autoclose: true
+	// });
 
 	// Date Picker 3 JS
-	$('#datetimepicker-3').datepicker({
-		weekStart: 0,
-		todayBtn: "linked",
-		language: "es",
-		orientation: "bottom auto",
-		keyboardNavigation: false,
-		autoclose: true
-	});
+	// $('#datetimepicker-3').datepicker({
+	// 	weekStart: 0,
+	// 	todayBtn: "linked",
+	// 	language: "es",
+	// 	orientation: "bottom auto",
+	// 	keyboardNavigation: false,
+	// 	autoclose: true
+	// });
 
 	// Click Event JS
 	$('.go-top').on('click', function () {
@@ -470,16 +470,16 @@
 	});
 
 	// Subscribe Form JS
-	$(".newsletter-form").validator().on("submit", function (event) {
-		if (event.isDefaultPrevented()) {
-			// handle the invalid form...
-			formErrorSub();
-			submitMSGSub(false, "Please enter your email correctly.");
-		} else {
-			// everything looks good!
-			event.preventDefault();
-		}
-	});
+	// $(".newsletter-form").validator().on("submit", function (event) {
+	// 	if (event.isDefaultPrevented()) {
+	// 		// handle the invalid form...
+	// 		formErrorSub();
+	// 		submitMSGSub(false, "Please enter your email correctly.");
+	// 	} else {
+	// 		// everything looks good!
+	// 		event.preventDefault();
+	// 	}
+	// });
 	function callbackFunction(resp) {
 		if (resp.result === "success") {
 			formSuccessSub();
