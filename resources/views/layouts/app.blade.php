@@ -22,20 +22,20 @@
     <link rel="stylesheet" href="{{ asset('css/flaticon.css') }}">
     <link rel="stylesheet" href="{{ asset('css/meanmenu.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/animate.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/nice-select.min.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('css/nice-select.min.css') }}"> --}}
     <link rel="stylesheet" href="{{ asset('css/odometer.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/date-picker.min.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('css/date-picker.min.css') }}"> --}}
     <link rel="stylesheet" href="{{ asset('css/magnific-popup.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/beautiful-fonts.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/dark.css') }}">
     <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
-    <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
+    {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" /> --}}
+    {{-- <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" /> --}}
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> --}}
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -76,23 +76,23 @@
 
     <script src="{{ asset('js/jquery.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('js/meanmenu.min.js') }}"></script>
+    {{-- <script src="{{ asset('js/meanmenu.min.js') }}"></script> --}}
     <script src="{{ asset('js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('js/wow.min.js') }}"></script>
-    <script src="{{ asset('js/nice-select.min.js') }}"></script>
+    {{-- <script src="{{ asset('js/nice-select.min.js') }}"></script> --}}
     <script src="{{ asset('js/magnific-popup.min.js') }}"></script>
     <script src="{{ asset('js/jquery.mixitup.min.js') }}"></script>
     <script src="{{ asset('js/appear.min.js') }}"></script>
     <script src="{{ asset('js/odometer.min.js') }}"></script>
-    <script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
+    {{-- <script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script> --}}
     <script src="{{ asset('js/ofi.min.js') }}"></script>
     <script src="{{ asset('js/jarallax.min.js') }}"></script>
-    <script src="{{ asset('js/form-validator.min.js') }}"></script>
-    <script src="{{ asset('js/contact-form-script.js') }}"></script>
+    {{-- <script src="{{ asset('js/form-validator.min.js') }}"></script> --}}
+    {{-- <script src="{{ asset('js/contact-form-script.js') }}"></script> --}}
     <script src="{{ asset('js/ajaxchimp.min.js') }}"></script>
-    <script src="{{ asset('fullcalendar/index.global.min.js') }}"></script>
-    <script src="{{ asset('fullcalendar/es.global.min.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    {{-- <script src="{{ asset('fullcalendar/index.global.min.js') }}"></script>
+    <script src="{{ asset('fullcalendar/es.global.min.js') }}"></script> --}}
+    {{-- <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('js/custom.js') }}"></script>
     <script src="{{ asset('js/pages/index.js') }}"></script>
