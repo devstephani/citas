@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('appointments', function (Blueprint $table) {
             $table->id();
             $table->boolean('status');
+            $table->boolean('discount')->default(false);
             $table->boolean('registered_local');
             $table->datetime('picked_date');
             $table->foreignId('user_id')->constrained();

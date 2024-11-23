@@ -19,10 +19,6 @@
 - Re-name (modules, views)
 - Probador virtual (layout)
 - Módulos en inicio no están actualizados (navbar)
-- Calendario
-  - Pendiente descuento en servicio cada 4
-    - Contar total de citas // 4 === 0 (descuento 15% ?)
-  - Servicio / paquete frecuente
 
 ----------------------------------------------------------------------------------------
 Calendario (25$)

@@ -22,4 +22,9 @@ class Payment extends Model
         'currency' => CurrencyEnum::class,
         'type' => TypeEnum::class
     ];
+
+    public function appointment()
+    {
+        return $this->belongsTo(Appointment::class);
+    }
 }

@@ -19,6 +19,42 @@
 
                     <div class="mt-4 text-sm text-gray-600">
                         <article class="mb-4 grid grid-cols-2 gap-4">
+                            @if (!$registered_local && $id === 0)
+                                <div class="col-span-full flex flex-col w-full overflow-x-auto">
+                                    <p class="flex-auto">
+                                        Citas frecuentes
+                                    </p>
+                                    <div class="flex overflow-x-auto mt-2">
+                                        <ul class="p-2 flex flex-row gap-3 whitespace-nowrap">
+                                            @foreach ($frequent_appointments as $frequent_appointment)
+                                                @php
+                                                    $frequent_appointment = \App\Models\Appointment::find(
+                                                        $frequent_appointment->last_id,
+                                                    );
+                                                    $name =
+                                                        $frequent_appointment->service->name ??
+                                                        $frequent_appointment->package->name;
+                                                    $hour = \Carbon\Carbon::createFromFormat(
+                                                        'Y-m-d H:i:s',
+                                                        $frequent_appointment->picked_date,
+                                                    )->format('h:i A');
+                                                @endphp
+                                                <li class="max-w-fit">
+                                                    <button
+                                                        wire:click="$dispatch('set_appointment', { record: {{ $frequent_appointment->id }} })"
+                                                        type="button" @class([
+                                                            'rounded-md border px-3.5 py-1.5 text-xs transition-all hover:bg-purple-400 hover:text-white shadow border-neutral-400 hover:border-purple-200',
+                                                            'bg-purple-400 text-white border-purple-200' =>
+                                                                $selected_frequent_appointment === $frequent_appointment->id,
+                                                        ]) />
+                                                    {{ "$name | $hour" }}
+                                                    </button>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                </div>
+                            @endif
                             @if (!$registered_local)
                                 @hasanyrole(['admin', 'employee'])
                                     <div class="col-span-full">
@@ -52,9 +88,12 @@
                                                 !Auth::user()->hasAnyRole(['admin', 'employee']) && $id > 0,
                                         ]) :disabled="!Auth::user()->hasAnyRole(['admin', 'employee']) && $id > 0">
                                         @foreach ($services as $service)
+                                            @php
+                                                $price = $service->price * ($this->discount ? 1 : 0.95);
+                                            @endphp
                                             <option value="{{ $service->id }}"
                                                 {{ $selected_service === $service->id ? 'selected' : '' }}>
-                                                {{ "$service->name | $$service->price" }}
+                                                {{ "$service->name | $$price" }}
                                             </option>
                                         @endforeach
                                     </x-select>
@@ -71,9 +110,12 @@
                                                 !Auth::user()->hasAnyRole(['admin', 'employee']) && $id > 0,
                                         ]) :disabled="!Auth::user()->hasAnyRole(['admin', 'employee']) && $id > 0">
                                         @foreach ($packages as $package)
+                                            @php
+                                                $price = $package->price * ($this->discount ? 1 : 0.95);
+                                            @endphp
                                             <option value="{{ $package->id }}"
                                                 {{ $selected_package === $package->id ? 'selected' : '' }}>
-                                                {{ "$package->name | $->price" }}
+                                                {{ "$package->name | $$price" }}
                                             </option>
                                         @endforeach
                                     </x-select>

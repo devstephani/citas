@@ -6,21 +6,23 @@ use App\Enum\Payment\CurrencyEnum;
 use App\Enum\Payment\TypeEnum;
 use App\Models\Appointment;
 use App\Models\Package;
+use App\Models\Payment;
 use App\Models\Service;
 use App\Models\User;
 use App\Rules\OneRequired;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
 class AppointmentsComponent extends Component
 {
-    public $show_modal = false;
-    public $id = 0, $client_name, $client_id = null, $clients, $services, $packages, $selected_service = 0, $selected_package = 0, $selected_date, $selected_time, $status, $registered_local, $type, $currency, $payed, $ref;
+    public $show_modal = false, $discount = false;
+    public $id = 0, $client_name, $client_id = null, $clients, $services, $packages, $selected_service = 0, $selected_package = 0, $selected_date, $selected_time, $status, $registered_local, $type, $currency, $payed, $ref, $frequent_appointments, $selected_frequent_appointment;
 
     private $pagination = 20;
-    protected $listeners = ['toggle', 'set_selected_day', 'edit', 'delete'];
+    protected $listeners = ['toggle', 'set_selected_day', 'edit', 'delete', 'set_appointment'];
 
     public $hours = [
         [
@@ -144,6 +146,21 @@ class AppointmentsComponent extends Component
         $this->show_modal = ! $this->show_modal;
     }
 
+    public function set_appointment(Appointment $record)
+    {
+        if ($this->selected_frequent_appointment === $record->id) {
+            $this->selected_service = null;
+            $this->selected_package = null;
+            $this->selected_time = null;
+            $this->selected_frequent_appointment = null;
+        } else {
+            $this->selected_service = $record->service_id;
+            $this->selected_package = $record->package_id;
+            $this->selected_time = explode(' ', $record->picked_date)[1];
+            $this->selected_frequent_appointment = $record->id;
+        }
+    }
+
     public function edit(Appointment $record)
     {
         $this->id = $record->id;
@@ -252,7 +269,8 @@ class AppointmentsComponent extends Component
                 'user_id' => $this->client_id ?? Auth::user()->id,
                 'service_id' => $this->selected_service ?? null,
                 'package_id' => $this->selected_package ?? null,
-                'picked_date' => $final_date
+                'picked_date' => $final_date,
+                'discount' => $this->discount
             ]);
 
             $this->resetUI();
@@ -293,6 +311,12 @@ class AppointmentsComponent extends Component
         $this->services = Service::where('active', 1)->get();
         $this->packages = Package::where('active', 1)->get();
 
+        $user_appointments = Payment::whereHas('appointment', function ($query) {
+            $query->where('user_id', auth()->id());
+        })->count();
+
+        $this->discount = $user_appointments % 4 === 0;
+
         if (Auth::user()->hasAnyRole('admin', 'employee')) {
             $this->clients = User::whereHas('roles', function ($query) {
                 $query->where('name', 'client');
@@ -304,13 +328,26 @@ class AppointmentsComponent extends Component
 
     public function render()
     {
+        if (auth()->user()->hasRole('client')) {
+            $this->frequent_appointments = Appointment::select(
+                DB::raw('max(id) as last_id'),
+                DB::raw('count(service_id) as services_count'),
+                DB::raw('count(package_id) as packages_count'),
+                DB::raw('DATE_FORMAT(picked_date, "%H:%i") as time')
+            )
+                ->where('user_id', auth()->id())
+                ->groupBy('time')
+                ->havingRaw('(count(service_id) > 3 OR count(package_id) > 3)')
+                ->get();
+        }
+
         $this->registered_local = auth()->user()->hasRole('admin');
         $appointments = Appointment::with('payment')
             ->orderByDesc('created_at')
             ->paginate($this->pagination);
 
         return view('livewire.appointments-component', [
-            'appointments' => $appointments
+            'appointments' => $appointments,
         ]);
     }
 }
