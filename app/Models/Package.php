@@ -28,4 +28,9 @@ class Package extends Model
     {
         return $this->belongsToMany(Service::class, 'package_service');
     }
+
+    public function appointments()
+    {
+        return $this->hasMany(Appointment::class);
+    }
 }
