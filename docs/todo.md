@@ -5,14 +5,24 @@
 - Calendar: https://github.com/omnia-digital/livewire-calendar
 - Logs: https://github.com/jeremykenedy/laravel-logger
 
+# WIP
+- Guardar y mostrar el pago
+
 # TODO
 
+- Revisar por que los modales se recargan cada segundo
+- Bitácora (10$)
+  - Observer?
+- Probador (20$)
 - Alerts
-- Configurar Backup path.
-- Probador virtual (layout)
-- Calendario
+  - Observer?
 - Re-name (modules, views)
-- Añadir citas borradas
+- Probador virtual (layout)
+- Módulos en inicio no están actualizados (navbar)
+- Calendario
+  - Pendiente descuento en servicio cada 4
+    - Contar total de citas // 4 === 0 (descuento 15% ?)
+  - Servicio / paquete frecuente
 
 ----------------------------------------------------------------------------------------
 Calendario (25$)

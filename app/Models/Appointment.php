@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class Appointment extends Model
 {
@@ -15,8 +16,18 @@ class Appointment extends Model
         'status',
         'user_id',
         'service_id',
-        'package_id'
+        'package_id',
+        'registered_local'
     ];
+
+    public static function boot()
+    {
+        parent::boot();
+
+        self::creating(function ($model) {
+            $model->registered_local = Auth::user()->hasAnyRole(['admin', 'employee']);
+        });
+    }
 
     public function user()
     {
@@ -29,5 +40,9 @@ class Appointment extends Model
     public function package()
     {
         return $this->belongsTo(Package::class);
+    }
+    public function payment()
+    {
+        return $this->hasOne(Payment::class);
     }
 }

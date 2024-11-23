@@ -52,7 +52,7 @@
 
                                     <li class="nav-item">
                                         <a href="{{ route('login') }}" class="nav-link active">
-                                            Login
+                                            Iniciar sesión
                                         </a>
                                     </li>
                                 @endguest

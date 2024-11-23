@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('appointment_id')->constrained();
+            $table->float('payed', 5, 2);
+            $table->enum('type', ['FULL', 'MOBILE', 'PAYPAL']);
+            $table->enum('currency', ['CASH', 'DOLLAR']);
+            $table->string('ref')->nullable();
             $table->timestamps();
         });
     }

@@ -2,6 +2,8 @@
 
 namespace App\Livewire;
 
+use App\Enum\Payment\CurrencyEnum;
+use App\Enum\Payment\TypeEnum;
 use App\Models\Appointment;
 use App\Models\Package;
 use App\Models\Service;
@@ -15,7 +17,7 @@ use Livewire\Component;
 class AppointmentsComponent extends Component
 {
     public $show_modal = false;
-    public $id = 0, $client_name, $client_id = null, $clients, $services, $packages, $selected_service = 0, $selected_package = 0, $selected_date, $selected_time, $status;
+    public $id = 0, $client_name, $client_id = null, $clients, $services, $packages, $selected_service = 0, $selected_package = 0, $selected_date, $selected_time, $status, $registered_local, $type, $currency, $payed, $ref;
 
     private $pagination = 20;
     protected $listeners = ['toggle', 'set_selected_day', 'edit', 'delete'];
@@ -79,6 +81,34 @@ class AppointmentsComponent extends Component
             'client_id' => [
                 'sometimes',
                 Rule::when(Auth::user()->hasAnyRole('admin', 'emploee'), 'exists:users,id')
+            ],
+            'type' => [
+                'sometimes',
+                Rule::when($this->status === '1', [
+                    'required',
+                    Rule::in(array_column(TypeEnum::cases(), 'value'))
+                ]),
+                Rule::when($this->currency === 'Bs', [
+                    'required',
+                    Rule::notIn(array_filter(array_column(TypeEnum::cases(), 'value'), function ($value) {
+                        return $value === 'PagoMóvil';
+                    }))
+                ]),
+            ],
+            'currency' => [
+                'sometimes',
+                Rule::when($this->status === '1', [
+                    'required',
+                    Rule::in(array_column(CurrencyEnum::cases(), 'value'))
+                ]),
+            ],
+            'payed' => [
+                'sometimes',
+                Rule::when($this->status === '1', 'required|min:0.1|max:1000|numeric')
+            ],
+            'ref' => [
+                'sometimes',
+                Rule::when($this->type === 'PagoMóvil' || $this->type === 'Paypal', 'required|min:3|max:8|regex:/^[0-9]+$/')
             ]
         ];
     }
@@ -92,7 +122,19 @@ class AppointmentsComponent extends Component
             'selected_time.date_format' => 'El formato de la hora es incorrecto',
             'client_id.exists' => 'El cliente seleccionado no está registrado',
             'status.required' => 'Debe seleccionar una opción',
-            'status.boolean' => 'Debe selecionar una opción de la lista'
+            'status.boolean' => 'Debe selecionar una opción de la lista',
+            'type.required' => 'Debe indicar el tipo de pago',
+            'type.in' => 'Debe seleccionar una opción de la lista',
+            'currency.required' => 'Debe indicar el tipo de moneda',
+            'currency.in' => 'Debe seleccionar una opción de la lista',
+            'payed.required' => 'Debe indicar el monto pagado',
+            'payed.min' => 'Debe ser al menos :min',
+            'payed.max' => 'Debe ser máximo :min',
+            'payed.numeric' => 'Debe ser un número',
+            'ref.required' => 'Debe indicar el número de referencia',
+            'ref.min' => 'Debe ser al menos :min dígitos',
+            'ref.max' => 'Debe ser máximo :min dígitos',
+            'ref.regex' => 'Debe ser un número',
         ];
     }
 
@@ -112,6 +154,7 @@ class AppointmentsComponent extends Component
         $this->show_modal = true;
         $this->client_name = $record->user->name;
         $this->status = $record->status;
+        $this->registered_local = $record->registered_local;
     }
 
     public function update()
@@ -126,6 +169,15 @@ class AppointmentsComponent extends Component
             'picked_date' => "$date $this->selected_time",
             'status' => $this->status
         ]);
+
+        if ($this->status === '1') {
+            $record->payment()->create(attributes: [
+                'type' => TypeEnum::from($this->type),
+                'payed' => $this->payed,
+                'currency' => CurrencyEnum::from($this->currency),
+                'ref' => $this->ref
+            ]);
+        }
 
         $this->dispatch(event: 'refreshParent')->to(AppointmentsCalendar::class);
         $this->resetUI();
@@ -202,6 +254,7 @@ class AppointmentsComponent extends Component
                 'package_id' => $this->selected_package ?? null,
                 'picked_date' => $final_date
             ]);
+
             $this->resetUI();
             $this->dispatch(event: 'refreshParent')->to(AppointmentsCalendar::class);
         } else {
@@ -251,7 +304,9 @@ class AppointmentsComponent extends Component
 
     public function render()
     {
-        $appointments = Appointment::orderByDesc('created_at')
+        $this->registered_local = auth()->user()->hasRole('admin');
+        $appointments = Appointment::with('payment')
+            ->orderByDesc('created_at')
             ->paginate($this->pagination);
 
         return view('livewire.appointments-component', [
