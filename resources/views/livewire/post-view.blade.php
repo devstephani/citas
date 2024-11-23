@@ -1,3 +1,7 @@
+@section('page-title')
+    Ver publicación
+@endsection
+
 <div>
     <section class="mt-16 mx-auto max-w-[70ch]">
         <div class="flex flex-col gap-3">
@@ -109,7 +113,11 @@
                         <x-label value="Comentario" for="comment" />
                         <x-textarea wire:model.lazy="comment" id="comment" name="comment" class="w-full"
                             required></x-textarea>
-                        <x-button type="button" wire:click="save_comment()">Enviar</x-button>
+                            @if ($comment_id > 0)
+                            <x-button type="button" wire:click="update_comment()">Actualizar</x-button>
+                            @else
+                            <x-button type="button" wire:click="save_comment()">Enviar</x-button>
+                            @endif
                         @if ($can_comment)
                             <x-button type="button" wire:click="toggle_edit_comment()">Cancelar</x-button>
                         @endif

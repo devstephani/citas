@@ -6,7 +6,6 @@ use App\Models\Employee as MEmployee;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
-use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Validation\Rule;
@@ -19,8 +18,6 @@ class EmployeeModal extends Component
     public $id = null, $employee_attendances, $employee;
     public $name, $email, $password, $active, $prevImg, $description;
     public $current_date, $initial_date, $attendance_date;
-
-    #[Validate('required|image|max:1024|mimes:jpg|extensions:jpg')]
     public $photo;
 
     protected $listeners = ['edit', 'toggle', 'toggle_active', 'delete', 'see_attendances'];
@@ -28,13 +25,17 @@ class EmployeeModal extends Component
     public function rules()
     {
         return [
-            'name' => 'required|min:4|max:80|regex:/^[a-zA-Z\s]+$/',
-            'description' => 'required|min:8|max:120|regex:/^[a-zA-Z\s]+$/',
+            'name' => 'required|min:4|max:80|regex:/^[a-zA-Z0-9\s]+$/',
+            'description' => 'required|min:8|max:120|regex:/^[a-zA-Z0-9\s]+$/',
             'email' => ['required', 'email', Rule::unique('users')->where(function ($query) {
                 return $query->where('email', $this->email);
             })->ignore($this->id)],
             'active' => ['boolean', Rule::excludeIf($this->id == null)],
             'password' => ['required', Password::min(4)->max(12)->numbers()->letters()],
+            'photo'  => [
+                'nullable',
+                Rule::when(!is_string($this->image), 'required|image|max:1024|mimes:jpg')
+            ],
         ];
     }
 

@@ -18,19 +18,19 @@
                 <article class="mb-4 flex flex-col gap-4">
                     <div class="block">
                         <x-label value="Nombre" for="name" />
-                        <x-input wire:model.lazy="name" type="text" id="name" name="name" class="w-full"
+                        <x-input wire:model.lazy="name" type="text" id="name" name="name" class="w-full" placeholder="Ej: Combo 1"
                             autofocus autocomplete="off" required />
                         <x-input-error for="name" class="mt-2" />
                     </div>
                     <div class="block">
                         <x-label value="Descripción" for="description" />
-                        <x-textarea wire:model.lazy="description" id="description" name="description" class="w-full"
+                        <x-textarea wire:model.lazy="description" id="description" name="description" class="w-full" placeholder="Ej: Belleza"
                             required></x-textarea>
                         <x-input-error for="description" class="mt-2" />
                     </div>
                     <div class="block">
                         <x-label value="Precio" for="price" />
-                        <x-input wire:model.lazy="price" type="number" id="price" name="price" required
+                        <x-input wire:model.lazy="price" type="number" id="price" name="price" required placeholder="Ej: 5"
                             class="w-full" />
                         <x-input-error for="price" class="mt-2" />
                     </div>
@@ -60,7 +60,7 @@
 
                     <x-label value="Imágen" for="image" />
 
-                    <x-input type="file" wire:model="image" />
+                    <x-input type="file" wire:model="image" accept=".jpg" />
 
                     <x-input-error for="image" class="mt-2" />
                     @if (($image && $id < 1) || ($image && $prevImg !== $image))

@@ -4,7 +4,6 @@ namespace App\Livewire;
 
 use App\Models\Post as MPost;
 use Illuminate\Support\Facades\Storage;
-use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Validation\Rule;
@@ -16,8 +15,6 @@ class PostModal extends Component
     public $showModal = false;
     public $message, $title, $active, $prevImg, $description;
     public $id = null;
-
-    #[Validate('required|image|max:1024|mimes:jpg|extensions:jpg')]
     public $image;
 
     protected $listeners = ['edit', 'toggle', 'toggle_active', 'delete'];
@@ -25,11 +22,14 @@ class PostModal extends Component
     public function rules()
     {
         return [
-            'title' => 'required|min:4|max:80|regex:/^[a-zA-Z\s]+$/',
-            'description' => 'required|min:40|max:2000|regex:/^[a-zA-Z\s]+$/',
-            'content' => 'required|min:10|max:150|regex:/^[a-zA-Z\s]+$/',
+            'title' => 'required|min:4|max:80|regex:/^[a-zA-Z0-9\s]+$/',
+            'description' => 'required|min:12|max:2000|regex:/^[a-zA-Z0-9\s]+$/',
+            'message' => 'required|min:10|max:150',
             'active' => ['boolean', Rule::excludeIf($this->id == null)],
-
+            'image'  => [
+                'nullable',
+                Rule::when(!is_string($this->image), 'required|image|max:1024|mimes:jpg')
+            ],
         ];
     }
 
@@ -44,10 +44,10 @@ class PostModal extends Component
             'description.regex' => 'Solo se aceptan letras',
             'description.min' => 'Debe contener al menos :min caracteres',
             'description.max' => 'Debe contener máximo :max caracteres',
-            'content.required' => 'Debe indicar la descripción',
-            'content.regex' => 'Solo se aceptan letras',
-            'content.min' => 'Debe contener al menos :min caracteres',
-            'content.max' => 'Debe contener máximo :max caracteres',
+            'message.required' => 'Debe indicar la descripción',
+            'message.regex' => 'Solo se aceptan letras',
+            'message.min' => 'Debe contener al menos :min caracteres',
+            'message.max' => 'Debe contener máximo :max caracteres',
             'email.required' => 'Debe indicar el correo',
             'email.email' => 'Debe ser un correo válido',
             'email.unique' => 'Este correo se encuentra registrado',
@@ -57,7 +57,6 @@ class PostModal extends Component
             'image.image' => 'Debe ser una imágen',
             'image.max' => 'Debe pesar máximo 1 MB',
             'image.mimes' => 'Debe tener formato JPG',
-            'image.extensions' => 'Debe tener formato JPG',
         ];
     }
 
@@ -91,6 +90,8 @@ class PostModal extends Component
         $this->id = $record->id;
         $this->title = $record->title;
         $this->message = $record->content;
+        $this->image = $record->image;
+        $this->prevImg = $record->image;
         $this->active = $record->active;
         $this->description = $record->description;
 

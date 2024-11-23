@@ -40,13 +40,14 @@ class EmployeeSeeder extends Seeder
 
         User::create([
             'active' => 1,
-            'name' =>  'Empleado',
+            'name' =>  'Alexandra Marquez',
             'email' => 'empleado3@gmail.com',
             'password' => Hash::make('empleado'),
         ])->assignRole('employee')
             ->employee()
             ->create([
-                'description' => 'Peinadora para toda clase de eventos tanto para niñas y adultos.'
+                'description' => 'Peinadora para toda clase de eventos tanto para niñas y adultos.',
+                
             ]);
     }
 }

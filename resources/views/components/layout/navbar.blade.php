@@ -2,6 +2,7 @@
     <div @class([
         'eorik-nav-style fixed-top z-10',
         'bg-black' => Route::is('appointments'),
+        'bg-black' => Route::is('post.id'),
     ])>
         <div class="navbar-area">
             <!-- Menu For Mobile Device -->

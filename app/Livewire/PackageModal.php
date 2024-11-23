@@ -5,7 +5,6 @@ namespace App\Livewire;
 use App\Models\package;
 use App\Models\Service;
 use Illuminate\Support\Facades\Storage;
-use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Validation\Rule;
@@ -18,23 +17,24 @@ class PackageModal extends Component
     public $id = null;
     public $service_ids = [];
     public $name, $description, $active, $price, $prevImg;
-
-    #[Validate('required|image|max:1024|mimes:jpg|extensions:jpg')]
     public $image;
 
     protected $listeners = ['edit', 'toggle', 'toggle_active', 'delete'];
 
     public function rules()
     {
-        $services = Service::pluck('id')->toArray();
         return [
-            'name' => ['required', 'min:4', 'max:80', 'regex:/^[a-zA-Z\s]+$/', Rule::unique('packages')->where(function ($query) {
+            'name' => ['required', 'min:4', 'max:80', 'regex:/^[a-zA-Z0-9\s]+$/', Rule::unique('packages')->where(function ($query) {
                 return $query->where('name', $this->name);
             })->ignore($this->id)],
-            'description' => 'required|min:10|max:150|regex:/^[a-zA-Z\s]+$/',
+            'description' => 'required|min:10|max:150|regex:/^[a-zA-Z0-9\s]+$/',
             'active' => ['boolean', Rule::excludeIf($this->id == null)],
             'price' => 'required|min:0.1|max:1000|numeric',
-            'service_ids' => ['required', 'exists:services,id']
+            'service_ids' => ['required', 'exists:services,id'],
+            'image'  => [
+                'nullable',
+                Rule::when(!is_string($this->image), 'required|image|max:1024|mimes:jpg')
+            ],
         ];
     }
 

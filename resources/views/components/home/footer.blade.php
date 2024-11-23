@@ -20,14 +20,14 @@
                             </li>
                             <li class="address">
                                 <i class="flaticon-call"></i>
-                                <span>Phone</span>
+                                <span>Teléfono</span>
                                 <a href="tel:+882-569-756">
                                     +58 424-3004510
                                 </a>
                             </li>
                             <li class="address">
                                 <i class="flaticon-envelope"></i>
-                                <span>Email</span>
+                                <span>Correo electrónico</span>
                                 <a href="mailto:hello@ecorik.com">
                                     browslashes.stefy@gmail.com
                                 </a>

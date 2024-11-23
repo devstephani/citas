@@ -6,7 +6,6 @@ use App\Enum\Service\TypeEnum;
 use App\Models\Service;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
-use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Validation\Rule;
@@ -18,8 +17,6 @@ class ServiceModal extends Component
     public $showModal = false;
     public $id = null;
     public $name, $description, $active, $price, $type, $prevImg, $employee_id;
-
-    #[Validate('required|image|max:1024|mimes:jpg|extensions:jpg')]
     public $image;
 
     protected $listeners = ['edit', 'toggle', 'toggle_active', 'delete'];
@@ -27,14 +24,18 @@ class ServiceModal extends Component
     public function rules()
     {
         return [
-            'name' => ['required', 'regex:/^[a-zA-Z\s]+$/', 'min:4', 'max:80', Rule::unique('services')->where(function ($query) {
+            'name' => ['required', 'regex:/^[a-zA-Z0-9\s]+$/', 'min:4', 'max:80', Rule::unique('services')->where(function ($query) {
                 return $query->where('name', $this->name);
             })->ignore($this->id)],
-            'description' => 'required|min:10|max:150|regex:/^[a-zA-Z\s]+$/',
+            'description' => 'required|min:10|max:150|regex:/^[a-zA-Z0-9\s]+$/',
             'active' => ['boolean', Rule::excludeIf($this->id == null)],
             'price' => 'required|min:0.1|max:1000|numeric',
-            'type' => ['required', Rule::in(array_column(TypeEnum::cases(), 'value'))],
-            'employee_id' => ['required', 'exists:employees,id']
+            'type' => ['required', Rule::enum(TypeEnum::class)],
+            'employee_id' => ['required', 'exists:employees,id'],
+            'image'  => [
+                'nullable',
+                Rule::when(!is_string($this->image), 'required|image|max:1024|mimes:jpg')
+            ],
         ];
     }
 
