@@ -5,9 +5,6 @@
 - Calendar: https://github.com/omnia-digital/livewire-calendar
 - Logs: https://github.com/jeremykenedy/laravel-logger
 
-# WIP
-- Guardar y mostrar el pago
-
 # TODO
 
 - Revisar por que los modales se recargan cada segundo

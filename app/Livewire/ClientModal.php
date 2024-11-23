@@ -2,7 +2,9 @@
 
 namespace App\Livewire;
 
+use App\Models\Appointment;
 use App\Models\User;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
 use Illuminate\Validation\Rule;
@@ -14,7 +16,7 @@ class ClientModal extends Component
     public $id = null;
     public $name, $email, $password, $active;
 
-    protected $listeners = ['edit', 'toggle', 'toggle_active', 'delete'];
+    protected $listeners = ['edit', 'toggle', 'toggle_active', 'delete', 'user_pdf'];
 
     public function rules()
     {
@@ -117,6 +119,25 @@ class ClientModal extends Component
         $this->id = '';
         $this->showModal = false;
         $this->dispatch('refreshParent')->to(Client::class);
+    }
+
+    public function user_pdf(User $record)
+    {
+        $image = base64_encode(file_get_contents(public_path('img/logo.jpg')));
+        $data = Appointment::with(['service', 'package', 'user', 'payment'])
+            ->where('user_id', $record->id)
+            ->whereYear('picked_date', '=', now()->format('Y'))
+            ->get();
+
+        return response()->streamDownload(function () use ($data, $image, $record) {
+            $pdf = App::make('dompdf.wrapper');
+            $pdf->loadView('pdfs.users', [
+                'data' => $data,
+                'image' => $image,
+                'client' => $record
+            ]);
+            echo $pdf->stream();
+        }, "Reporte de servicios y paquetes de usuario {$record->name}.pdf");
     }
 
     public function render()
