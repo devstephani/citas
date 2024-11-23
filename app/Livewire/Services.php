@@ -24,21 +24,17 @@ class Services extends Component
         $this->dispatch('$refresh');
     }
 
-    // public function mount()
-    // {
-    //     if (auth()->user()->hasRole('client')) {
-    //         return redirect()->route('home');
-    //     }
-    // }
-
     #[Layout('layouts.app')]
     public function render()
     {
-        $data = Service::where(function ($query) {
-            $query->where('name', 'like', '%' . $this->query . '%')
-                ->orWhere('description', 'like', '%' . $this->query . '%')
-                ->orWhere('type', 'like', '%' . $this->query . '%');
-        })
+        $query = auth()->user()->hasRole('admin')
+            ? Service::where(function ($query) {
+                $query->where('name', 'like', '%' . $this->query . '%')
+                    ->orWhere('description', 'like', '%' . $this->query . '%')
+                    ->orWhere('type', 'like', '%' . $this->query . '%');
+            })
+            : Service::where('active', 1);
+        $data = $query
             ->orderByDesc('created_at')
             ->paginate($this->pagination);
 

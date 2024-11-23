@@ -24,10 +24,14 @@ class Packages extends Component
     #[Layout('layouts.app')]
     public function render()
     {
-        $data = Package::where(function ($query) {
-            $query->where('name', 'like', '%' . $this->query . '%')
-                ->orWhere('description', 'like', '%' . $this->query . '%');
-        })
+        $query = auth()->user()->hasRole('admin')
+            ? Package::where(function ($query) {
+                $query->where('name', 'like', '%' . $this->query . '%')
+                    ->orWhere('description', 'like', '%' . $this->query . '%');
+            })
+            : Package::where('active', 1);
+
+        $data = $query
             ->orderByDesc('created_at')
             ->paginate($this->pagination);
 
