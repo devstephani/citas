@@ -2,8 +2,10 @@
 
 namespace App\Livewire;
 
+use App\Models\Attendance;
 use App\Models\Employee as MEmployee;
 use App\Models\User;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
@@ -20,7 +22,7 @@ class EmployeeModal extends Component
     public $current_date, $initial_date, $attendance_date;
     public $photo;
 
-    protected $listeners = ['edit', 'toggle', 'toggle_active', 'delete', 'see_attendances'];
+    protected $listeners = ['edit', 'toggle', 'toggle_active', 'delete', 'see_attendances', 'employee_pdf'];
 
     public function rules()
     {
@@ -201,6 +203,21 @@ class EmployeeModal extends Component
         $this->description = '';
         $this->prevImg = '';
         $this->dispatch('refreshParent')->to(Employee::class);
+    }
+
+    public function employee_pdf($record)
+    {
+        $image = base64_encode(file_get_contents(public_path('img/logo.jpg')));
+        $attendances = Attendance::where('employee_id', $record)
+            ->get();
+        return response()->streamDownload(function () use ($attendances, $image) {
+            $pdf = App::make('dompdf.wrapper');
+            $pdf->loadView('pdfs.employee', [
+                'attendances' => $attendances,
+                'image' => $image
+            ]);
+            echo $pdf->stream();
+        }, "Asistencia de empleado.pdf");
     }
 
     public function render()

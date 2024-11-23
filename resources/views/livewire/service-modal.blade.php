@@ -1,4 +1,8 @@
 <div x-data="{ open: @entangle('showModal') }">
+    <x-button type="button" wire:click="$dispatch('pdf')" class="w-full sm:w-fit gap-3">
+        <x-lucide-file-text class="size-5" />
+        Reportes
+    </x-button>
     <x-button wire:click="toggle" class="w-full sm:w-fit gap-3">
         <x-lucide-plus class="size-5" />
         Servicio
@@ -18,20 +22,20 @@
                 <article class="mb-4 flex flex-col gap-4">
                     <div class="block">
                         <x-label value="Nombre" for="name" />
-                        <x-input wire:model.lazy="name" type="text" id="name" name="name" class="w-full" placeholder="Ej: Estética"
-                            autofocus autocomplete="off" required />
+                        <x-input wire:model.lazy="name" type="text" id="name" name="name" class="w-full"
+                            placeholder="Ej: Estética" autofocus autocomplete="off" required />
                         <x-input-error for="name" class="mt-2" />
                     </div>
                     <div class="block">
                         <x-label value="Descripción" for="description" />
-                        <x-textarea wire:model.lazy="description" id="description" name="description" class="w-full" placeholder="Ej: Belleza"
-                            required></x-textarea>
+                        <x-textarea wire:model.lazy="description" id="description" name="description" class="w-full"
+                            placeholder="Ej: Belleza" required></x-textarea>
                         <x-input-error for="description" class="mt-2" />
                     </div>
                     <div class="block">
                         <x-label value="Precio" for="price" />
-                        <x-input wire:model.lazy="price" type="number" id="price" name="price" required placeholder="Ej: 5"
-                            class="w-full" />
+                        <x-input wire:model.lazy="price" type="number" id="price" name="price" required
+                            placeholder="Ej: 5" class="w-full" />
                         <x-input-error for="price" class="mt-2" />
                     </div>
                     <div class="block">

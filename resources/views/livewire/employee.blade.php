@@ -80,6 +80,8 @@
                             </td>
                             <td class="px-6 py-4">
                                 <div class="flex gap-3">
+                                    <x-lucide-file-text class="size-5 hover:text-blue-600 cursor-pointer"
+                                        wire:click="$dispatch('employee_pdf', { record: {{ $employee->id }}})" />
                                     <x-lucide-alarm-clock class="size-5 hover:text-blue-600 cursor-pointer"
                                         wire:click="$dispatch('see_attendances', { record: {{ $employee->id }}})" />
                                     <x-lucide-pencil class="size-5 hover:text-blue-600 cursor-pointer"

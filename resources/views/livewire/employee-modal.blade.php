@@ -36,6 +36,10 @@
     @endif
 
     <div x-data="{ open: @entangle('showModal') }">
+        <x-button type="button" wire:click="$dispatch('pdf')" class="w-full sm:w-fit gap-3">
+            <x-lucide-file-text class="size-5" />
+            Asistencias
+        </x-button>
         <x-button wire:click="toggle" class="w-full sm:w-fit gap-3">
             <x-lucide-plus class="size-5" />
             Empleado

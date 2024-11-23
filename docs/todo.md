@@ -18,7 +18,6 @@
   - Observer?
 - Re-name (modules, views)
 - Probador virtual (layout)
-- Módulos en inicio no están actualizados (navbar)
 
 ----------------------------------------------------------------------------------------
 Calendario (25$)
@@ -31,17 +30,6 @@ Calendario (25$)
 - Un paquete no puede estar citado a la misma hora de un servicio que lo contenga
 - Un paquete puede estar citado varias veces el mismo dia
 - [-] Recordatorio via email a las 00 del dia y 1 hora antes del mismo
-----------------------------------------------------------------------------------------
-Reportes
-- Asistencia de empleado (seleccionar empleado)
-- Asistencia de todos los empleados
-- Servicios y paquetes
-  - Fecha | Clientes | Ingresos
-- Usuarios
-  - Fecha | Usuarios | Servicios | Paquetes
-  - Fecha | Servicio o paquete | Costo
-- Pagos
-  - Fecha | Servicio o paquete | Empleado | Costo
 ----------------------------------------------------------------------------------------
 Facturacion (7$)
 - Finalizada la cita, el empleado da concluido el servicio y se manda un email con: servicio, fecha, duracion, costo y estado de pagado
@@ -88,6 +76,17 @@ Facturacion (7$)
 ✔ Empleado (17$)
 - Nombre, email, contraseña
 - Servicios que ofrece
+----------------------------------------------------------------------------------------
+✔ Reportes
+- Asistencia de empleado (seleccionar empleado)
+- Asistencia de todos los empleados
+- Servicios y paquetes
+  - Fecha | Clientes | Ingresos
+- Usuarios
+  - Fecha | Usuarios | Servicios | Paquetes
+  - Fecha | Servicio o paquete | Costo
+- Pagos
+  - Fecha | Servicio o paquete | Empleado | Costo
 ----------------------------------------------------------------------------------------
 
 Admin:
