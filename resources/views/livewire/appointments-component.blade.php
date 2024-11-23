@@ -89,11 +89,11 @@
                                         ]) :disabled="!Auth::user()->hasAnyRole(['admin', 'employee']) && $id > 0">
                                         @foreach ($services as $service)
                                             @php
-                                                $price = $service->price * ($this->discount ? 1 : 0.95);
+                                                $price = $service->price * ($this->discount ? 0.95 : 1);
                                             @endphp
                                             <option value="{{ $service->id }}"
                                                 {{ $selected_service === $service->id ? 'selected' : '' }}>
-                                                {{ "$service->name | $$price" }}
+                                                {{ "$service->name | $price$" }}
                                             </option>
                                         @endforeach
                                     </x-select>
@@ -111,11 +111,11 @@
                                         ]) :disabled="!Auth::user()->hasAnyRole(['admin', 'employee']) && $id > 0">
                                         @foreach ($packages as $package)
                                             @php
-                                                $price = $package->price * ($this->discount ? 1 : 0.95);
+                                                $price = $package->price * ($this->discount ? 0.95 : 1);
                                             @endphp
                                             <option value="{{ $package->id }}"
                                                 {{ $selected_package === $package->id ? 'selected' : '' }}>
-                                                {{ "$package->name | $$price" }}
+                                                {{ "$package->name | $price$" }}
                                             </option>
                                         @endforeach
                                     </x-select>
@@ -250,6 +250,9 @@
                                 Pagado
                             </th>
                             <th scope="col" class="px-6 py-3">
+                                Descuento
+                            </th>
+                            <th scope="col" class="px-6 py-3">
                                 Pago
                             </th>
                             <th scope="col" class="px-6 py-3">
@@ -265,12 +268,24 @@
                     </thead>
                     <tbody class="divide-y -space-x-2">
                         @foreach ($appointments as $appointment)
+                            @php
+                                $payed = 0;
+                                $discount = 0;
+
+                                if ($appointment->payment) {
+                                    $payed = $appointment->payment->payed;
+                                    $discount = $payed * ($appointment->discount ? 0.05 : 0);
+                                }
+                            @endphp
                             <tr class="">
                                 <td class="px-6 py-4">
                                     {{ $appointment->service->name ?? $appointment->package->name }}
                                 </td>
                                 <td class="px-6 py-4">
-                                    {{ $appointment->service->price ?? $appointment->package->price }}
+                                    @php
+                                        $price = $appointment->service->price ?? $appointment->package->price;
+                                    @endphp
+                                    {{ $price ? "$price$" : '' }}
                                 </td>
                                 <td @class([
                                     'px-6 py-4',
@@ -283,7 +298,10 @@
                                     {{ $appointment->user->name }}
                                 </td>
                                 <td class="px-6 py-4">
-                                    {{ $appointment->payment->payed ?? '' }}
+                                    {{ $payed ? "$payed$" : '' }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ $discount ? "$discount$" : '' }}
                                 </td>
                                 <td class="px-6 py-4">
                                     {{ $appointment->payment->type->name ?? '' }}
