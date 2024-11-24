@@ -3,7 +3,9 @@
 @endsection
 
 <div>
-    <x-page-title :title="$title" :subtitle="$subtitle" />
+    @role('client')
+        <x-page-title :title="$title" :subtitle="$subtitle" />
+    @endrole
 
     @if ($show_alert)
         <div class="max-w-sm mx-auto text-justify">

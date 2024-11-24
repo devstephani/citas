@@ -75,6 +75,16 @@
                     <span class="ms-3 ">Blog</span>
                 </a>
             </li>
+            <li>
+                <a href="{{ route('virtual') }}" @class([
+                    'flex items-center p-2 rounded-lg hover:bg-neutral-200',
+                    'bg-neutral-200' => Route::is('virtual'),
+                ])>
+
+                    <x-lucide-image class="size-5 " />
+                    <span class="ms-3 ">Probador virtual</span>
+                </a>
+            </li>
             @role('admin')
                 <li>
                     <a href="{{ route('trash') }}" @class([
