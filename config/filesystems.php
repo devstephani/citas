@@ -37,6 +37,13 @@ return [
             'visibility' => 'public',
         ],
 
+        'templates' => [
+            'driver' => 'local',
+            'root' => public_path(),
+            'visibility' => 'public',
+            'throw' => false,
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public/backups'),

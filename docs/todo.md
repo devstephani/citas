@@ -10,7 +10,6 @@
 - Revisar por que los modales se recargan cada segundo
 - Bitácora (10$)
   - Observer?
-- Probador (20$)
 - Alerts
   - Observer?
 - Re-name (modules, views)
