@@ -14,8 +14,14 @@
   - Observer?
 - Re-name (modules, views)
 
+
+# DONE
 ----------------------------------------------------------------------------------------
-Calendario (25$)
+✔ Facturacion (7$)
+- Finalizada la cita, el empleado da concluido el servicio y se manda un email con: servicio, fecha, duracion, costo y estado de pagado
+- Finalizada la cita, el admin da concluido el paquete y se manda un email con: servicio, fecha, duracion, costo y estado de pagado
+----------------------------------------------------------------------------------------
+✔ Calendario (25$)
 - Registros de agendacion de servicios y paquetes
 - Para el cliente, se muestran sus citas
 - Para el empleado, se muestran sus citas
@@ -24,16 +30,7 @@ Calendario (25$)
 - Un servicio puede estar citado varias veces el mismo dia
 - Un paquete no puede estar citado a la misma hora de un servicio que lo contenga
 - Un paquete puede estar citado varias veces el mismo dia
-- [-] Recordatorio via email a las 00 del dia y 1 hora antes del mismo
-----------------------------------------------------------------------------------------
-Facturacion (7$)
-- Finalizada la cita, el empleado da concluido el servicio y se manda un email con: servicio, fecha, duracion, costo y estado de pagado
-- Finalizada la cita, el admin da concluido el paquete y se manda un email con: servicio, fecha, duracion, costo y estado de pagado
-----------------------------------------------------------------------------------------
-			COSTE TOTAL: 109$ - Descuento a 85$
-----------------------------------------------------------------------------------------
-
-# DONE
+- Recordatorio via email a las 00 del dia y 1 hora antes del mismo
 ----------------------------------------------------------------------------------------
 ✔ Blog (20$)
 - Titulo
@@ -64,7 +61,7 @@ Facturacion (7$)
 ----------------------------------------------------------------------------------------
 ✔ Formulario de servicios y paquetes (12$)
 - Servicio
-  - Nombre, precio, descripcion, imagen, activo, *pending* descuento (se aplica cada 4 servicios en el historial del cliente)
+  - Nombre, precio, descripcion, imagen, activo, descuento (se aplica cada 4 servicios en el historial del cliente)
 - Paquete
   - Nombre, precio, descripcion, lista de servicios, imagen, activo
 ----------------------------------------------------------------------------------------
@@ -82,6 +79,8 @@ Facturacion (7$)
   - Fecha | Servicio o paquete | Costo
 - Pagos
   - Fecha | Servicio o paquete | Empleado | Costo
+----------------------------------------------------------------------------------------
+  COSTE TOTAL: 109$ - Descuento a 85$
 ----------------------------------------------------------------------------------------
 
 Admin:

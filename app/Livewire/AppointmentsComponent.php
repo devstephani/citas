@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Snowfire\Beautymail\Beautymail;
 
 class AppointmentsComponent extends Component
 {
@@ -194,6 +195,16 @@ class AppointmentsComponent extends Component
                 'currency' => CurrencyEnum::from($this->currency),
                 'ref' => $this->ref
             ]);
+
+            $beautymail = app()->make(Beautymail::class);
+            $beautymail->send('emails.appointment-payed', [
+                'appointment' => $record
+            ], function ($message) use ($record) {
+                $message
+                    ->from(env('MAIL_FROM_ADDRESS'))
+                    ->to($record->user->email)
+                    ->subject('Cita finalizada y pagada');
+            });
         }
 
         $this->dispatch(event: 'refreshParent')->to(AppointmentsCalendar::class);

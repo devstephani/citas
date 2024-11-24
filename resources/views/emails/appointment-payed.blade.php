@@ -15,13 +15,11 @@
     </tr>
     <tr>
         <td class="paragraph">
-            El motivo de este correo es para darle un recordatorio de la cita solicitada el día
-            {{ $appointment->created_at->format('d-m-Y h:i a') }} para
-            <b>
+            Hemos confirmado el pago de su cita del día
+            {{ Carbon::createFromFormat('Y-m-d h:i:s', $appointment->picked_date)->format('d-m-Y h:i a') }} y se ha dado por
+            concluido <b>
                 {{ $appointment->package ? "el paquete {$appointment->package->name}" : "la cita {$appointment->service->name}" }}
-            </b>
-            para el día
-            {{ Carbon::createFromFormat('Y-m-d h:i:s', $appointment->picked_date)->format('d-m-Y h:i a') }}
+            </b> {{ $appointment->package ? 'solicitado' : 'solicitada' }}.
         </td>
     </tr>
     <tr>
@@ -29,7 +27,7 @@
     </tr>
     <tr>
         <td class="paragraph">
-            Sin más que agregar lo esperamos para la fecha pautada.
+            Esperamos haya disfrutado de nuestros servicios y hayan sido de su agrado.
         </td>
     </tr>
     <tr>
