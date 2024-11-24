@@ -2,10 +2,12 @@
 
 namespace App\Livewire;
 
+use App\Models\Appointment;
 use App\Models\Package;
 use App\Models\Service;
 use App\Models\User;
 use Asantibanez\LivewireCharts\Models\ColumnChartModel;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -28,11 +30,31 @@ class Dashboard extends Component
         'Dic',
     ];
 
+    protected $listeners = ['pdf'];
+
     public function mount()
     {
         if (auth()->user()->hasRole('client')) {
             return redirect()->route('home');
         }
+    }
+
+    public function pdf()
+    {
+        $image = base64_encode(file_get_contents(public_path('img/logo.jpg')));
+        $data = Appointment::with(['service', 'user', 'payment'])
+            ->where('service_id', '!=', null)
+            ->whereYear('picked_date', '=', now()->format('Y'))
+            ->get();
+
+        return response()->streamDownload(function () use ($data, $image) {
+            $pdf = App::make('dompdf.wrapper');
+            $pdf->loadView('pdfs.payments', [
+                'data' => $data,
+                'image' => $image
+            ]);
+            echo $pdf->stream();
+        }, "Reporte de pagos.pdf");
     }
 
     #[Layout('layouts.app')]

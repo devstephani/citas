@@ -40,6 +40,15 @@
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
+    <style>
+        @font-face {
+            font-family: 'Figtree Light';
+            src: url({{ asset('fonts/Figtree-Light.ttf') }}) format('truetype');
+            font-weight: 400;
+            font-style: normal;
+        }
+    </style>
+
     <!-- Styles -->
     @livewireStyles
     @stack('scripts')
