@@ -20,6 +20,7 @@
         "livewire/livewire": "^3.0",
         "mallardduck/blade-lucide-icons": "^1.23",
         "omnia-digital/livewire-calendar": "^3.1",
+        "snowfire/beautymail": "^1.1",
         "spatie/laravel-permission": "^6.9",
         "tinymce/tinymce": "^7.4",
         "treinetic/imageartist": "^1.0"

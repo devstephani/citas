@@ -13,7 +13,6 @@
 - Alerts
   - Observer?
 - Re-name (modules, views)
-- Probador virtual (layout)
 
 ----------------------------------------------------------------------------------------
 Calendario (25$)
