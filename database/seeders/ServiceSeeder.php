@@ -25,5 +25,35 @@ class ServiceSeeder extends Seeder
             'employee_id' => Employee::first()->id,
             'user_id' => User::first()->id
         ]);
+        Service::create([
+            'name' => 'Cejas',
+            'description' => 'Segundo servicio',
+            'image' => 'cp1.jpg',
+            'active' => 1,
+            'price' => 5,
+            'type' => TypeEnum::Cejas,
+            'employee_id' => Employee::first()->id,
+            'user_id' => User::first()->id
+        ]);
+        Service::create([
+            'name' => 'Pestañas',
+            'description' => 'Tercer servicio',
+            'image' => 'cp1.jpg',
+            'active' => 1,
+            'price' => 5,
+            'type' => TypeEnum::Pestañas,
+            'employee_id' => Employee::first()->id,
+            'user_id' => User::first()->id
+        ]);
+        Service::create([
+            'name' => 'Depilación',
+            'description' => 'Cuarto servicio',
+            'image' => 'cp1.jpg',
+            'active' => 1,
+            'price' => 10,
+            'type' => TypeEnum::Depilación,
+            'employee_id' => Employee::first()->id,
+            'user_id' => User::first()->id
+        ]);
     }
 }

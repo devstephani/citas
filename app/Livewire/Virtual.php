@@ -5,12 +5,16 @@ namespace App\Livewire;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use Treinetic\ImageArtist\lib\Image;
 
 class Virtual extends Component
 {
+    use WithFileUploads;
+
     public $title = 'Probador';
     public $subtitle = 'Probador Virtual';
+    public $photo;
 
     public $eyeslashes = false, $browslashes = false, $show_template = false, $show_alert = false;
     public $eyeslashes_images = [];
@@ -68,17 +72,31 @@ class Virtual extends Component
     public function save()
     {
         $file_name = 'result_image.jpeg';
-        $base = Storage::disk('templates')->files('img/templates')[0];
+        $base = '';
+
+        if ($this->photo) {
+            $base = $this->photo->getRealPath();
+        } else {
+            $base = Storage::disk('templates')->files('img/templates')[0];
+        }
+
         $img = new Image($base);
-        $eyeslashes_image = new Image($this->selected_eyeslashes);
-        $browslashes_image = new Image($this->selected_browslashes);
+        $eyeslashes_image = $this->selected_eyeslashes !== '' ? new Image($this->selected_eyeslashes) : '';
+        $browslashes_image = $this->selected_browslashes !== '' ? new Image($this->selected_browslashes) : '';
 
         $img->scaleToWidth(384);
         $img->scaleToHeight(384);
-        $eyeslashes_image->resize(160, 60);
-        $browslashes_image->resize(160, 60);
-        $img->merge($eyeslashes_image, $this->eyeslashes_position['x'] * 4.5, $this->eyeslashes_position['y'] * 4);
-        $img->merge($browslashes_image, $this->browslashes_position['x'] * 4.5, $this->browslashes_position['y'] * 3.5);
+
+        if ($this->selected_eyeslashes !== '') {
+            $eyeslashes_image->resize(160, 60);
+            $img->merge($eyeslashes_image, $this->eyeslashes_position['x'] * 4.5, $this->eyeslashes_position['y'] * 4);
+        }
+
+        if ($this->selected_browslashes !== '') {
+            $browslashes_image->resize(160, 60);
+            $img->merge($browslashes_image, $this->browslashes_position['x'] * 4.5, $this->browslashes_position['y'] * 3.5);
+        }
+
         $img->save($file_name, IMAGETYPE_JPEG);
 
         $file_path = public_path() . "/$file_name";
@@ -96,13 +114,14 @@ class Virtual extends Component
 
     public function resetUI()
     {
-        $this->selected_eyeslashes = $this->eyeslashes_images[0];
-        $this->selected_browslashes = $this->browslashes_images[0];
+        $this->selected_eyeslashes = '';
+        $this->selected_browslashes = '';
         $this->eyeslashes_position = ['x' => 25, 'y' => 40];
         $this->browslashes_position = ['x' => 25, 'y' => 35];
         $this->show_template = false;
         $this->browslashes = false;
         $this->eyeslashes = false;
+        $this->photo = null;
     }
 
     public function mount()
@@ -110,9 +129,6 @@ class Virtual extends Component
         $disk = Storage::disk('templates');
         $this->eyeslashes_images = $disk->files('img/templates/eyeslashes');
         $this->browslashes_images = $disk->files('img/templates/browslashes');
-
-        $this->selected_eyeslashes = $this->eyeslashes_images[0];
-        $this->selected_browslashes = $this->browslashes_images[0];
     }
 
     #[Layout('layouts.app')]

@@ -36,7 +36,7 @@ class EmployeeModal extends Component
             'password' => ['required', Password::min(4)->max(12)->numbers()->letters()],
             'photo'  => [
                 'nullable',
-                Rule::when(!is_string($this->image), 'required|image|max:1024|mimes:jpg')
+                Rule::when(!is_string($this->photo), 'required|image|max:1024|mimes:jpg')
             ],
         ];
     }
