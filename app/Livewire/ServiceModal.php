@@ -24,10 +24,10 @@ class ServiceModal extends Component
     public function rules()
     {
         return [
-            'name' => ['required', 'regex:/^[a-zA-Z0-9\s]+$/', 'min:4', 'max:80', Rule::unique('services')->where(function ($query) {
+            'name' => ['required', 'regex:/^[\p{L}\p{N}\s]+$/u', 'min:4', 'max:80', Rule::unique('services')->where(function ($query) {
                 return $query->where('name', $this->name);
             })->ignore($this->id)],
-            'description' => 'required|min:10|max:150|regex:/^[a-zA-Z0-9\s]+$/',
+            'description' => 'required|min:10|max:150|regex:/^[\p{L}\p{N}\s]+$/u',
             'active' => ['boolean', Rule::excludeIf($this->id == null)],
             'price' => 'required|min:0.1|max:1000|numeric',
             'type' => ['required', Rule::enum(TypeEnum::class)],

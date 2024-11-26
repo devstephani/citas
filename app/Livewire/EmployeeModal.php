@@ -27,8 +27,8 @@ class EmployeeModal extends Component
     public function rules()
     {
         return [
-            'name' => 'required|min:4|max:80|regex:/^[a-zA-Z0-9\s]+$/',
-            'description' => 'required|min:8|max:120|regex:/^[a-zA-Z0-9\s]+$/',
+            'name' => 'required|min:4|max:80|regex:/^[\p{L}\p{N}\s]+$/u',
+            'description' => 'required|min:8|max:120|regex:/^[\p{L}\p{N}\s]+$/u',
             'email' => ['required', 'email', Rule::unique('users')->where(function ($query) {
                 return $query->where('email', $this->email);
             })->ignore($this->id)],

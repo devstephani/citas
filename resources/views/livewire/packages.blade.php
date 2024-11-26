@@ -9,7 +9,7 @@
             <div class="container">
                 <div class="section-title">
                     <span>Paquetes</span>
-                    <h2>Disfruta de nuestros servicios</h2>
+                    <h2>Disfruta de nuestros paquetes</h2>
                 </div>
                 <div class="row">
                     @foreach ($packages as $package)

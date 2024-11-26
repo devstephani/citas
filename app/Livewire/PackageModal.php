@@ -24,10 +24,10 @@ class PackageModal extends Component
     public function rules()
     {
         return [
-            'name' => ['required', 'min:4', 'max:80', 'regex:/^[a-zA-Z0-9\s]+$/', Rule::unique('packages')->where(function ($query) {
+            'name' => ['required', 'min:4', 'max:80', 'regex:/^[\p{L}\p{N}\s]+$/u', Rule::unique('packages')->where(function ($query) {
                 return $query->where('name', $this->name);
             })->ignore($this->id)],
-            'description' => 'required|min:10|max:150|regex:/^[a-zA-Z0-9\s]+$/',
+            'description' => 'required|min:10|max:150|regex:/^[\p{L}\p{N}\s]+$/u',
             'active' => ['boolean', Rule::excludeIf($this->id == null)],
             'price' => 'required|min:0.1|max:1000|numeric',
             'service_ids' => ['required', 'exists:services,id'],

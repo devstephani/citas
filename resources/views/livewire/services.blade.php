@@ -9,7 +9,7 @@
             <div class="container">
                 <div class="section-title">
                     <span>Servicios</span>
-                    <h2>Servicios & paquetes</h2>
+                    <h2>Disfruta de nuestros servicios</h2>
                 </div>
                 <div class="row">
                     @foreach ($services as $service)
@@ -19,23 +19,7 @@
                                     <img src="{{ asset('storage/' . $service->image) }}" alt="Image">
                                     <div class="single-rooms-three-content">
                                         <h3>{{ $service->name }}</h3>
-                                        <ul class="rating">
-                                            <li>
-                                                <i class="bx bxs-star"></i>
-                                            </li>
-                                            <li>
-                                                <i class="bx bxs-star"></i>
-                                            </li>
-                                            <li>
-                                                <i class="bx bxs-star"></i>
-                                            </li>
-                                            <li>
-                                                <i class="bx bxs-star"></i>
-                                            </li>
-                                            <li>
-                                                <i class="bx bxs-star"></i>
-                                            </li>
-                                        </ul>
+                                        <p>{{ $service->description }}</p>
                                         <span class="price">{{ "$service->price$" }}</span>
                                         <a href="{{ route('appointments') }}" class="default-btn">
                                             Reserva en línea

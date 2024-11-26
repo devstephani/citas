@@ -68,10 +68,10 @@
                     </section>
                     <div class="grid grid-cols-1 sm:grid-cols-2 mx-auto gap-3">
                         <x-button wire:click="$dispatch('toggle', { side: 'eyeslashes' })">
-                            Cejas
+                            Pestañas
                         </x-button>
                         <x-button wire:click="$dispatch('toggle', { side: 'browslashes' })">
-                            Pestañas
+                            Cejas
                         </x-button>
                         <x-button wire:click="save" class="text-center">
                             Guardar

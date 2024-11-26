@@ -22,8 +22,8 @@ class PostModal extends Component
     public function rules()
     {
         return [
-            'title' => 'required|min:4|max:80|regex:/^[a-zA-Z0-9\s]+$/',
-            'description' => 'required|min:12|max:2000|regex:/^[a-zA-Z0-9\s]+$/',
+            'title' => 'required|min:4|max:80|regex:/^[\p{L}\p{N}\s]+$/u',
+            'description' => 'required|min:12|max:2000|regex:/^[\p{L}\p{N}\s]+$/u',
             'message' => 'required|min:10|max:150',
             'active' => ['boolean', Rule::excludeIf($this->id == null)],
             'image'  => [

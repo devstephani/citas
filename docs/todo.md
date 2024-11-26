@@ -14,6 +14,18 @@
   - Observer?
 - Re-name (modules, views)
 
+- Quitar autocompletado del search
+- Modal abre solo
+- Cita, siguiente mes
+- Desde citas y paquetes llevar a cita ya con el item seleccionado
+- Revisar selección de servicio (name null)
+- Horas -> cada 2
+- Domingo hasta las 2
+- Lunes - jueves 9am - 5pm
+- Viernes - sabado 8am - 7pm
+- Actualizar servicio no coloca al empleado correcto
+- Cejas y pestañas queda demaciado grande
+- Cliente realiza pago y admin confirma
 
 # DONE
 ----------------------------------------------------------------------------------------
