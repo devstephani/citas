@@ -22,7 +22,6 @@ class ServiceSeeder extends Seeder
             'active' => 1,
             'price' => 20,
             'type' => TypeEnum::Trenzado,
-            'employee_id' => Employee::first()->id,
             'user_id' => User::first()->id
         ]);
         Service::create([
@@ -32,7 +31,6 @@ class ServiceSeeder extends Seeder
             'active' => 1,
             'price' => 5,
             'type' => TypeEnum::Cejas,
-            'employee_id' => Employee::first()->id,
             'user_id' => User::first()->id
         ]);
         Service::create([
@@ -42,7 +40,6 @@ class ServiceSeeder extends Seeder
             'active' => 1,
             'price' => 5,
             'type' => TypeEnum::Pestañas,
-            'employee_id' => Employee::first()->id,
             'user_id' => User::first()->id
         ]);
         Service::create([
@@ -52,7 +49,6 @@ class ServiceSeeder extends Seeder
             'active' => 1,
             'price' => 10,
             'type' => TypeEnum::Depilación,
-            'employee_id' => Employee::first()->id,
             'user_id' => User::first()->id
         ]);
     }
