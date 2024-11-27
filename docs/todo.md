@@ -1,3 +1,4 @@
+- Currency api: https://github.com/fcoagz/api-pydolarvenezuela
 - Roles: https://spatie.be/docs/laravel-permission/v6/installation-laravel
 - Alerts: https://sweetalert2.github.io/
 - Auth: Jetstream

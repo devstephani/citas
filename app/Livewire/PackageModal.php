@@ -71,7 +71,6 @@ class PackageModal extends Component
 
     public function save()
     {
-        dd($this->service_ids);
         $this->validate();
         $path = $this->image->store('public/packages');
 
@@ -177,7 +176,9 @@ class PackageModal extends Component
 
     public function render()
     {
-        $services = Service::where('active', 1)->get();
+        $services = Service::where('active', 1)
+            ->where('name', '!=', 'Trenzado')
+            ->get();
 
         return view('livewire.package-modal', [
             'services' => $services

@@ -158,7 +158,11 @@ class EmployeeModal extends Component
 
     public function delete(MEmployee $record)
     {
-        Storage::disk('public')->delete($record->photo);
+        $disk = Storage::disk('public');
+        if (!is_null($record->photo) && $disk->exists($record->photo)) {
+            $disk->delete($record->photo);
+        }
+
         $record->delete();
         $this->resetUI();
     }
