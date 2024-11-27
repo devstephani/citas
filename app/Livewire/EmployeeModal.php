@@ -156,10 +156,10 @@ class EmployeeModal extends Component
         $this->resetUI();
     }
 
-    public function delete(MEmployee $employee)
+    public function delete(MEmployee $record)
     {
-        Storage::disk('public')->delete($employee->photo);
-        $employee->delete();
+        Storage::disk('public')->delete($record->photo);
+        $record->delete();
         $this->resetUI();
     }
 
