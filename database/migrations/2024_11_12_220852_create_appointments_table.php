@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('appointments', function (Blueprint $table) {
             $table->id();
-            $table->boolean('status');
             $table->boolean('discount')->default(false);
             $table->boolean('registered_local');
             $table->integer('status');

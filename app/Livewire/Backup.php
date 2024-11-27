@@ -11,8 +11,8 @@ use Livewire\Component;
 
 class Backup extends Component
 {
-    protected $dump_path = "C:/laragon/bin/mysql/mysql-8.0.30-winx64/bin/mysqldump";
-    protected $destination_path = "C:/laragon/www/manicurista/storage/app/public/backups";
+    protected $dump_path = "C:/xampp/mysql/bin/mysqldump";
+    protected $destination_path = "C:/xampp/htdocs/Citas/storage/app/public/backups";
     protected $listeners = ['save', 'download'];
 
     public function get_size($size)
