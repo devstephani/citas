@@ -16,7 +16,7 @@
     <tr>
         <td class="paragraph">
             Hemos confirmado el pago de su cita del día
-            {{ Carbon::createFromFormat('Y-m-d h:i:s', $appointment->picked_date)->format('d-m-Y h:i a') }} y se ha dado por
+            {{ Carbon::createFromFormat('Y-m-d H:i:s', $appointment->picked_date)->format('d-m-Y h:i a') }} y se ha dado por
             concluido <b>
                 {{ $appointment->package ? "el paquete {$appointment->package->name}" : "la cita {$appointment->service->name}" }}
             </b> {{ $appointment->package ? 'solicitado' : 'solicitada' }}.

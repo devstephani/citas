@@ -36,7 +36,7 @@ class AppointmentsCalendar extends LivewireCalendar
                 return [
                     'id' => $appointment->id,
                     'title' => $appointment->service->name ?? $appointment->package->name,
-                    'description' => Carbon::createFromFormat('Y-m-d h:i:s', $appointment->picked_date)->format('h:i:s a'),
+                    'description' => Carbon::createFromFormat('Y-m-d H:i:s', $appointment->picked_date)->format('h:i:s a'),
                     'date' => $appointment->picked_date,
                 ];
             });

@@ -348,7 +348,7 @@
                                     {{ $appointment->payment->ref ?? '' }}
                                 </td>
                                 <td class="px-6 py-4">
-                                    {{ \Carbon\Carbon::createFromFormat('Y-m-d h:i:s', $appointment->picked_date)->translatedFormat('l, d F Y') }}
+                                    {{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $appointment->picked_date)->translatedFormat('l, d F Y') }}
                                 </td>
                             </tr>
                         @endforeach

@@ -49,7 +49,7 @@ class AppointmentsComponent extends Component
         return [
             'selected_service' => ['nullable', new OneRequired('selected_package'), 'exists:services,id'],
             'selected_package' => ['nullable', new OneRequired('selected_service'), 'exists:packages,id'],
-            'selected_time' => ['required', 'date_format:h:i:s'],
+            'selected_time' => ['required', 'date_format:H:i:s'],
             'status' => [
                 Rule::when(Auth::user()->hasRole('admin') && $this->id > 0, 'required|integer|min:0|max:2')
             ],
@@ -309,34 +309,40 @@ class AppointmentsComponent extends Component
 
     public function getAvailableHours($today)
     {
+        $currentTimeFormatted = now()->format('H:i:s');
+        $availableHours = [];
+
         if ($today === 0) {
-            return [
+            $availableHours = [
                 ['value' => '09:00:00', 'text' => '09:00 a.m.'],
                 // ['value' => '10:00:00', 'text' => '10:00 a.m.'],
                 ['value' => '11:00:00', 'text' => '11:00 a.m.'],
                 // ['value' => '12:00:00', 'text' => '12:00 p.m.'],
-                ['value' => '01:00:00', 'text' => '01:00 p.m.'],
-                // ['value' => '02:00:00', 'text' => '02:00 p.m.']
+                ['value' => '13:00:00', 'text' => '01:00 p.m.'], // 13:00 for 1 PM
+                // ['value' => '14:00:00', 'text' => '02:00 p.m.']
             ];
-        }
-
-        if (in_array($today, [1, 2, 3, 4])) {
-            return [
+        } elseif (in_array($today, [1, 2, 3, 4])) {
+            $availableHours = [
                 ['value' => '09:00:00', 'text' => '09:00 a.m.'],
                 // ['value' => '10:00:00', 'text' => '10:00 a.m.'],
                 ['value' => '11:00:00', 'text' => '11:00 a.m.'],
                 // ['value' => '12:00:00', 'text' => '12:00 p.m.'],
-                ['value' => '01:00:00', 'text' => '01:00 p.m.'],
-                // ['value' => '02:00:00', 'text' => '02:00 p.m.'],
-                ['value' => '03:00:00', 'text' => '03:00 p.m.'],
-                // ['value' => '04:00:00', 'text' => '04:00 p.m.'],
-                ['value' => '05:00:00', 'text' => '05:00 p.m.']
+                ['value' => '13:00:00', 'text' => '01:00 p.m.'],
+                // ['value' => '14:00:00', 'text' => '02:00 p.m.'],
+                ['value' => '15:00:00', 'text' => '03:00 p.m.'],
+                // ['value' => '16:00:00', 'text' => '04:00 p.m.'],
+                ['value' => '17:00:00', 'text' => '05:00 p.m.']
             ];
+        } elseif (in_array($today, [5, 6])) {
+            return [];
         }
 
-        if (in_array($today, [5, 6])) {
-            return $this->hours;
-        }
+        $filteredHours = array_filter($availableHours, function ($hour) use ($currentTimeFormatted) {
+            return $hour['value'] > $currentTimeFormatted;
+        });
+
+
+        return $filteredHours;
     }
 
     public function mount()
