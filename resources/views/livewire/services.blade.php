@@ -5,7 +5,7 @@
 <div>
     @role('client')
         <x-page-title :title="$title" :subtitle="$subtitle" />
-        <section class="mt-5 our-rooms-area pb-100">
+        <section class="exclusive-offers-area-four pt-100 pb-70">
             <div class="container">
                 <div class="section-title">
                     <span>Servicios</span>
@@ -14,18 +14,22 @@
                 <div class="row">
                     @foreach ($services as $service)
                         <div class="col-lg-4 col-sm-6">
-                            <div class="single-rooms-three-wrap">
-                                <div class="single-rooms-three">
-                                    <img src="{{ asset('storage/' . $service->image) }}" alt="Image">
-                                    <div class="single-rooms-three-content">
-                                        <h3>{{ $service->name }}</h3>
-                                        <p>{{ $service->description }}</p>
-                                        <span class="price">{{ "$service->price$" }}</span>
-                                        <a href="{{ route('appointments') }}" class="default-btn">
-                                            Reserva en línea
-                                            <i class="flaticon-right"></i>
+                            <div class="single-exclusive-four">
+                                <img src="{{ asset('storage/' . $service->image) }}" alt="Image">
+                                <div class="exclusive-content">
+                                    <h3>{{ $service->name }}</h3>
+                                    <span class="review">
+                                        <a href="#">Precio: {{ $service->price }}$ -
+                                            ({{ $service->appointments()->count() }}
+                                            Citas)
                                         </a>
-                                    </div>
+                                    </span>
+                                    <p>{{ $service->description }}</p>
+                                    <a href="{{ route('appointments', ['service_id' => $service->id]) }}"
+                                        class="default-btn">
+                                        Reserva en línea
+                                        <i class="flaticon-right"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>

@@ -14,18 +14,17 @@
   - Observer?
 - Re-name (modules, views)
 
-- Quitar autocompletado del search
-- Modal abre solo
-- Cita, siguiente mes
-- Desde citas y paquetes llevar a cita ya con el item seleccionado
+- Modal abre solo en empleados
 - Revisar selección de servicio (name null)
-- Horas -> cada 2
-- Domingo hasta las 2
-- Lunes - jueves 9am - 5pm
-- Viernes - sabado 8am - 7pm
 - Actualizar servicio no coloca al empleado correcto
-- Cejas y pestañas queda demaciado grande
 - Cliente realiza pago y admin confirma
+- Añadir pago desde cliente, cuando se mande sea con el pago y el admin acepta o cancela (citas canceladas se muestran)
+- Editar cliente
+- Empleado*
+- No carga la asistencia
+
+- Registrar / editar empleado (añadir servicios)
+- sistema de puntuación para servicios y paquetes
 
 # DONE
 ----------------------------------------------------------------------------------------

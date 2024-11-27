@@ -83,7 +83,7 @@
                 </div>
                 @if ($show_template)
                     <section
-                        class="w-full max-w-96 max-h-fit border rounded-md border-neutral-400 p-4 flex flex-col items-center">
+                        class="w-full max-w-96 max-h-fit border rounded-md border-neutral-400 p-4 flex flex-col items-center flex-wrap">
                         <div class="flex flex-wrap gap-3">
                             @if ($eyeslashes)
                                 @foreach ($eyeslashes_images as $img)

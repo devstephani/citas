@@ -19,10 +19,13 @@
                                 <div class="exclusive-content">
                                     <h3>{{ $package->name }}</h3>
                                     <span class="review">
-                                        <a href="#">({{ $package->appointments()->count() }} Citas)</a>
+                                        <a href="#">Precio: {{ $package->price }}$ -
+                                            ({{ $package->appointments()->count() }} Citas)
+                                        </a>
                                     </span>
                                     <p>{{ $package->description }}</p>
-                                    <a href="{{ route('appointments') }}" class="default-btn">
+                                    <a href="{{ route('appointments', ['service_id' => $service->id]) }}"
+                                        class="default-btn">
                                         Reserva en línea
                                         <i class="flaticon-right"></i>
                                     </a>

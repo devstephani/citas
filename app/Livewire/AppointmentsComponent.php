@@ -14,11 +14,14 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 use Snowfire\Beautymail\Beautymail;
 
 class AppointmentsComponent extends Component
 {
+    #[Url]
+    public $service_id, $package_id;
     public $show_modal = false, $discount = false;
     public $id = 0, $client_name, $client_id = null, $clients, $services, $packages, $selected_service = 0, $selected_package = 0, $selected_date, $selected_time, $status, $registered_local, $type, $currency, $payed, $ref, $frequent_appointments, $selected_frequent_appointment;
 
@@ -26,50 +29,18 @@ class AppointmentsComponent extends Component
     protected $listeners = ['toggle', 'set_selected_day', 'edit', 'delete', 'set_appointment'];
 
     public $hours = [
-        [
-            'value' => '08:00:00',
-            'text' => '08:00 a.m.'
-        ],
-        [
-            'value' => '09:00:00',
-            'text' => '09:00 a.m.'
-        ],
-        [
-            'value' => '10:00:00',
-            'text' => '10:00 a.m.'
-        ],
-        [
-            'value' => '11:00:00',
-            'text' => '11:00 a.m.'
-        ],
-        [
-            'value' => '12:00:00',
-            'text' => '12:00 p.m.'
-        ],
-        [
-            'value' => '01:00:00',
-            'text' => '01:00 p.m.'
-        ],
-        [
-            'value' => '02:00:00',
-            'text' => '02:00 p.m.'
-        ],
-        [
-            'value' => '03:00:00',
-            'text' => '03:00 p.m.'
-        ],
-        [
-            'value' => '04:00:00',
-            'text' => '04:00 p.m.'
-        ],
-        [
-            'value' => '05:00:00',
-            'text' => '05:00 p.m.'
-        ],
-        [
-            'value' => '06:00:00',
-            'text' => '06:00 p.m.'
-        ],
+        ['value' => '08:00:00', 'text' => '08:00 a.m.'],
+        // ['value' => '09:00:00', 'text' => '09:00 a.m.'],
+        ['value' => '10:00:00', 'text' => '10:00 a.m.'],
+        // ['value' => '11:00:00', 'text' => '11:00 a.m.'],
+        ['value' => '12:00:00', 'text' => '12:00 p.m.'],
+        // ['value' => '01:00:00', 'text' => '01:00 p.m.'],
+        ['value' => '02:00:00', 'text' => '02:00 p.m.'],
+        // ['value' => '03:00:00', 'text' => '03:00 p.m.'],
+        ['value' => '04:00:00', 'text' => '04:00 p.m.'],
+        // ['value' => '05:00:00', 'text' => '05:00 p.m.'],
+        ['value' => '06:00:00', 'text' => '06:00 p.m.'],
+        // ['value' => '07:00:00', 'text' => '07:00 p.m.'],
     ];
 
     public function rules()
@@ -317,8 +288,44 @@ class AppointmentsComponent extends Component
         $this->client_name = null;
         $this->status = 0;
     }
+
+    public function getAvailableHours($today)
+    {
+        if ($today === 0) {
+            return [
+                ['value' => '09:00:00', 'text' => '09:00 a.m.'],
+                // ['value' => '10:00:00', 'text' => '10:00 a.m.'],
+                ['value' => '11:00:00', 'text' => '11:00 a.m.'],
+                // ['value' => '12:00:00', 'text' => '12:00 p.m.'],
+                ['value' => '01:00:00', 'text' => '01:00 p.m.'],
+                // ['value' => '02:00:00', 'text' => '02:00 p.m.']
+            ];
+        }
+
+        if (in_array($today, [1, 2, 3, 4])) {
+            return [
+                ['value' => '09:00:00', 'text' => '09:00 a.m.'],
+                // ['value' => '10:00:00', 'text' => '10:00 a.m.'],
+                ['value' => '11:00:00', 'text' => '11:00 a.m.'],
+                // ['value' => '12:00:00', 'text' => '12:00 p.m.'],
+                ['value' => '01:00:00', 'text' => '01:00 p.m.'],
+                // ['value' => '02:00:00', 'text' => '02:00 p.m.'],
+                ['value' => '03:00:00', 'text' => '03:00 p.m.'],
+                // ['value' => '04:00:00', 'text' => '04:00 p.m.'],
+                ['value' => '05:00:00', 'text' => '05:00 p.m.']
+            ];
+        }
+
+        if (in_array($today, [5, 6])) {
+            return $this->hours;
+        }
+    }
+
     public function mount()
     {
+        $today = now()->today()->dayOfWeek;
+        $this->hours = $this->getAvailableHours($today);
+
         $this->services = Service::where('active', 1)->get();
         $this->packages = Package::where('active', 1)->get();
 
@@ -339,6 +346,9 @@ class AppointmentsComponent extends Component
 
     public function render()
     {
+        $this->selected_package = $this->package_id;
+        $this->selected_service = $this->service_id;
+
         if (auth()->user()->hasRole('client')) {
             $this->frequent_appointments = Appointment::select(
                 DB::raw('max(id) as last_id'),

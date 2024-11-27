@@ -19,7 +19,7 @@
 
                     <div class="mt-4 text-sm text-gray-600">
                         <article class="mb-4 grid grid-cols-2 gap-4">
-                            @if (!$registered_local && $id === 0)
+                            @if (!$registered_local && $id === 0 && $frequent_appointments->count() > 0)
                                 <div class="col-span-full flex flex-col w-full overflow-x-auto">
                                     <p class="flex-auto">
                                         Citas frecuentes
@@ -227,7 +227,7 @@
         </div>
 
         <livewire:appointments-calendar week-starts-at="1" day-of-week-view="components/calendar-days-header"
-            day-view="components/calendar-day" />
+            day-view="components/calendar-day" before-calendar-view="components/before-calendar-view" />
 
         @if (Auth::user()->hasRole('admin'))
             <div class="p-4 overflow-x-auto shadow-md">

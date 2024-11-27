@@ -5,7 +5,10 @@
             <x-lucide-search class="size-3.5" />
         </div>
 
-        <x-input wire:ignore.self wire:model.live="query" type="text" placeholder="Buscar registros"
-            class="ps-9 w-full sm:w-fit" autocomplete="off" wire:click="dispatch('clear')" />
+        <input type="password" name="password" style="display:none">
+
+        <x-input id="search" wire:ignore.self wire:model.live="query" type="text" placeholder="Buscar registros"
+            class="ps-9 w-full sm:w-fit" autocomplete="new-password" aria-autocomplete="none"
+            wire:click="dispatch('clear')" />
     </div>
 </div>
