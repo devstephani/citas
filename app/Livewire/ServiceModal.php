@@ -5,7 +5,6 @@ namespace App\Livewire;
 use App\Enum\Service\TypeEnum;
 use App\Models\Employee;
 use App\Models\Service;
-use App\Models\User;
 use App\Rules\Text;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
@@ -18,7 +17,7 @@ class ServiceModal extends Component
 
     public $showModal = false;
     public $id = null;
-    public $name, $description, $active, $price, $type, $prevImg, $employee_id;
+    public $name, $description, $active, $price, $type, $prevImg;
     public $image;
 
     protected $listeners = ['edit', 'toggle', 'toggle_active', 'delete'];
@@ -33,7 +32,6 @@ class ServiceModal extends Component
             'active' => ['boolean', Rule::excludeIf($this->id == null)],
             'price' => 'required|min:0.1|max:1000|numeric',
             'type' => ['required', Rule::enum(TypeEnum::class)],
-            'employee_id' => ['required', 'exists:employees,id'],
             'image'  => [
                 'nullable',
                 Rule::when(!is_string($this->image), 'required|image|max:1024|mimes:jpg')
@@ -61,8 +59,6 @@ class ServiceModal extends Component
             'price.numeric' => 'Debe ser un número',
             'type.required' => 'Debe seleccionar una opción',
             'type.in' => 'Debe seleccionar una opción de la lista',
-            'employee_id.required' => 'Debe seleccionar una opción',
-            'employee_id.exists' => 'El empleado seleccionado no está registrado',
             'image.required' => 'Debe añadir una imágen',
             'image.image' => 'Debe ser una imágen',
             'image.max' => 'Debe pesar máximo 1 MB',
@@ -84,7 +80,6 @@ class ServiceModal extends Component
             'price' => $this->price,
             'type' => TypeEnum::from($this->type),
             'image' => $path,
-            'employee_id' => $this->employee_id,
             'user_id' => auth()->user()->id
         ]);
 
@@ -97,12 +92,6 @@ class ServiceModal extends Component
         $this->showModal = ! $this->showModal;
     }
 
-    public function select_employee($id)
-    {
-        $this->employee_id = $id;
-    }
-
-
     public function edit(service $record)
     {
         $this->showModal = true;
@@ -114,7 +103,6 @@ class ServiceModal extends Component
         $this->image = $record->image;
         $this->prevImg = $record->image;
         $this->active = $record->active;
-        $this->employee_id = $record->employee_id;
     }
 
     public function update()
@@ -137,7 +125,6 @@ class ServiceModal extends Component
             'price' => $this->price,
             'type' => TypeEnum::from($this->type->value),
             'active' => $this->active,
-            'employee_id' => $this->employee_id
         ]);
 
         $this->resetUI();
@@ -167,7 +154,6 @@ class ServiceModal extends Component
         $this->description = '';
         $this->type = '';
         $this->price = '';
-        $this->employee_id = null;
         $this->image = '';
         $this->prevImg = '';
         $this->active = '';
