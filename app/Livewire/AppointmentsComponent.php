@@ -12,6 +12,7 @@ use App\Models\User;
 use App\Rules\OneRequired;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Url;
@@ -23,7 +24,7 @@ class AppointmentsComponent extends Component
     #[Url]
     public $service_id, $package_id;
     public $show_modal = false, $discount = false;
-    public $id = 0, $client_name, $client_id = null, $clients, $services, $packages, $selected_service = 0, $selected_package = 0, $selected_date, $selected_time, $status, $registered_local, $type, $currency, $payed, $ref, $frequent_appointments, $selected_frequent_appointment;
+    public $id = 0, $currency_api = 0, $client_name, $client_id = null, $clients, $services, $packages, $selected_service = 0, $selected_package = 0, $m_service, $m_package, $selected_date, $selected_time, $status, $registered_local, $type, $currency, $payed, $ref, $frequent_appointments, $selected_frequent_appointment, $note = null;
 
     private $pagination = 20;
     protected $listeners = ['toggle', 'set_selected_day', 'edit', 'delete', 'set_appointment'];
@@ -143,7 +144,12 @@ class AppointmentsComponent extends Component
         $this->show_modal = true;
         $this->client_name = $record->user->name;
         $this->status = $record->status;
+        $this->note = $record->note;
         $this->registered_local = $record->registered_local;
+        $this->payed = $record->payment->payed;
+        $this->ref = $record->payment->ref;
+        $this->currency = $record->payment->currency->value;
+        $this->type = $record->payment->type->value;
     }
 
     public function update()
@@ -156,17 +162,18 @@ class AppointmentsComponent extends Component
             'service' => $this->selected_service ?? null,
             'package' => $this->selected_package ?? null,
             'picked_date' => "$date $this->selected_time",
-            'status' => $this->status
+            'status' => $this->status,
+            'note' => $this->note
+        ]);
+        $record->payment()->update([
+            'payed' => $this->payed,
+            'currency' => $this->currency,
+            'type' => $this->type,
+            'ref' => $this->ref,
+            'currency_api' => $this->currency_api
         ]);
 
         if ($this->status === '1') {
-            $record->payment()->create(attributes: [
-                'type' => TypeEnum::from($this->type),
-                'payed' => $this->payed,
-                'currency' => CurrencyEnum::from($this->currency),
-                'ref' => $this->ref
-            ]);
-
             $beautymail = app()->make(Beautymail::class);
             $beautymail->send('emails.appointment-payed', [
                 'appointment' => $record
@@ -253,6 +260,12 @@ class AppointmentsComponent extends Component
                 'package_id' => $this->selected_package ?? null,
                 'picked_date' => $final_date,
                 'discount' => $this->discount
+            ])->payment()->create([
+                'payed' => $this->payed,
+                'currency' => $this->currency,
+                'type' => $this->type,
+                'ref' => $this->ref,
+                'currency_api' => $this->currency_api
             ]);
 
             $this->resetUI();
@@ -287,6 +300,11 @@ class AppointmentsComponent extends Component
         $this->client_id = null;
         $this->client_name = null;
         $this->status = 0;
+        $this->note = null;
+        $this->currency = null;
+        $this->payed = null;
+        $this->type = null;
+        $this->ref = null;
     }
 
     public function getAvailableHours($today)
@@ -323,6 +341,12 @@ class AppointmentsComponent extends Component
 
     public function mount()
     {
+        $response = Http::get('https://pydolarve.org/api/v1/dollar?monitor=bcv');
+        if ($response->status() === 200 && !$response->failed()) {
+            $data = json_decode($response->body());
+            $this->currency_api = $data->price;
+        }
+
         $today = now()->today()->dayOfWeek;
         $this->hours = $this->getAvailableHours($today);
 
@@ -346,8 +370,15 @@ class AppointmentsComponent extends Component
 
     public function render()
     {
-        $this->selected_package = $this->package_id;
-        $this->selected_service = $this->service_id;
+        if (!is_null($this->package_id)) {
+            $this->selected_package = $this->package_id;
+        }
+        if (!is_null($this->service_id)) {
+            $this->selected_service = $this->service_id;
+        }
+
+        $this->m_service = Service::find($this->selected_service);
+        $this->m_package = Package::find($this->selected_package);
 
         if (auth()->user()->hasRole('client')) {
             $this->frequent_appointments = Appointment::select(

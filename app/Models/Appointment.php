@@ -15,6 +15,7 @@ class Appointment extends Model
         'picked_date',
         'status',
         'discount',
+        'note',
         'user_id',
         'service_id',
         'package_id',

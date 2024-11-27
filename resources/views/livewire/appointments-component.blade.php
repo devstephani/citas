@@ -55,7 +55,7 @@
                                     </div>
                                 </div>
                             @endif
-                            @if (!$registered_local)
+                            @if ($id > 0)
                                 @hasanyrole(['admin', 'employee'])
                                     <div class="col-span-full">
                                         <x-label value="Clientes" />
@@ -63,7 +63,7 @@
                                     </div>
                                 @endhasanyrole
                             @endif
-                            @if (!empty($clients) && $registered_local)
+                            @if (!empty($clients) && $registered_local && $id === 0)
                                 <div class="col-span-full">
                                     <x-label value="Clientes" for="client_id" />
                                     <x-select wire:model.live="client_id" id="client_id" name="client_id" required
@@ -78,7 +78,7 @@
                                     <x-input-error for="client_id" class="mt-2" />
                                 </div>
                             @endif
-                            @if (empty($selected_package))
+                            @if (is_null($selected_package))
                                 <div class="col-span-full">
                                     <x-label value="Servicio" for="selected_service" />
                                     <x-select wire:model.live="selected_service" id="selected_service"
@@ -88,19 +88,16 @@
                                                 !Auth::user()->hasAnyRole(['admin', 'employee']) && $id > 0,
                                         ]) :disabled="!Auth::user()->hasAnyRole(['admin', 'employee']) && $id > 0">
                                         @foreach ($services as $service)
-                                            @php
-                                                $price = $service->price * ($this->discount ? 0.95 : 1);
-                                            @endphp
                                             <option value="{{ $service->id }}"
                                                 {{ $selected_service === $service->id ? 'selected' : '' }}>
-                                                {{ "$service->name | $price$" }}
+                                                {{ $service->name }}
                                             </option>
                                         @endforeach
                                     </x-select>
                                     <x-input-error for="selected_service" class="mt-2" />
                                 </div>
                             @endif
-                            @if (empty($selected_service))
+                            @if (is_null($selected_service))
                                 <div class="col-span-full">
                                     <x-label value="Paquetes" for="selected_package" />
                                     <x-select wire:model.live="selected_package" id="selected_package"
@@ -110,12 +107,9 @@
                                                 !Auth::user()->hasAnyRole(['admin', 'employee']) && $id > 0,
                                         ]) :disabled="!Auth::user()->hasAnyRole(['admin', 'employee']) && $id > 0">
                                         @foreach ($packages as $package)
-                                            @php
-                                                $price = $package->price * ($this->discount ? 0.95 : 1);
-                                            @endphp
                                             <option value="{{ $package->id }}"
                                                 {{ $selected_package === $package->id ? 'selected' : '' }}>
-                                                {{ "$package->name | $price$" }}
+                                                {{ $package->name }}
                                             </option>
                                         @endforeach
                                     </x-select>
@@ -145,70 +139,111 @@
                                         class="w-full">
                                         <option value="0" {{ $status === 0 ? 'selected' : '' }}>Pendiente</option>
                                         <option value="1" {{ $status === 1 ? 'selected' : '' }}>Pagado</option>
+                                        <option value="2" {{ $status === 2 ? 'selected' : '' }}>Cancelado</option>
                                     </x-select>
                                     <x-input-error for="status" class="mt-2" />
                                 </div>
-                                <div wire:loading wire:target="status" class="w-full col-span-full">
-                                    <p class="text-gray-600">Cargando sección de pago, por favor espere...</p>
+                                <div class="col-span-full">
+                                    <x-label value="Nota" for="note" />
+                                    <x-textarea wire:model.lazy="note" id="note" name="note" class="w-full"
+                                        placeholder="Ej: El pago no puede ser verificado" required></x-textarea>
+                                    <x-input-error for="note" class="mt-2" />
                                 </div>
-                                @if ($status === '1')
-                                    <div class="col-span-full sm:col-span-1">
-                                        <x-label value="Tipo de pago" for="type" />
-                                        <x-select wire:model.live="type" id="type" name="type" required
-                                            class="w-full">
-                                            @foreach (App\Enum\Payment\TypeEnum::cases() as $enum)
-                                                @if ($currency === 'Divisas' && $enum->name === 'PagoMóvil')
-                                                    @continue
-                                                @endif
-                                                @if ($currency === 'Bs' && $enum->name === 'Paypal')
-                                                    @continue
-                                                @endif
-                                                <option value="{{ $enum->value }}"
-                                                    {{ $enum->value === $type ? 'selected' : '' }}>
-                                                    {{ $enum->name }}
-                                                </option>
-                                            @endforeach
-                                        </x-select>
-                                        <x-input-error for="type" class="mt-2" />
-                                    </div>
-                                    <div class="col-span-full sm:col-span-1">
-                                        <x-label value="Tipo de moneda" for="currency" />
-                                        <x-select wire:model.live="currency" id="currency" name="currency" required
-                                            class="w-full">
-                                            @foreach (App\Enum\Payment\CurrencyEnum::cases() as $enum)
-                                                @if ($type === 'Paypal' && $enum->name === 'Bs')
-                                                    @continue
-                                                @endif
-                                                <option value="{{ $enum->value }}"
-                                                    {{ $enum->value === $currency ? 'selected' : '' }}>
-                                                    {{ $enum->name }}
-                                                </option>
-                                            @endforeach
-                                        </x-select>
-                                        <x-input-error for="currency" class="mt-2" />
-                                    </div>
-                                    <div class="col-span-full sm:col-span-1">
-                                        <x-label value="Pago" for="payed" />
-                                        <x-input wire:model.lazy="payed" type="number" id="payed" name="payed"
-                                            required placeholder="Ej: 4" class="w-full" />
-                                        <x-input-error for="payed" class="mt-2" />
-                                    </div>
-                                    <div class="col-span-full sm:col-span-1">
-                                        <x-label value="Referencia" for="ref" />
-                                        <x-input wire:model.lazy="ref" placeholder="Ej: 0000" id="ref"
-                                            name="ref" class="w-full" />
-                                        <x-input-error for="ref" class="mt-2" />
-                                    </div>
-                                @endif
                             @endif
+                            @php
+                                $service_price = $m_service->price ?? 0;
+                                $package_price = $m_package->price ?? 0;
+                                $base_price = ($service_price ?? $package_price) * ($this->discount ? 0.95 : 1);
+                                $price_to_bs = round($base_price * $currency_api, 2);
+                            @endphp
+                            <div class="col-span-full border border-neutral-400 p-4 rounded-md">
+                                <ul class="flex flex-col gap-3">
+                                    <li class="font-bold">Datos para el pago</li>
+                                    <ul class="grid grid-cols-2">
+                                        <li>0102</li>
+                                        <li></li>
+                                        <li>04243004510</li>
+                                        <li class="font-semibold">Monto a pagar</li>
+                                        <li>30956447</li>
+                                        <li>{{ $price_to_bs }}Bs o {{ $base_price }}$</li>
+                                    </ul>
+                                </ul>
+                                @role('client')
+                                    <p class="mt-4 text-neutral-600">{{ $note }}</p>
+                                @endrole
+                            </div>
+                            <div class="col-span-full sm:col-span-1">
+                                <x-label value="Tipo de pago" for="type" />
+                                <x-select wire:model.live="type" id="type" name="type" required
+                                    :disabled="Auth::user()->hasAnyRole(['admin', 'employee']) && $id > 0" @class([
+                                        'w-full',
+                                        'bg-neutral-200' =>
+                                            Auth::user()->hasAnyRole(['admin', 'employee']) && $id > 0,
+                                    ])>
+                                    @foreach (App\Enum\Payment\TypeEnum::cases() as $enum)
+                                        @if ($currency === 'Divisas' && $enum->name === 'PagoMóvil')
+                                            @continue
+                                        @endif
+                                        @if ($currency === 'Bs' && $enum->name === 'Paypal')
+                                            @continue
+                                        @endif
+                                        <option value="{{ $enum->value }}"
+                                            {{ $enum->value === $type ? 'selected' : '' }}>
+                                            {{ $enum->name }}
+                                        </option>
+                                    @endforeach
+                                </x-select>
+                                <x-input-error for="type" class="mt-2" />
+                            </div>
+                            <div class="col-span-full sm:col-span-1">
+                                <x-label value="Tipo de moneda" for="currency" />
+                                <x-select wire:model.live="currency" id="currency" name="currency" required
+                                    @class([
+                                        'w-full',
+                                        'bg-neutral-200' =>
+                                            Auth::user()->hasAnyRole(['admin', 'employee']) && $id > 0,
+                                    ]) :disabled="Auth::user()->hasRole(['admin', 'employee']) && $id > 0">
+                                    @foreach (App\Enum\Payment\CurrencyEnum::cases() as $enum)
+                                        @if ($type === 'Paypal' && $enum->name === 'Bs')
+                                            @continue
+                                        @endif
+                                        <option value="{{ $enum->value }}"
+                                            {{ $enum->value === $currency ? 'selected' : '' }}>
+                                            {{ $enum->name }}
+                                        </option>
+                                    @endforeach
+                                </x-select>
+                                <x-input-error for="currency" class="mt-2" />
+                            </div>
+                            <div class="col-span-full sm:col-span-1">
+                                <x-label value="Pago" for="payed" />
+                                <x-input wire:model.lazy="payed" type="number" id="payed" name="payed"
+                                    required placeholder="Ej: 4" @class([
+                                        'w-full',
+                                        'bg-neutral-200' =>
+                                            Auth::user()->hasAnyRole(['admin', 'employee']) && $id > 0,
+                                    ]) step="0.02"
+                                    :disabled="Auth::user()->hasRole(['admin', 'employee']) && $id > 0" />
+                                <x-input-error for="payed" class="mt-2" />
+                            </div>
+                            <div class="col-span-full sm:col-span-1">
+                                <x-label value="Referencia" for="ref" />
+                                <x-input wire:model.lazy="ref" placeholder="Ej: 0000" id="ref" name="ref"
+                                    @class([
+                                        'w-full',
+                                        'bg-neutral-200' =>
+                                            Auth::user()->hasAnyRole(['admin', 'employee']) && $id > 0,
+                                    ]) :disabled="Auth::user()->hasRole(['admin', 'employee']) && $id > 0" />
+                                <x-input-error for="ref" class="mt-2" />
+                            </div>
                         </article>
 
                         @if ($id >= 1)
+                            <x-button wire:target="selected_service, selected_package" type="button"
+                                wire:click="update()" wire:loading.attr="disabled">
+                                Actualizar
+                            </x-button>
                             @if (Auth::user()->hasAnyRole(['admin', 'employee']))
-                                <x-button wire:target="selected_service, selected_package" type="button"
-                                    wire:click="update()" wire:loading.attr="disabled">
-                                    Actualizar
-                                </x-button>
                                 @if (Auth::user()->hasRole('admin'))
                                     <x-danger-button type="button" wire:click="delete()">
                                         Borrar
@@ -289,10 +324,10 @@
                                 </td>
                                 <td @class([
                                     'px-6 py-4',
-                                    'text-green-500' => $appointment->status,
-                                    'text-red-500' => !$appointment->status,
+                                    'text-green-500' => $appointment->status === 1,
+                                    'text-red-500' => $appointment->status === 0,
                                 ])>
-                                    {{ $appointment->status ? 'Pagado' : 'Pendiente' }}
+                                    {{ ($appointment->status === 0 ? 'Pendiente' : $appointment->status === 1) ? 'Pagado' : 'Cancelado' }}
                                 </td>
                                 <td class="px-6 py-4">
                                     {{ $appointment->user->name }}

@@ -15,9 +15,6 @@
   - Observer?
 - Re-name (modules, views)
 
-- Modal abre solo en empleados
-- Añadir pago desde cliente, cuando se mande sea con el pago y el admin acepta o cancela (citas canceladas se muestran)
-
 - sistema de puntuación para servicios y paquetes
 
 # DONE

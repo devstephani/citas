@@ -16,11 +16,11 @@ class AppointmentsCalendar extends LivewireCalendar
     {
         $query = Auth::user()->hasRole('client')
             ?  Appointment::where('user_id', Auth::user()->id)
-            ->whereIn('status', [0, 1])
+            ->whereNot('status', 1)
             ->get()
             : (Auth::user()->hasRole('employee')
                 ? Appointment::where(function ($query) {
-                    $query - whereIn('status', [0, 1])
+                    $query->whereNot('status', 0)
                         ->whereHas('service', function ($q) {
                             $q->where('employee_id', Auth::user()->employee->id);
                         })->orWhereHas('package', function ($q) {
@@ -29,7 +29,7 @@ class AppointmentsCalendar extends LivewireCalendar
                             });
                         });
                 })->get()
-                : Appointment::where('status', 0)->get());
+                : Appointment::whereNot('status', 1)->get());
 
         return $query
             ->map(function (Appointment $appointment) {

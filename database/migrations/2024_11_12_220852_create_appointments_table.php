@@ -17,6 +17,7 @@ return new class extends Migration
             $table->boolean('registered_local');
             $table->integer('status');
             $table->datetime('picked_date');
+            $table->string('note')->nullable();
             $table->foreignId('user_id')->constrained();
             $table->foreignId('service_id')->nullable()->constrained();
             $table->foreignId('package_id')->nullable()->constrained();

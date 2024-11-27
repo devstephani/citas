@@ -16,6 +16,7 @@ class Payment extends Model
         'type',
         'payed',
         'currency',
+        'currency_api',
         'ref'
     ];
     protected $casts = [
