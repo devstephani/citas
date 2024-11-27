@@ -25,7 +25,7 @@ class Virtual extends Component
     public $browslashes_position = ['x' => 25, 'y' => 35];
     public $selected_eyeslashes = '';
     public $selected_browslashes = '';
-    public $browslashes_size = 100, $eyeslashes_size = 100;
+    public $browslashes_size = 10, $eyeslashes_size = 10;
 
     protected $listeners = ['toggle_eyeslashes', 'toggle_browslashes', 'toggle_images', 'toggle', 'save_image', 'save', 'dissmiss_alert', 'resetUI'];
 
