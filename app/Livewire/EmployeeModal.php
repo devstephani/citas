@@ -4,7 +4,9 @@ namespace App\Livewire;
 
 use App\Models\Attendance;
 use App\Models\Employee as MEmployee;
+use App\Models\Service;
 use App\Models\User;
+use App\Rules\Text;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -16,9 +18,10 @@ use Illuminate\Validation\Rules\Password;
 class EmployeeModal extends Component
 {
     use WithFileUploads;
+
     public $showModal = false, $show_attendance_modal = false;
     public $id = null, $employee_attendances, $employee;
-    public $name, $email, $password, $active, $prevImg, $description;
+    public $name, $email, $password, $active, $prevImg, $description, $available_services = [], $service_ids = [], $services = [];
     public $current_date, $initial_date, $attendance_date;
     public $photo;
 
@@ -27,17 +30,24 @@ class EmployeeModal extends Component
     public function rules()
     {
         return [
-            'name' => 'required|min:4|max:80|regex:/^[\p{L}\p{N}\s]+$/u',
-            'description' => 'required|min:8|max:120|regex:/^[\p{L}\p{N}\s]+$/u',
+            'name' => ['required', 'min:4', 'max:80', new Text()],
+            'description' => ['required', 'min:8', 'max:120', new Text()],
             'email' => ['required', 'email', Rule::unique('users')->where(function ($query) {
-                return $query->where('email', $this->email);
+                return $query->where('email', $this->id);
             })->ignore($this->id)],
             'active' => ['boolean', Rule::excludeIf($this->id == null)],
-            'password' => ['required', Password::min(4)->max(12)->numbers()->letters()],
+            'password' => [
+                'nullable',
+                Rule::when(!empty($this->password), ['required', Password::min(4)->max(12)->numbers()->letters()])
+            ],
             'photo'  => [
                 'nullable',
                 Rule::when(!is_string($this->photo), 'required|image|max:1024|mimes:jpg')
             ],
+            'service_ids' => [
+                'nullable',
+                Rule::when($this->id > 0, 'required|exists:services,id')
+            ]
         ];
     }
 
@@ -75,16 +85,19 @@ class EmployeeModal extends Component
         $this->validate();
         $path = $this->photo->store('public/employees');
 
-        User::create([
+        $user = User::create([
             'name' => $this->name,
             'email' => $this->email,
             'password' => Hash::make($this->password),
-        ])->assignRole('employee')
-            ->employee()
+        ])->assignRole('employee');
+
+        $employee = $user->employee()
             ->create([
                 'description' => $this->description,
                 'photo' => $path
             ]);
+
+        $employee->services()->sync($this->service_ids);
 
         $this->resetUI();
     }
@@ -106,6 +119,7 @@ class EmployeeModal extends Component
         $this->description = $record->description;
         $this->photo = $record->photo;
         $this->prevImg = $record->photo;
+        $this->services = $record->services()->pluck('services.id')->toArray();
     }
 
     public function update()
@@ -121,6 +135,8 @@ class EmployeeModal extends Component
                 'photo' => $path,
             ]);
         }
+
+        $employee->services()->sync($this->service_ids);
 
         $employee->update([
             'description' => $this->description,
@@ -202,6 +218,9 @@ class EmployeeModal extends Component
         $this->photo = '';
         $this->description = '';
         $this->prevImg = '';
+        $this->available_services = [];
+        $this->service_ids = [];
+        $this->services = [];
         $this->dispatch('refreshParent')->to(Employee::class);
     }
 
@@ -222,6 +241,8 @@ class EmployeeModal extends Component
 
     public function render()
     {
+        $this->available_services = Service::where('active', 1)->get();
+
         if (empty($this->current_date)) {
             $this->current_date = now()->format('Y-m-d');
         }

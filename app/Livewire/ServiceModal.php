@@ -3,8 +3,10 @@
 namespace App\Livewire;
 
 use App\Enum\Service\TypeEnum;
+use App\Models\Employee;
 use App\Models\Service;
 use App\Models\User;
+use App\Rules\Text;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -24,10 +26,10 @@ class ServiceModal extends Component
     public function rules()
     {
         return [
-            'name' => ['required', 'regex:/^[\p{L}\p{N}\s]+$/u', 'min:4', 'max:80', Rule::unique('services')->where(function ($query) {
+            'name' => ['required', new Text(), 'min:4', 'max:80', Rule::unique('services')->where(function ($query) {
                 return $query->where('name', $this->name);
             })->ignore($this->id)],
-            'description' => 'required|min:10|max:150|regex:/^[\p{L}\p{N}\s]+$/u',
+            'description' => ['required', 'min:10', 'max:150', new Text()],
             'active' => ['boolean', Rule::excludeIf($this->id == null)],
             'price' => 'required|min:0.1|max:1000|numeric',
             'type' => ['required', Rule::enum(TypeEnum::class)],
@@ -175,11 +177,8 @@ class ServiceModal extends Component
 
     public function render()
     {
-        $employees = User::with('roles')
-            ->whereHas('roles', function ($q) {
-                $q->whereIn('name', ['employee']);
-            })
-            ->get();
+        $employees = Employee::get();
+
         return view('livewire.service-modal', [
             'employees' => $employees
         ]);

@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\package;
 use App\Models\Service;
+use App\Rules\Text;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -24,10 +25,10 @@ class PackageModal extends Component
     public function rules()
     {
         return [
-            'name' => ['required', 'min:4', 'max:80', 'regex:/^[\p{L}\p{N}\s]+$/u', Rule::unique('packages')->where(function ($query) {
+            'name' => ['required', 'min:4', 'max:80', new Text(), Rule::unique('packages')->where(function ($query) {
                 return $query->where('name', $this->name);
             })->ignore($this->id)],
-            'description' => 'required|min:10|max:150|regex:/^[\p{L}\p{N}\s]+$/u',
+            'description' => ['required', 'min:10', 'max:150', new Text()],
             'active' => ['boolean', Rule::excludeIf($this->id == null)],
             'price' => 'required|min:0.1|max:1000|numeric',
             'service_ids' => ['required', 'exists:services,id'],
@@ -70,6 +71,7 @@ class PackageModal extends Component
 
     public function save()
     {
+        dd($this->service_ids);
         $this->validate();
         $path = $this->image->store('public/packages');
 
@@ -175,7 +177,7 @@ class PackageModal extends Component
 
     public function render()
     {
-        $services = Service::all();
+        $services = Service::where('active', 1)->get();
 
         return view('livewire.package-modal', [
             'services' => $services

@@ -19,7 +19,6 @@ class Service extends Model
         'active',
         'price',
         'type',
-        'employee_id',
         'user_id'
     ];
 
@@ -32,9 +31,9 @@ class Service extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function employee()
+    public function employees()
     {
-        return $this->belongsTo(Employee::class, 'employee_id', 'id', 'employee');
+        return $this->belongsToMany(Employee::class, 'employee_service');
     }
 
     public function packages()

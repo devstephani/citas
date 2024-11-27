@@ -34,7 +34,7 @@ class Employee extends Model
 
     public function services()
     {
-        return $this->hasMany(Service::class);
+        return $this->belongsToMany(Service::class, 'employee_service');
     }
 
     public function attendances()

@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Comment;
 use App\Models\Post;
+use App\Rules\Text;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -16,7 +17,7 @@ class PostView extends Component
     public function rules()
     {
         return [
-            'comment' => 'required|min:3|max:200|regex:/^[\p{L}\p{N}\s]+$/u'
+            'comment' => ['required', 'min:3', 'max:200', new Text()]
         ];
     }
 

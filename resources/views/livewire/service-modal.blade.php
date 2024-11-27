@@ -49,19 +49,6 @@
                         </x-select>
                         <x-input-error for="type" class="mt-2" />
                     </div>
-                    <div class="block">
-                        <x-label value="Empleado" for="employee_id" />
-                        <x-select wire:click="select_employee($event.target.value)" wire:model.lazy="employee_id"
-                            id="employee_id" name="employee_id" required class="w-full">
-                            @foreach ($employees as $employee)
-                                <option value="{{ $employee->id }}"
-                                    {{ $employee->id == $employee_id ? 'selected' : '' }}>
-                                    {{ $employee->name }}
-                                </option>
-                            @endforeach
-                        </x-select>
-                        <x-input-error for="employee_id" class="mt-2" />
-                    </div>
                     @if ($id > 0)
                         <div class="block">
                             <x-label value="Activo" for="active" />

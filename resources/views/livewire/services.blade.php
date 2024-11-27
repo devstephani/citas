@@ -65,7 +65,7 @@
                                 Descripción
                             </th>
                             <th scope="col" class="px-6 py-3">
-                                Empleado
+                                Empleados
                             </th>
                             <th scope="col" class="px-6 py-3">
                                 Tipo
@@ -98,7 +98,15 @@
                                     {{ $service->description }}
                                 </td>
                                 <td class="px-6 py-4">
-                                    {{ $service->employee->user->name }}
+                                    @if (count($service->employees) > 0)
+                                        <ul class="flex flex-col gap-2">
+                                            @foreach ($service->employees as $employee)
+                                                <li class="list-disc">{{ $employee->user->name }}</li>
+                                            @endforeach
+                                        </ul>
+                                    @else
+                                        <p class="text-gray-600">Sin empleados</p>
+                                    @endif
                                 </td>
                                 <td class="px-6 py-4">
                                     {{ $service->type->name }}

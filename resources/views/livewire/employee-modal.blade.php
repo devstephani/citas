@@ -12,6 +12,10 @@
                     <x-input wire:model.live="attendance_date" type="date" :min="$initial_date" :max="$current_date"
                         class="w-full mt-2" />
 
+                    <div wire:loading wire:target="attendance_date">
+                        <p class="text-gray-600">Cargando asistencias, por favor espere...</p>
+                    </div>
+
                     <div class="mt-4 text-sm text-gray-600">
                         <ul class="mb-4 grid grid-cols-5 gap-4">
                             @foreach ($employee_attendances as $attendance)
@@ -36,7 +40,7 @@
     @endif
 
     <div x-data="{ open: @entangle('showModal') }">
-        <x-button type="button" wire:click="$dispatch('pdf')" class="w-full sm:w-fit gap-3">
+        <x-button wire:click="$dispatch('pdf')" class="w-full sm:w-fit gap-3">
             <x-lucide-file-text class="size-5" />
             Asistencias
         </x-button>
@@ -45,7 +49,7 @@
             Empleado
         </x-button>
 
-        <x-modal id="employee-modal" maxWidth="md" wire:model="showModal">
+        <x-modal id="employees-modal" maxWidth="md" wire:model="showModal">
             <div class="px-6 py-4">
                 <div class="text-lg font-medium text-gray-900">
                     @if ($id > 0)
@@ -65,8 +69,10 @@
                         </div>
                         <div class="block">
                             <x-label value="Correo" for="email" />
+                            <input type="email" name="email" style="display:none">
+
                             <x-input placeholder="Ej: correo@email.com" wire:model.lazy="email" type="email"
-                                id="email" name="email" class="w-full" autocomplete="off" required />
+                                id="email" name="email" class="w-full" autocomplete="new-password" required />
                             <x-input-error for="email" class="mt-2" />
                         </div>
                         <div class="block">
@@ -81,6 +87,21 @@
                                 id="description" name="description" class="w-full" required></x-textarea>
                             <x-input-error for="description" class="mt-2" />
                         </div>
+
+                        <div class="block">
+                            <x-label value="Servicios" for="service_ids" />
+                            <x-select wire:model.lazy="service_ids" id="service_ids" name="service_ids[]" multiple
+                                required class="w-full" no_default>
+                                @foreach ($available_services as $service)
+                                    <option value="{{ $service->id }}"
+                                        {{ in_array($service->id, $services) ? 'selected' : '' }}>
+                                        {{ $service->name }}
+                                    </option>
+                                @endforeach
+                            </x-select>
+                            <x-input-error for="service_ids" class="mt-2" />
+                        </div>
+
                         @if ($id > 0)
                             <div class="block">
                                 <x-label value="Activo" for="active" />
@@ -113,12 +134,12 @@
                         <x-button type="button" wire:click="update()" wire:loading.attr="disabled">
                             Actualizar
                         </x-button>
-                    @else
-                        <x-button type="button" wire:click="save()" wire:loading.attr="disabled">
-                            Registrar
-                        </x-button>
-                    @endif
                 </div>
+            @else
+                <x-button type="button" wire:click="save()" wire:loading.attr="disabled">
+                    Registrar
+                </x-button>
+                @endif
             </div>
         </x-modal>
     </div>

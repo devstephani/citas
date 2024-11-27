@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Post as MPost;
+use App\Rules\Text;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -22,8 +23,8 @@ class PostModal extends Component
     public function rules()
     {
         return [
-            'title' => 'required|min:4|max:80|regex:/^[\p{L}\p{N}\s]+$/u',
-            'description' => 'required|min:12|max:2000|regex:/^[\p{L}\p{N}\s]+$/u',
+            'title' => ['required', 'min:4', 'max:80', new Text()],
+            'description' => ['required', 'min:12', 'max:2000', new Text()],
             'message' => 'required|min:10|max:150',
             'active' => ['boolean', Rule::excludeIf($this->id == null)],
             'image'  => [

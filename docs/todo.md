@@ -15,15 +15,8 @@
 - Re-name (modules, views)
 
 - Modal abre solo en empleados
-- Revisar selección de servicio (name null)
-- Actualizar servicio no coloca al empleado correcto
-- Cliente realiza pago y admin confirma
 - Añadir pago desde cliente, cuando se mande sea con el pago y el admin acepta o cancela (citas canceladas se muestran)
-- Editar cliente
-- Empleado*
-- No carga la asistencia
 
-- Registrar / editar empleado (añadir servicios)
 - sistema de puntuación para servicios y paquetes
 
 # DONE
