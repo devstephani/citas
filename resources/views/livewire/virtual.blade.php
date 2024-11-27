@@ -19,8 +19,11 @@
         <div x-data="{
             eyelashesX: @entangle('eyeslashes_position.x'),
             eyelashesY: @entangle('eyeslashes_position.y'),
+            eyeslashesSize: @entangle('eyeslashes_size'),
             browslashesX: @entangle('browslashes_position.x'),
             browslashesY: @entangle('browslashes_position.y'),
+            browslashesSize: @entangle('browslashes_size'),
+        
         }" class="p-12 w-full mx-auto flex items-center">
             <div class="mx-auto flex gap-3">
                 <div class="flex flex-col gap-4 w-full">
@@ -56,14 +59,17 @@
                         @endif
 
                         @if (!empty($selected_eyeslashes) && $selected_eyeslashes !== '')
-                            <img src="{{ asset($selected_eyeslashes) }}" alt=""
-                                class="mx-auto w-36 h-12 absolute z-10"
-                                x-bind:style="'top: ' + eyelashesY + '%; left: ' + eyelashesX + '%;'">
+                            <img src="{{ asset($selected_eyeslashes) }}" alt="" class="mx-auto absolute z-10"
+                                x-bind:style="'top: ' + eyelashesY + '%; left: ' + eyelashesX + '%; width: ' + eyeslashesSize +
+                                    '%; height: ' + eyeslashesSize + '%;'">
                         @endif
                         @if (!empty($selected_browslashes) && $selected_browslashes !== '')
-                            <img src="{{ asset($selected_browslashes) }}" alt=""
-                                class="mx-auto w-36 h-12 absolute z-10"
-                                x-bind:style="'top: ' + browslashesY + '%; left: ' + browslashesX + '%;'">
+                            <img src="{{ asset($selected_browslashes) }}" alt="" class="mx-auto absolute z-10"
+                                x-bind:style="'top: ' + browslashesY + '%;
+                                left: ' + browslashesX + ' % ;
+                                width: ' + browslashesSize +' % ;
+                                height: ' + browslashesSize + ' % ;
+                                '">
                         @endif
                     </section>
                     <div class="grid grid-cols-1 sm:grid-cols-2 mx-auto gap-3">
@@ -106,6 +112,11 @@
                                         <input type="range" wire:model.lazy="eyeslashes_position.y" min="0"
                                             max="100" id="eyeslashesY" class="w-full" />
                                     </div>
+                                    <div class="">
+                                        <x-label value="Tamaño" for="eyeslashesSize" />
+                                        <input type="range" wire:model.lazy="eyeslashes_size" min="0"
+                                            max="100" id="eyeslashesSize" class="w-full" />
+                                    </div>
                                 </div>
                             @endif
                             @if ($browslashes)
@@ -128,6 +139,11 @@
                                         <x-label value="Posición y" for="browslashes_y" />
                                         <input type="range" wire:model.lazy="browslashes_position.y" min="0"
                                             max="100" id="browslashes_y" class="w-full" />
+                                    </div>
+                                    <div class="">
+                                        <x-label value="Tamaño" for="browslashesSize" />
+                                        <input type="range" wire:model.lazy="browslashes_size" min="0"
+                                            max="100" id="browslashesSize" class="w-full" />
                                     </div>
                                 </div>
                             @endif
