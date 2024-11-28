@@ -8,8 +8,8 @@
         <section class="exclusive-offers-area-four pt-100 pb-70">
             <div class="container">
                 <div class="section-title">
-                    <span>Servicios</span>
                     <h2>Disfruta de nuestros servicios</h2>
+                    <span>Servicios</span>
                 </div>
                 <div class="row">
                     @foreach ($services as $service)

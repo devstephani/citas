@@ -60,7 +60,8 @@
         </div>
 
         <div class="mt-4 mb-8 max-w-[70ch] text-wrap break-words">
-            <p class="text-justify mb-5">{{ $post->description }}</p>
+            <img src="{{  asset('storage/' . $post->image)  }}" alt="" class="rounded-md max-h-[32rem] mx-auto">
+            <p class="text-justify mt-3 mb-5">{{ $post->description }}</p>
             {!! $post->content !!}
         </div>
 

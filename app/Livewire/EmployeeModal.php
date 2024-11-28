@@ -46,7 +46,7 @@ class EmployeeModal extends Component
             ],
             'service_ids' => [
                 'nullable',
-                Rule::when($this->id > 0, 'required|exists:services,id')
+                Rule::when($this->id > 0 && count($this->service_ids), 'required|exists:services,id')
             ]
         ];
     }

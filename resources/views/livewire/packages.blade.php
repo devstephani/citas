@@ -8,8 +8,8 @@
         <section class="exclusive-offers-area-four pt-100 pb-70">
             <div class="container">
                 <div class="section-title">
-                    <span>Paquetes</span>
                     <h2>Disfruta de nuestros paquetes</h2>
+                    <span>Paquetes</span>
                 </div>
                 <div class="row">
                     @foreach ($packages as $package)
@@ -24,7 +24,7 @@
                                         </a>
                                     </span>
                                     <p>{{ $package->description }}</p>
-                                    <a href="{{ route('appointments', ['service_id' => $service->id]) }}"
+                                    <a href="{{ route('appointments', ['package_id' => $package->id]) }}"
                                         class="default-btn">
                                         Reserva en línea
                                         <i class="flaticon-right"></i>

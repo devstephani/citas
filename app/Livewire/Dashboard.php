@@ -42,7 +42,7 @@ class Dashboard extends Component
     public function pdf()
     {
         $image = base64_encode(file_get_contents(public_path('img/logo.jpg')));
-        $data = Appointment::with(['service', 'user', 'payment'])
+        $data = Appointment::with(['service', 'user', 'payment', 'service.employees'])
             ->where('service_id', '!=', null)
             ->whereYear('picked_date', '=', now()->format('Y'))
             ->get();

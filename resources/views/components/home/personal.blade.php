@@ -10,9 +10,9 @@
             @foreach ($personal as $employee)
                 <div class="col-lg-4 col-md-6">
                     <div class="single-news">
-                        <div class="news-img">
+                        <div class="news-img max-h-[32rem] h-auto">
                             <div style="display: flex; justify-content: center;">
-                                <img style="width: 50%; border-radius: 10px;" src="{{ $employee->get_image() }}"
+                                <img style="width: 50%; border-radius: 10px" src="{{ $employee->get_image() }}"
                                     alt="Image">
                             </div>
 

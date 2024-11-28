@@ -27,8 +27,10 @@ class ClientModal extends Component
                 return $query->where('email', $this->email);
             })->ignore($this->id)],
             'active' => ['boolean', Rule::excludeIf($this->id == null)],
-
-            'password' => ['required', Password::min(4)->max(12)->numbers()->letters()],
+            'password' => [
+                'nullable',
+                Rule::when(!empty($this->password), ['required', Password::min(4)->max(12)->numbers()->letters()])
+            ],
         ];
     }
 

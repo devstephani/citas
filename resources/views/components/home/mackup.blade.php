@@ -12,7 +12,7 @@
                     <a href="{{ route('post.id', $post->id) }}">
                         <div class="single-news">
                             <div class="news-img">
-                                <img src="{{ asset('storage/' . $post->image) }}" alt="Image">
+                                <img src="{{ asset('storage/' . $post->image) }}" alt="Image" class="rounded-md" style="max-width: 100%; max-height: 32rem">
                             </div>
                             <div class="news-content-wrap">
                                 <div class="flex gap-3">
@@ -37,7 +37,7 @@
                                         <x-lucide-message-circle class="size-4" />
                                     </p>
                                 </div>
-                                <h3>{{ $post->title }}</h3>
+                                <h3 class="text-xl">{{ $post->title }}</h3>
                                 <p>{{ $post->description }}</p>
                                 <a class="read-more" href="{{ route('post.id', $post->id) }}">
                                     Leer más

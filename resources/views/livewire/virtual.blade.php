@@ -96,7 +96,7 @@
                                     <img src="{{ $img }}" alt=""
                                         wire:click="$dispatch('toggle_images', { image: '{{ $img }}', side: 'eyeslashes'})"
                                         @class([
-                                            'size-16 p-2 cursor-pointer hover:border hover:border-blue-500 hover:scale-110',
+                                            'w-16 h-16 p-2 cursor-pointer hover:border hover:border-blue-500 hover:scale-110',
                                             'shadow border border-blue-300' => $selected_eyeslashes === $img,
                                         ])>
                                 @endforeach
@@ -124,7 +124,7 @@
                                     <img src="{{ $img }}" alt=""
                                         wire:click="$dispatch('toggle_images', { image: '{{ $img }}', side: 'browslashes'})"
                                         @class([
-                                            'size-16 p-2 cursor-pointer hover:border hover:border-blue-500 hover:scale-110',
+                                            'w-16 h-16 p-2 cursor-pointer hover:border hover:border-blue-500 hover:scale-110',
                                             'shadow border border-blue-300' => $selected_browslashes === $img,
                                         ])>
                                 @endforeach

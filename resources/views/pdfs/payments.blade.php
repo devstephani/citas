@@ -42,7 +42,7 @@
                             @foreach ($data as $item)
                                 <tr>
                                     <td class="text-center">
-                                        <p>{{ \Carbon\Carbon::createFromFormat('Y-m-d h:i:s', $item->picked_date)->format('d-m-Y h:i a') }}
+                                        <p>{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $item->picked_date)->format('d-m-Y h:i a') }}
                                         </p>
                                     </td>
                                     <td class="text-center">
@@ -50,8 +50,11 @@
                                         </p>
                                     </td>
                                     <td class="text-center">
-                                        <p>{{ $item->service->employee->user->name ?? $item->package->user->employee->name }}
-                                        </p>
+                                        <ul class="flex flex-col gap-2">
+                                            @foreach ($item->service->employees ?? $item->package->employee as $employee)
+                                                <li class="list-disc">{{ $employee->user->name }}</li>
+                                            @endforeach
+                                        </ul>
                                     </td>
                                     <td class="text-center">
                                         <p>{{ $item->user->name }}

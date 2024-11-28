@@ -81,13 +81,13 @@
                             <td class="px-6 py-4">
                                 <div class="flex gap-3">
                                     <x-lucide-file-text class="size-5 hover:text-blue-600 cursor-pointer"
-                                        wire:click="$dispatch('employee_pdf', { record: {{ $employee->id }}})" />
-                                    <x-lucide-alarm-clock class="size-5 hover:text-blue-600 cursor-pointer"
-                                        wire:click="$dispatch('see_attendances', { record: {{ $employee->id }}})" />
+                                        wire:click="$dispatch('employee_pdf', { record: {{ $employee->id }}})" title="Imprimir reporte" />
+                                    <x-lucide-calendar class="size-5 hover:text-blue-600 cursor-pointer"
+                                        wire:click="$dispatch('see_attendances', { record: {{ $employee->id }}})" title="Asistencia" />
                                     <x-lucide-pencil class="size-5 hover:text-blue-600 cursor-pointer"
-                                        wire:click="$dispatch('edit', { record: {{ $employee->id }}})" />
+                                        wire:click="$dispatch('edit', { record: {{ $employee->id }}})" title="Editar" />
                                     <x-lucide-trash class="size-5 hover:text-blue-600 cursor-pointer"
-                                        onclick="delete_alert({{ $employee->id }})" />
+                                        onclick="delete_alert({{ $employee->id }})" title="Eliminar" />
                                 </div>
                             </td>
                         </tr>

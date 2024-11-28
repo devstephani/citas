@@ -327,7 +327,7 @@
                                     'text-green-500' => $appointment->status === 1,
                                     'text-red-500' => $appointment->status === 0,
                                 ])>
-                                    {{ ($appointment->status === 0 ? 'Pendiente' : $appointment->status === 1) ? 'Pagado' : 'Cancelado' }}
+                                    {{ $appointment->status === 0 ? 'Pendiente' : ($appointment->status === 1 ? 'Pagado' : 'Cancelado') }}
                                 </td>
                                 <td class="px-6 py-4">
                                     {{ $appointment->user->name }}
