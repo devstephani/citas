@@ -15,6 +15,13 @@
   - Observer?
 - Re-name (modules, views)
 
+- Arreglar tamaños de las fotos de empleados
+- Centrar titulos en landing
+
+- Añadir funcion de ver en inputs password
+- Ignorar servicios al editar empleado si no cambian
+- Bloquear horas pero mostrar todas
+- Añadir mes y año en calendario
 - sistema de puntuación para servicios y paquetes
 
 # DONE

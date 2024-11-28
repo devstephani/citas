@@ -44,7 +44,7 @@
             <x-lucide-file-text class="size-5" />
             Asistencias
         </x-button>
-        <x-button wire:click="toggle" class="w-full sm:w-fit gap-3">
+        <x-button wire:click="toggle" class="w-full sm:w-fit gap-3" title="Registrar empleado">
             <x-lucide-plus class="size-5" />
             Empleado
         </x-button>

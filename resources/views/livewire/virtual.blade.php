@@ -101,21 +101,28 @@
                                         ])>
                                 @endforeach
 
-                                <div class="flex justify-between gap-3">
-                                    <div class="">
-                                        <x-label value="Posición x" for="eyeslashesX" />
-                                        <input type="range" wire:model.lazy="eyeslashes_position.x" min="0"
-                                            max="100" id="eyeslashesX" class="w-full" />
-                                    </div>
-                                    <div class="">
-                                        <x-label value="Posición y" for="eyeslashesY" />
-                                        <input type="range" wire:model.lazy="eyeslashes_position.y" min="0"
-                                            max="100" id="eyeslashesY" class="w-full" />
-                                    </div>
-                                    <div class="">
-                                        <x-label value="Tamaño" for="eyeslashesSize" />
-                                        <input type="range" wire:model.lazy="eyeslashes_size" min="0"
-                                            max="100" id="eyeslashesSize" class="w-full" />
+                                <div class="flex flex-col gap-3">
+                                    <div class="flex justify-between gap-3">
+                                        <div class="">
+                                            <x-label value="Posición x" for="eyeslashesX" />
+                                            <input type="range" wire:model.lazy="eyeslashes_position.x" min="0"
+                                                max="100" id="eyeslashesX" class="w-full" />
+                                        </div>
+                                        <div class="">
+                                            <x-label value="Posición y" for="eyeslashesY" />
+                                            <input type="range" wire:model.lazy="eyeslashes_position.y" min="0"
+                                                max="100" id="eyeslashesY" class="w-full" />
+                                        </div>
+                                        <div class="">
+                                            <x-label value="Tamaño" for="eyeslashesSize" />
+                                            <input type="range" wire:model.lazy="eyeslashes_size" min="0"
+                                                max="100" id="eyeslashesSize" class="w-full" />
+                                        </div>
+                                        <div class="w-full">
+                                            <x-button wire:click="reset_eyeslashes">
+                                                Limpiar
+                                            </x-button>
+                                        </div>
                                     </div>
                                 </div>
                             @endif
@@ -129,21 +136,28 @@
                                         ])>
                                 @endforeach
 
-                                <div class="flex justify-between gap-3">
-                                    <div class="">
-                                        <x-label value="Posición x" for="browslashes_x" />
-                                        <input type="range" wire:model.lazy="browslashes_position.x" min="0"
-                                            max="100" id="browslashes_x" class="w-full" />
+                                <div class="flex flex-col gap-3">
+                                    <div class="flex justify-between gap-3">
+                                        <div class="">
+                                            <x-label value="Posición x" for="browslashes_x" />
+                                            <input type="range" wire:model.lazy="browslashes_position.x"
+                                                min="0" max="100" id="browslashes_x" class="w-full" />
+                                        </div>
+                                        <div class="">
+                                            <x-label value="Posición y" for="browslashes_y" />
+                                            <input type="range" wire:model.lazy="browslashes_position.y"
+                                                min="0" max="100" id="browslashes_y" class="w-full" />
+                                        </div>
+                                        <div class="">
+                                            <x-label value="Tamaño" for="browslashesSize" />
+                                            <input type="range" wire:model.lazy="browslashes_size" min="0"
+                                                max="100" id="browslashesSize" class="w-full" />
+                                        </div>
                                     </div>
-                                    <div class="">
-                                        <x-label value="Posición y" for="browslashes_y" />
-                                        <input type="range" wire:model.lazy="browslashes_position.y" min="0"
-                                            max="100" id="browslashes_y" class="w-full" />
-                                    </div>
-                                    <div class="">
-                                        <x-label value="Tamaño" for="browslashesSize" />
-                                        <input type="range" wire:model.lazy="browslashes_size" min="0"
-                                            max="100" id="browslashesSize" class="w-full" />
+                                    <div class="w-full">
+                                        <x-button wire:click="reset_browslashes">
+                                            Limpiar
+                                        </x-button>
                                     </div>
                                 </div>
                             @endif

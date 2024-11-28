@@ -23,7 +23,9 @@
                 <div class="caja__trasera-register">
                     <h3>¿Aún no tienes una cuenta?</h3>
                     <p>Regístrate para que puedas iniciar sesión</p>
-                    <button id="btn__registrarse">Regístrarse</button>
+                    <a href="{{ route('register') }}">
+                        <button id="btn__registrarse">Regístrarse</button>
+                    </a>
                 </div>
             </div>
 
@@ -45,41 +47,6 @@
                         <a class="font-italic isai5" href="{{ route('password.request') }}">Olvidé mi contraseña </a>
                     </div>
                     <button>Entrar</button>
-                </form>
-
-                <!--Register-->
-                <form method="POST" action="{{ route('register') }}" class="formulario__register">
-                    @csrf
-                    <h2>Regístrarse</h2>
-                    <input required type="text" placeholder="Nombre" name="name" :value="old('name')">
-                    @error('name')
-                        <p class="mt-2 text-sm text-red-600 dark:text-red-500">
-                            {{ $message }}
-                        </p>
-                    @enderror
-                    <input required type="email" placeholder="Correo Electronico" name="email"
-                        :value="old('email')">
-                    @error('email')
-                        <p class="mt-2 text-sm text-red-600 dark:text-red-500">
-                            {{ $message }}
-                        </p>
-                    @enderror
-                    <input required type="password" placeholder="Contraseña" name="password"
-                        autocomplete="new-password">
-                    @error('password')
-                        <p class="mt-2 text-sm text-red-600 dark:text-red-500">
-                            {{ $message }}
-                        </p>
-                    @enderror
-                    <input id="password_confirmation" class="block mt-1 w-full" type="password"
-                        placeholder="Confirmar contraseña" name="password_confirmation" required
-                        autocomplete="new-password" />
-                    @error('password_confirmation')
-                        <p class="mt-2 text-sm text-red-600 dark:text-red-500">
-                            {{ $message }}
-                        </p>
-                    @enderror
-                    <button>Regístrarse</button>
                 </form>
             </div>
 

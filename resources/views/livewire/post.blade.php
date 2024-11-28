@@ -76,11 +76,11 @@
                                     @if ($post->active)
                                         <x-lucide-circle-check
                                             wire:click="$dispatch('toggle_active', { record: {{ $post->id }} })"
-                                            class="cursor-pointer size-5 text-green-700" />
+                                            class="cursor-pointer size-5 text-green-700" title="Marcar inactivo" />
                                     @else
                                         <x-lucide-circle-slash
                                             wire:click="$dispatch('toggle_active', { record: {{ $post->id }} })"
-                                            class="cursor-pointer size-5 text-red-700" />
+                                            class="cursor-pointer size-5 text-red-700" title="Marcar activo" />
                                     @endif
                                 @endrole
                                 @role('employee')
@@ -96,14 +96,15 @@
                             </td>
                             <td class="px-6 py-4">
                                 <div class="flex gap-3">
-                                    <a href="{{ route('post.id', $post->id) }}">
+                                    <a href="{{ route('post.id', $post->id) }}" title="Ver publicación">
                                         <x-lucide-eye class="size-5 hover:text-blue-600 cursor-pointer" />
                                     </a>
                                     <x-lucide-pencil class="size-5 hover:text-blue-600 cursor-pointer"
-                                        wire:click="$dispatch('edit', { record: {{ $post->id }}})" />
+                                        wire:click="$dispatch('edit', { record: {{ $post->id }}})"
+                                        title="Editar" />
                                     @role('admin')
                                         <x-lucide-trash class="size-5 hover:text-blue-600 cursor-pointer"
-                                            onclick="delete_alert({{ $post->id }})" />
+                                            onclick="delete_alert({{ $post->id }})" title="Eliminar" />
                                     @endrole
                                 </div>
                             </td>

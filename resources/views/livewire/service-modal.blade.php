@@ -1,9 +1,9 @@
 <div x-data="{ open: @entangle('showModal') }">
-    <x-button type="button" wire:click="$dispatch('pdf')" class="w-full sm:w-fit gap-3">
+    <x-button type="button" wire:click="$dispatch('pdf')" class="w-full sm:w-fit gap-3" title="Imprimir reporte">
         <x-lucide-file-text class="size-5" />
         Reportes
     </x-button>
-    <x-button wire:click="toggle" class="w-full sm:w-fit gap-3">
+    <x-button wire:click="toggle" class="w-full sm:w-fit gap-3" title="Registrar servicio">
         <x-lucide-plus class="size-5" />
         Servicio
     </x-button>

@@ -122,11 +122,11 @@
                                         @if ($service->active)
                                             <x-lucide-circle-check
                                                 wire:click="$dispatch('toggle_active', { service: {{ $service->id }} })"
-                                                class="cursor-pointer size-5 text-green-700" />
+                                                class="cursor-pointer size-5 text-green-700" title="Marcar inactivo" />
                                         @else
                                             <x-lucide-circle-slash
                                                 wire:click="$dispatch('toggle_active', { service: {{ $service->id }} })"
-                                                class="cursor-pointer size-5 text-red-700" />
+                                                class="cursor-pointer size-5 text-red-700" title="Marcar activo" />
                                         @endif
                                     @endrole
                                     @role('employee')
@@ -140,10 +140,11 @@
                                 <td class="px-6 py-4">
                                     <div class="flex gap-3">
                                         <x-lucide-pencil class="size-5 hover:text-blue-600 cursor-pointer"
-                                            wire:click="$dispatch('edit', { record: {{ $service->id }}})" />
+                                            wire:click="$dispatch('edit', { record: {{ $service->id }}})"
+                                            title="Editar" />
                                         @role('admin')
                                             <x-lucide-trash class="size-5 hover:text-blue-600 cursor-pointer"
-                                                onclick="delete_alert({{ $service->id }})" />
+                                                onclick="delete_alert({{ $service->id }})" title="Eliminar" />
                                         @endrole
                                     </div>
                                 </td>

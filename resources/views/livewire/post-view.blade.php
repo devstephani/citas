@@ -60,7 +60,7 @@
         </div>
 
         <div class="mt-4 mb-8 max-w-[70ch] text-wrap break-words">
-            <img src="{{  asset('storage/' . $post->image)  }}" alt="" class="rounded-md max-h-[32rem] mx-auto">
+            <img src="{{ asset('storage/' . $post->image) }}" alt="" class="rounded-md max-h-[32rem] mx-auto">
             <p class="text-justify mt-3 mb-5">{{ $post->description }}</p>
             {!! $post->content !!}
         </div>
@@ -85,11 +85,11 @@
                                         @if ($comment->active)
                                             <x-lucide-circle-check
                                                 wire:click="$dispatch('toggle_comment_active', { record: {{ $comment->id }} })"
-                                                class="cursor-pointer size-5 text-green-700" />
+                                                class="cursor-pointer size-5 text-green-700" title="Marcar inactivo" />
                                         @else
                                             <x-lucide-circle-slash
                                                 wire:click="$dispatch('toggle_comment_active', { record: {{ $comment->id }} })"
-                                                class="cursor-pointer size-5 text-red-700" />
+                                                class="cursor-pointer size-5 text-red-700" title="Marcar activo" />
                                         @endif
                                     </div>
                                 @endif
@@ -114,11 +114,11 @@
                         <x-label value="Comentario" for="comment" />
                         <x-textarea wire:model.lazy="comment" id="comment" name="comment" class="w-full"
                             required></x-textarea>
-                            @if ($comment_id > 0)
+                        @if ($comment_id > 0)
                             <x-button type="button" wire:click="update_comment()">Actualizar</x-button>
-                            @else
+                        @else
                             <x-button type="button" wire:click="save_comment()">Enviar</x-button>
-                            @endif
+                        @endif
                         @if ($can_comment)
                             <x-button type="button" wire:click="toggle_edit_comment()">Cancelar</x-button>
                         @endif

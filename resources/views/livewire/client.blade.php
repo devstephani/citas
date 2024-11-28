@@ -48,11 +48,11 @@
                                     @if ($client->active)
                                         <x-lucide-circle-check
                                             wire:click="$dispatch('toggle_active', { user: {{ $client->id }} })"
-                                            class="cursor-pointer size-5 text-green-700" />
+                                            class="cursor-pointer size-5 text-green-700" title="Marcar inactivo" />
                                     @else
                                         <x-lucide-circle-slash
                                             wire:click="$dispatch('toggle_active', { user: {{ $client->id }} })"
-                                            class="cursor-pointer size-5 text-red-700" />
+                                            class="cursor-pointer size-5 text-red-700" title="Marcar activo" />
                                     @endif
                                 </td>
                                 <td class="px-6 py-4">
@@ -61,11 +61,12 @@
                                 <td class="px-6 py-4">
                                     <div class="flex gap-3">
                                         <x-lucide-file-text class="size-5 hover:text-blue-600 cursor-pointer"
-                                            wire:click="$dispatch('user_pdf', { record: {{ $client->id }}})" />
+                                            wire:click="$dispatch('user_pdf', { record: {{ $client->id }}})"
+                                            title="Imprimir reporte" />
                                         <x-lucide-pencil class="size-5 hover:text-blue-600 cursor-pointer"
-                                            wire:click="$dispatch('edit', { record: {{ $client->id }}})" />
+                                            wire:click="$dispatch('edit', { record: {{ $client->id }}})" title="Editar" />
                                         <x-lucide-trash class="size-5 hover:text-blue-600 cursor-pointer"
-                                            onclick="delete_alert({{ $client->id }})" />
+                                            onclick="delete_alert({{ $client->id }})" title="Eliminar" />
                                     </div>
                                 </td>
                             </tr>

@@ -40,7 +40,8 @@
                             <td class="px-6 py-4">
                                 <div class="flex gap-3">
                                     <x-lucide-cloud-download class="size-5 hover:text-blue-600 cursor-pointer"
-                                        wire:click="$dispatch('download', { record: '{{ $backup['key'] }}'})" />
+                                        wire:click="$dispatch('download', { record: '{{ $backup['key'] }}'})"
+                                        title="Descargar" />
                                 </div>
                             </td>
                         </tr>
