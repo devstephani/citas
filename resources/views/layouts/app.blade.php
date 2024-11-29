@@ -38,6 +38,11 @@
             font-weight: 400;
             font-style: normal;
         }
+
+        input::-ms-reveal,
+        input::-ms-clear {
+            display: none;
+        }
     </style>
 
     <!-- Styles -->

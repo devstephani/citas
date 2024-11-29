@@ -15,7 +15,6 @@
   - Observer?
 - Re-name (modules, views)
 
-- Añadir funcion de ver en inputs password
 - sistema de puntuación para servicios y paquetes
 - modales se abren solos
 
