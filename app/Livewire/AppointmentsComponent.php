@@ -22,7 +22,7 @@ use Snowfire\Beautymail\Beautymail;
 class AppointmentsComponent extends Component
 {
     #[Url]
-    public $service_id, $package_id;
+    public $service_id, $package_id, $currentTimeFormatted;
     public $show_modal = false, $discount = false;
     public $id = 0, $currency_api = 0, $client_name, $client_id = null, $clients, $services, $packages, $selected_service = 0, $selected_package = 0, $m_service, $m_package, $selected_date, $selected_time, $status, $registered_local, $type, $currency, $payed, $ref, $frequent_appointments, $selected_frequent_appointment, $note = null;
 
@@ -30,18 +30,18 @@ class AppointmentsComponent extends Component
     protected $listeners = ['toggle', 'set_selected_day', 'edit', 'delete', 'set_appointment'];
 
     public $hours = [
-        ['value' => '08:00:00', 'text' => '08:00 a.m.'],
-        // ['value' => '09:00:00', 'text' => '09:00 a.m.'],
-        ['value' => '10:00:00', 'text' => '10:00 a.m.'],
-        // ['value' => '11:00:00', 'text' => '11:00 a.m.'],
-        ['value' => '12:00:00', 'text' => '12:00 p.m.'],
-        // ['value' => '01:00:00', 'text' => '01:00 p.m.'],
-        ['value' => '02:00:00', 'text' => '02:00 p.m.'],
-        // ['value' => '03:00:00', 'text' => '03:00 p.m.'],
-        ['value' => '04:00:00', 'text' => '04:00 p.m.'],
-        // ['value' => '05:00:00', 'text' => '05:00 p.m.'],
-        ['value' => '06:00:00', 'text' => '06:00 p.m.'],
-        // ['value' => '07:00:00', 'text' => '07:00 p.m.'],
+        ['value' => '08:00:00', 'text' => '08:00 am'],
+        // ['value' => '09:00:00', 'text' => '09:00 am'],
+        ['value' => '10:00:00', 'text' => '10:00 am'],
+        // ['value' => '11:00:00', 'text' => '11:00 am'],
+        ['value' => '12:00:00', 'text' => '12:00 pm'],
+        // ['value' => '01:00:00', 'text' => '01:00 pm'],
+        ['value' => '14:00:00', 'text' => '02:00 pm'],
+        // ['value' => '03:00:00', 'text' => '03:00 pm'],
+        ['value' => '16:00:00', 'text' => '04:00 pm'],
+        // ['value' => '05:00:00', 'text' => '05:00 pm'],
+        ['value' => '18:00:00', 'text' => '06:00 pm'],
+        // ['value' => '07:00:00', 'text' => '07:00 pm'],
     ];
 
     public function rules()
@@ -314,35 +314,30 @@ class AppointmentsComponent extends Component
 
         if ($today === 0) {
             $availableHours = [
-                ['value' => '09:00:00', 'text' => '09:00 a.m.'],
-                // ['value' => '10:00:00', 'text' => '10:00 a.m.'],
-                ['value' => '11:00:00', 'text' => '11:00 a.m.'],
-                // ['value' => '12:00:00', 'text' => '12:00 p.m.'],
-                ['value' => '13:00:00', 'text' => '01:00 p.m.'], // 13:00 for 1 PM
-                // ['value' => '14:00:00', 'text' => '02:00 p.m.']
+                ['value' => '09:00:00', 'text' => '09:00 am'],
+                // ['value' => '10:00:00', 'text' => '10:00 am'],
+                ['value' => '11:00:00', 'text' => '11:00 am'],
+                // ['value' => '12:00:00', 'text' => '12:00 pm'],
+                ['value' => '13:00:00', 'text' => '01:00 pm'], // 13:00 for 1 PM
+                // ['value' => '14:00:00', 'text' => '02:00 pm']
             ];
         } elseif (in_array($today, [1, 2, 3, 4])) {
             $availableHours = [
-                ['value' => '09:00:00', 'text' => '09:00 a.m.'],
-                // ['value' => '10:00:00', 'text' => '10:00 a.m.'],
-                ['value' => '11:00:00', 'text' => '11:00 a.m.'],
-                // ['value' => '12:00:00', 'text' => '12:00 p.m.'],
-                ['value' => '13:00:00', 'text' => '01:00 p.m.'],
-                // ['value' => '14:00:00', 'text' => '02:00 p.m.'],
-                ['value' => '15:00:00', 'text' => '03:00 p.m.'],
-                // ['value' => '16:00:00', 'text' => '04:00 p.m.'],
-                ['value' => '17:00:00', 'text' => '05:00 p.m.']
+                ['value' => '09:00:00', 'text' => '09:00 am'],
+                // ['value' => '10:00:00', 'text' => '10:00 am'],
+                ['value' => '11:00:00', 'text' => '11:00 am'],
+                // ['value' => '12:00:00', 'text' => '12:00 pm'],
+                ['value' => '13:00:00', 'text' => '01:00 pm'],
+                // ['value' => '14:00:00', 'text' => '02:00 pm'],
+                ['value' => '15:00:00', 'text' => '03:00 pm'],
+                // ['value' => '16:00:00', 'text' => '04:00 pm'],
+                ['value' => '17:00:00', 'text' => '05:00 pm']
             ];
         } elseif (in_array($today, [5, 6])) {
-            return [];
+            return $this->hours;
         }
 
-        $filteredHours = array_filter($availableHours, function ($hour) use ($currentTimeFormatted) {
-            return $hour['value'] > $currentTimeFormatted;
-        });
-
-
-        return $filteredHours;
+        return $availableHours;
     }
 
     public function mount()
@@ -364,6 +359,7 @@ class AppointmentsComponent extends Component
         })->count();
 
         $this->discount = $user_appointments % 4 === 0;
+        $this->currentTimeFormatted = now()->format('H:i:s');
 
         if (Auth::user()->hasAnyRole('admin', 'employee')) {
             $this->clients = User::whereHas('roles', function ($query) {

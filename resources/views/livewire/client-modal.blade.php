@@ -1,4 +1,7 @@
 <div x-data="{ open: @entangle('showModal') }">
+    @if ($errors->getMessages())
+        @dd($errors)
+    @endif
     <x-button type="button" wire:click="$dispatch('pdf')" class="w-full sm:w-fit gap-3" title="Imprimir reporte">
         <x-lucide-file-text class="size-5" />
         Reportes
@@ -26,6 +29,12 @@
                         <x-input placeholder="Ej: José Navarra" wire:model.lazy="name" type="text" id="name"
                             name="name" class="w-full" autofocus autocomplete="off" required />
                         <x-input-error for="name" class="mt-2" />
+                    </div>
+                    <div class="block">
+                        <x-label value="Teléfono" for="phone" />
+                        <x-input placeholder="Ej: 04125121212" wire:model.lazy="phone" type="number" id="phone"
+                            name="phone" class="w-full" autofocus autocomplete="off" required />
+                        <x-input-error for="phone" class="mt-2" />
                     </div>
                     <div class="block">
                         <x-label value="Correo" for="email" />

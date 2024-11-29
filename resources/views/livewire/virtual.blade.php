@@ -23,6 +23,7 @@
             browslashesX: @entangle('browslashes_position.x'),
             browslashesY: @entangle('browslashes_position.y'),
             browslashesSize: @entangle('browslashes_size'),
+            aspectRatio: 520 / 75
         
         }" class="p-12 w-full mx-auto flex items-center">
             <div class="mx-auto flex gap-3">
@@ -60,16 +61,15 @@
 
                         @if (!empty($selected_eyeslashes) && $selected_eyeslashes !== '')
                             <img src="{{ asset($selected_eyeslashes) }}" alt="" class="mx-auto absolute z-10"
-                                x-bind:style="'top: ' + eyelashesY + '%; left: ' + eyelashesX + '%; width: ' + eyeslashesSize +
+                                x-bind:style="'top: ' + eyelashesY + '%; left: ' + eyelashesX + '%; width: ' + (eyeslashesSize *
+                                        aspectRatio) +
                                     '%; height: ' + eyeslashesSize + '%;'">
                         @endif
                         @if (!empty($selected_browslashes) && $selected_browslashes !== '')
                             <img src="{{ asset($selected_browslashes) }}" alt="" class="mx-auto absolute z-10"
-                                x-bind:style="'top: ' + browslashesY + '%;
-                                left: ' + browslashesX + ' % ;
-                                width: ' + browslashesSize +' % ;
-                                height: ' + browslashesSize + ' % ;
-                                '">
+                                x-bind:style="'top: ' + browslashesY + '%; left: ' + browslashesX + '%; width: ' + (browslashesSize *
+                                        aspectRatio) +
+                                    '%; height: ' + browslashesSize + '%;'">
                         @endif
                     </section>
                     <div class="grid grid-cols-1 sm:grid-cols-2 mx-auto gap-3">
@@ -92,13 +92,20 @@
                         class="w-full max-w-96 max-h-fit border rounded-md border-neutral-400 p-4 flex flex-col items-center flex-wrap">
                         <div class="flex flex-wrap gap-3">
                             @if ($eyeslashes)
-                                @foreach ($eyeslashes_images as $img)
-                                    <img src="{{ $img }}" alt=""
-                                        wire:click="$dispatch('toggle_images', { image: '{{ $img }}', side: 'eyeslashes'})"
-                                        @class([
-                                            'w-16 h-16 p-2 cursor-pointer hover:border hover:border-blue-500 hover:scale-110',
-                                            'shadow border border-blue-300' => $selected_eyeslashes === $img,
-                                        ])>
+                                @php
+                                    $sizes = [12, 14, 10, 8];
+                                @endphp
+                                @foreach ($eyeslashes_images as $index => $img)
+                                    <div class="relative">
+                                        <img src="{{ $img }}" alt=""
+                                            wire:click="$dispatch('toggle_images', { image: '{{ $img }}', side: 'eyeslashes'})"
+                                            @class([
+                                                'w-16 h-16 p-2 cursor-pointer hover:border hover:border-blue-500 hover:scale-110',
+                                                'shadow border border-blue-300' => $selected_eyeslashes === $img,
+                                            ])>
+                                        <span
+                                            class="absolute py-0.5 px-1 bg-white top-0 right-0 border shadow rounded-md border-neutral-400">{{ $sizes[$index] }}</span>
+                                    </div>
                                 @endforeach
 
                                 <div class="flex flex-col gap-3">
@@ -118,11 +125,11 @@
                                             <input type="range" wire:model.lazy="eyeslashes_size" min="0"
                                                 max="100" id="eyeslashesSize" class="w-full" />
                                         </div>
-                                        <div class="w-full">
-                                            <x-button wire:click="reset_eyeslashes">
-                                                Limpiar
-                                            </x-button>
-                                        </div>
+                                    </div>
+                                    <div class="w-full">
+                                        <x-button wire:click="reset_eyeslashes">
+                                            Limpiar
+                                        </x-button>
                                     </div>
                                 </div>
                             @endif

@@ -15,7 +15,7 @@ class ClientModal extends Component
 {
     public $showModal = false;
     public $id = null;
-    public $name, $email, $password, $active;
+    public $name, $email, $password, $active, $phone;
 
     protected $listeners = ['edit', 'toggle', 'toggle_active', 'delete', 'user_pdf'];
 
@@ -23,10 +23,14 @@ class ClientModal extends Component
     {
         return [
             'name' => ['required', 'min:4', 'max:80', new Text()],
+            'phone' => ['required', 'numeric', 'digits:11', Rule::unique('users')->ignore($this->id)],
             'email' => ['required', 'email', Rule::unique('users')->where(function ($query) {
                 return $query->where('email', $this->email);
             })->ignore($this->id)],
-            'active' => ['boolean', Rule::excludeIf($this->id == null)],
+            'active' => [
+                'nullable',
+                Rule::when(!is_null($this->id), 'required|boolean')
+            ],
             'password' => [
                 'nullable',
                 Rule::when(!empty($this->password), ['required', Password::min(4)->max(12)->numbers()->letters()])
@@ -41,6 +45,10 @@ class ClientModal extends Component
             'name.regex' => 'Solo se aceptan letras',
             'name.min' => 'Debe contener al menos :min caracteres',
             'name.max' => 'Debe contener máximo :max caracteres',
+            'phone.required' => 'Debe indicar el teléfono',
+            'phone.numeric' => 'Debe ser un número',
+            'phone.digits' => 'Debe contener 11 dígitos',
+            'phone.unique' => 'El número ya fue registrado',
             'email.required' => 'Debe indicar el correo',
             'email.email' => 'Debe ser un correo válido',
             'email.unique' => 'Este correo se encuentra registrado',
@@ -60,6 +68,7 @@ class ClientModal extends Component
 
         User::create([
             'name' => $this->name,
+            'phone' => $this->phone,
             'email' => $this->email,
             'password' => Hash::make($this->password),
         ])->assignRole('client');
@@ -79,6 +88,7 @@ class ClientModal extends Component
         $this->showModal = true;
         $this->id = $record->id;
         $this->name = $record->name;
+        $this->phone = $record->phone;
         $this->email = $record->email;
         $this->active = $record->active;
     }
@@ -91,6 +101,7 @@ class ClientModal extends Component
         $user->update([
             'name' => $this->name,
             'email' => $this->email,
+            'phone' => $this->phone,
             'password' => Hash::make($this->password),
             'active' => $this->active
         ]);
@@ -118,6 +129,7 @@ class ClientModal extends Component
         $this->name = '';
         $this->email = '';
         $this->password = '';
+        $this->phone = '';
         $this->active = '';
         $this->id = '';
         $this->showModal = false;

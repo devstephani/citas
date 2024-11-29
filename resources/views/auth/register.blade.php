@@ -40,6 +40,12 @@
                             {{ $message }}
                         </p>
                     @enderror
+                    <input required type="number" placeholder="Teléfono" name="phone" :value="old('phone')">
+                    @error('phone')
+                        <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+                            {{ $message }}
+                        </p>
+                    @enderror
                     <input required type="email" placeholder="Correo Electronico" name="email"
                         :value="old('email')">
                     @error('email')

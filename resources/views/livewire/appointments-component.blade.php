@@ -125,7 +125,9 @@
                                             !Auth::user()->hasAnyRole(['admin', 'employee']) && $id > 0,
                                     ])>
                                     @foreach ($hours as $hour)
-                                        <option value="{{ $hour['value'] }}">{{ $hour['text'] }}</option>
+                                        <option value="{{ $hour['value'] }}"
+                                            {{ $currentTimeFormatted > $hour['value'] ? 'disabled' : '' }}>
+                                            {{ $hour['text'] }}</option>
                                     @endforeach
 
                                 </x-select>

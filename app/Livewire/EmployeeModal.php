@@ -120,6 +120,7 @@ class EmployeeModal extends Component
         $this->photo = $record->photo;
         $this->prevImg = $record->photo;
         $this->services = $record->services()->pluck('services.id')->toArray();
+        $this->service_ids = $this->services;
     }
 
     public function update()

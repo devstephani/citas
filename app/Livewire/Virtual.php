@@ -81,6 +81,7 @@ class Virtual extends Component
 
     public function save()
     {
+        $aspect_ratio = 520 / 75;
         $file_name = 'result_image.jpeg';
         $base = '';
 
@@ -98,21 +99,20 @@ class Virtual extends Component
         $img->scaleToHeight(384);
 
         if ($this->selected_eyeslashes !== '') {
-            $eyeslashes_image->resize($this->eyeslashes_size * 1.6, $this->eyeslashes_size);
-            $img->merge($eyeslashes_image, $this->eyeslashes_position['x'] * 4.5, $this->eyeslashes_position['y'] * 4);
+            $eyeslashes_image->resize($this->eyeslashes_size * $aspect_ratio * 4, $this->eyeslashes_size * 4);
+            $img->merge($eyeslashes_image, $this->eyeslashes_position['x'] * 3.3, $this->eyeslashes_position['y'] * 1.6);
         }
 
         if ($this->selected_browslashes !== '') {
-            // $browslashes_image->resize(160, 60);
-            $browslashes_image->resize($this->browslashes_size * 1.6, $this->browslashes_size);
-            $img->merge($browslashes_image, $this->browslashes_position['x'] * 4.5, $this->browslashes_position['y'] * 3.5);
+            $browslashes_image->resize($this->browslashes_size * $aspect_ratio * 4, $this->browslashes_size * 4);
+            $img->merge($browslashes_image, $this->browslashes_position['x'] * 3.3, $this->browslashes_position['y'] * 1.6);
         }
 
         $img->save($file_name, IMAGETYPE_JPEG);
 
         $file_path = public_path() . "/$file_name";
 
-        $this->resetUI();
+        // $this->resetUI();
 
         if (file_exists($file_path)) {
             return response()->download($file_path)
