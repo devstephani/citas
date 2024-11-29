@@ -9,14 +9,9 @@
 # TODO
 
 - Revisar por que los modales se recargan cada segundo
-- Bitácora (10$)
-  - Observer?
 - Alerts
   - Observer?
 - Re-name (modules, views)
-
-- sistema de puntuación para servicios y paquetes
-- modales se abren solos
 
 # DONE
 ----------------------------------------------------------------------------------------

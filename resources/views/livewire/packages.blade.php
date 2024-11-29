@@ -23,6 +23,16 @@
                                             ({{ $package->appointments()->count() }} Citas)
                                         </a>
                                     </span>
+                                    @php
+                                        $stars = round(
+                                            $package->appointments()->whereNotNull('stars')->avg('stars'),
+                                            2,
+                                        );
+                                    @endphp
+                                    <div class="flex items-center gap-3">
+                                        <x-lucide-star class="size-5 fill-yellow-400" />
+                                        <p class="mb-0">{{ $stars }}</p>
+                                    </div>
                                     <p>{{ $package->description }}</p>
                                     <a href="{{ route('appointments', ['package_id' => $package->id]) }}"
                                         class="default-btn">

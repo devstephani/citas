@@ -16,6 +16,7 @@ return new class extends Migration
             $table->boolean('discount')->default(false);
             $table->boolean('registered_local');
             $table->integer('status');
+            $table->integer('stars')->nullable();
             $table->datetime('picked_date');
             $table->string('note')->nullable();
             $table->foreignId('user_id')->constrained();

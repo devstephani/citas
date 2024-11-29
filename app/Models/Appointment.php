@@ -16,6 +16,7 @@ class Appointment extends Model
         'status',
         'discount',
         'note',
+        'stars',
         'user_id',
         'service_id',
         'package_id',

@@ -362,5 +362,125 @@
                 @endif
             </div>
         @endif
+        @if (Auth::user()->hasRole('client'))
+            <div class="p-4 overflow-x-auto shadow-md">
+                <table class="w-full text-sm text-left text-gray-400 bg-white rounded-md border border-neutral-400">
+                    <thead class="border-b text-xs text-gray-700 uppercase bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3">
+                                Cita
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Precio
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Estado
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Cliente
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Pagado
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Descuento
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Pago
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Moneda
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Referencia
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Cita para
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Puntuar
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y -space-x-2">
+                        @foreach ($appointments as $appointment)
+                            @php
+                                $payed = 0;
+                                $discount = 0;
+
+                                if ($appointment->payment) {
+                                    $payed = $appointment->payment->payed;
+                                    $discount = $payed * ($appointment->discount ? 0.05 : 0);
+                                }
+
+                                $stars = $appointment->stars;
+                            @endphp
+                            <tr class="">
+                                <td class="px-6 py-4">
+                                    {{ $appointment->service->name ?? $appointment->package->name }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    @php
+                                        $price = $appointment->service->price ?? $appointment->package->price;
+                                    @endphp
+                                    {{ $price ? "$price$" : '' }}
+                                </td>
+                                <td @class([
+                                    'px-6 py-4',
+                                    'text-green-500' => $appointment->status === 1,
+                                    'text-red-500' => $appointment->status === 0,
+                                ])>
+                                    {{ $appointment->status === 0 ? 'Pendiente' : ($appointment->status === 1 ? 'Pagado' : 'Cancelado') }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ $appointment->user->name }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ $payed ? "$payed$" : '' }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ $discount ? "$discount$" : '' }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ $appointment->payment->type->name ?? '' }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ $appointment->payment->currency->name ?? '' }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ $appointment->payment->ref ?? '' }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $appointment->picked_date)->translatedFormat('l, d F Y') }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex gap-1">
+                                        @php
+                                            $options = [1, 2, 3, 4, 5];
+                                        @endphp
+                                        @foreach ($options as $index)
+                                            @if (!is_null($stars))
+                                                <x-lucide-star @class(['size-4', 'fill-yellow-400' => $stars >= $index]) title="1 estrella" />
+                                            @else
+                                                <x-lucide-star @class([
+                                                    'size-4',
+                                                    'cursor-pointer hover:fill-yellow-400' => is_null($stars),
+                                                ])
+                                                    wire:click="rate({{ $index }}, {record: {{ $appointment->id }}})"
+                                                    title="{{ $index }} estrella{{ $index >= 2 ? 's' : '' }}" />
+                                            @endif
+                                        @endforeach
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                {{ $appointments->links() }}
+                @if (count($appointments) === 0)
+                    <p class="text-center">No se encontraron registros</p>
+                @endif
+            </div>
+        @endif
     </div>
 </div>

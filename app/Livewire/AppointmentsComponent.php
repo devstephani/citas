@@ -28,7 +28,7 @@ class AppointmentsComponent extends Component
     public $id = 0, $currency_api = 0, $client_name, $client_id = null, $clients, $services, $packages, $selected_service = 0, $selected_package = 0, $m_service, $m_package, $selected_date, $selected_time, $status, $registered_local, $type, $currency, $payed, $ref, $frequent_appointments, $selected_frequent_appointment, $note = null;
 
     private $pagination = 20;
-    protected $listeners = ['toggle', 'set_selected_day', 'edit', 'delete', 'set_appointment'];
+    protected $listeners = ['toggle', 'set_selected_day', 'edit', 'delete', 'set_appointment', 'rate'];
 
     public $hours = [
         ['value' => '08:00:00', 'text' => '08:00 am'],
@@ -260,9 +260,11 @@ class AppointmentsComponent extends Component
         if (!$occupied) {
             $this->validate();
 
-            $record = Appointment::create([
+            $user = User::find($this->client_id ?? Auth::user()->id);
+
+            Appointment::create([
                 'status' => 0,
-                'user_id' => $this->client_id ?? Auth::user()->id,
+                'user_id' => $user->id,
                 'service_id' => $this->selected_service ?? null,
                 'package_id' => $this->selected_package ?? null,
                 'picked_date' => $final_date,
@@ -278,7 +280,7 @@ class AppointmentsComponent extends Component
             Binnacle::create([
                 'user_id' => auth()->id(),
                 'status' => 'success',
-                'message' => "Se registró la cita de {$record->user->name}"
+                'message' => "Se registró la cita de {$user->name}"
             ]);
 
             $this->resetUI();
@@ -386,6 +388,13 @@ class AppointmentsComponent extends Component
         }
     }
 
+    public function rate(int $stars, Appointment $record)
+    {
+        $record->update([
+            'stars' => $stars
+        ]);
+    }
+
     #[Layout('layouts.app')]
 
     public function render()
@@ -414,9 +423,20 @@ class AppointmentsComponent extends Component
         }
 
         $this->registered_local = auth()->user()->hasRole('admin');
-        $appointments = Appointment::with('payment')
-            ->orderByDesc('created_at')
-            ->paginate($this->pagination);
+        $appointments = [];
+        $user = auth()->user();
+        if ($user->hasRole('admin')) {
+            $appointments = Appointment::with('payment')
+                ->orderByDesc('created_at')
+                ->paginate($this->pagination);
+        }
+        if ($user->hasRole('client')) {
+            $appointments = Appointment::with('payment')
+                ->where('user_id', $user->id)
+                ->whereIn('status', [1, 2])
+                ->orderByDesc('created_at')
+                ->paginate($this->pagination);
+        }
 
         return view('livewire.appointments-component', [
             'appointments' => $appointments,

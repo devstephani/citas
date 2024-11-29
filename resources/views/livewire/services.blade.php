@@ -24,6 +24,16 @@
                                             Citas)
                                         </a>
                                     </span>
+                                    @php
+                                        $stars = round(
+                                            $service->appointments()->whereNotNull('stars')->avg('stars'),
+                                            2,
+                                        );
+                                    @endphp
+                                    <div class="flex items-center gap-3">
+                                        <x-lucide-star class="size-5 fill-yellow-400" />
+                                        <p class="mb-0">{{ $stars }}</p>
+                                    </div>
                                     <p>{{ $service->description }}</p>
                                     <a href="{{ route('appointments', ['service_id' => $service->id]) }}"
                                         class="default-btn">
