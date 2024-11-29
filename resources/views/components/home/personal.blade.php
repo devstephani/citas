@@ -1,6 +1,6 @@
 @props(['personal'])
 
-<section class="news-area">
+<section class="news-area mx-auto">
     <div class="container">
         <div class="section-title">
             <span>Presentacion</span>
@@ -10,10 +10,10 @@
             @foreach ($personal as $employee)
                 <div class="col-lg-4 col-md-6">
                     <div class="single-news">
-                        <div class="news-img max-h-[32rem] h-auto">
-                            <div style="display: flex; justify-content: center;">
-                                <img style="width: 50%; border-radius: 10px" src="{{ $employee->get_image() }}"
-                                    alt="Image">
+                        <div class="news-img">
+                            <div class="flex justify-center">
+                                <img style="width: 50%; border-radius: 10px;" class="h-[200px]"
+                                    src="{{ $employee->get_image() }}" alt="Image">
                             </div>
 
                         </div>

@@ -15,10 +15,9 @@
   - Observer?
 - Re-name (modules, views)
 
-- Arreglar tamaños de las fotos de empleados
-- Centrar titulos en landing
 - Añadir funcion de ver en inputs password
 - sistema de puntuación para servicios y paquetes
+- modales se abren solos
 
 # DONE
 ----------------------------------------------------------------------------------------

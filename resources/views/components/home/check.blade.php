@@ -5,7 +5,6 @@
                 Agendar cita
                 <i class="flaticon-right"></i>
             </a>
-            <a>
         </div>
         {{-- <form class="check-form" id="formulario" action="">
             <div class="row align-items-center">
