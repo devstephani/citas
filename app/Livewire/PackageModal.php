@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Binnacle;
 use App\Models\package;
 use App\Models\Service;
 use App\Rules\Text;
@@ -83,6 +84,12 @@ class PackageModal extends Component
             'user_id' => auth()->user()->id
         ]);
 
+        Binnacle::create([
+            'user_id' => auth()->id(),
+            'status' => 'success',
+            'message' => "Se registró el paquete {$package->name}"
+        ]);
+
         $package->services()->sync($this->service_ids);
 
         $this->resetUI();
@@ -138,6 +145,12 @@ class PackageModal extends Component
             'active' => $this->active,
         ]);
 
+        Binnacle::create([
+            'user_id' => auth()->id(),
+            'status' => 'success',
+            'message' => "Se actualizó el paquete {$package->name}"
+        ]);
+
         $package->services()->sync($this->service_ids);
 
         $this->resetUI();
@@ -147,6 +160,12 @@ class PackageModal extends Component
     {
         Storage::disk('public')->delete($record->image);
         $record->delete();
+
+        Binnacle::create([
+            'user_id' => auth()->id(),
+            'status' => 'warning',
+            'message' => "Se eliminó el paquete {$record->name}"
+        ]);
         $this->resetUI();
     }
 
@@ -154,6 +173,13 @@ class PackageModal extends Component
     {
         $package->update([
             'active' => ! $package->active
+        ]);
+
+        $message = $package->active ? 'activó' : 'desactivó';
+        Binnacle::create([
+            'user_id' => auth()->id(),
+            'status' => 'info',
+            'message' => "Se {$message} el paquete {$package->name}"
         ]);
 
         $this->dispatch('refreshParent')->to(Packages::class);

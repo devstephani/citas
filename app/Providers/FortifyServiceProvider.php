@@ -7,6 +7,7 @@ use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
 use App\Models\Attendance;
+use App\Models\Binnacle;
 use App\Models\User;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
@@ -49,6 +50,12 @@ class FortifyServiceProvider extends ServiceProvider
                         ]);
                     }
                 }
+
+                Binnacle::create([
+                    'user_id' => $user->id,
+                    'status' => 'success',
+                    'message' => "Inició sesión"
+                ]);
 
                 return $user;
             }

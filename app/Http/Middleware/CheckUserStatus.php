@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Models\Attendance;
+use App\Models\Binnacle;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,6 +26,14 @@ class CheckUserStatus
                 }
 
                 return redirect()->route('login')->withErrors(['inactive' => 'Su cuenta se encuentra inactiva.']);
+            }
+
+            if ($request->routeIs('logout')) {
+                Binnacle::create([
+                    'user_id' => auth()->id(),
+                    'status' => 'success',
+                    'message' => "Cerró sesión"
+                ]);
             }
 
             if ($request->routeIs('logout') && Auth::user()->hasRole('employee')) {

@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Attendance;
+use App\Models\Binnacle;
 use App\Models\Employee as MEmployee;
 use App\Models\Service;
 use App\Models\User;
@@ -97,6 +98,11 @@ class EmployeeModal extends Component
                 'photo' => $path
             ]);
 
+        Binnacle::create([
+            'user_id' => auth()->id(),
+            'status' => 'success',
+            'message' => "Se registró el empleado {$user->name}"
+        ]);
         $employee->services()->sync($this->service_ids);
 
         $this->resetUI();
@@ -154,6 +160,12 @@ class EmployeeModal extends Component
             ]);
         }
 
+        Binnacle::create([
+            'user_id' => auth()->id(),
+            'status' => 'success',
+            'message' => "Se actualizó el paquete {$employee->user->name}"
+        ]);
+
         $this->resetUI();
     }
 
@@ -165,6 +177,11 @@ class EmployeeModal extends Component
         }
 
         $record->delete();
+        Binnacle::create([
+            'user_id' => auth()->id(),
+            'status' => 'warning',
+            'message' => "Se eliminó el empleado {$record->user->name}"
+        ]);
         $this->resetUI();
     }
 
@@ -172,6 +189,13 @@ class EmployeeModal extends Component
     {
         $employee->user()->update([
             'active' => ! $employee->user->active
+        ]);
+
+        $message = $employee->user->active ? 'activó' : 'desactivó';
+        Binnacle::create([
+            'user_id' => auth()->id(),
+            'status' => 'info',
+            'message' => "Se {$message} el empleado {$employee->user->name}"
         ]);
 
         $this->dispatch('refreshParent')->to(Employee::class);

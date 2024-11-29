@@ -4,6 +4,7 @@ use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Livewire\AppointmentsComponent;
 use App\Livewire\Backup;
+use App\Livewire\Binnacle;
 use App\Livewire\Blog;
 use App\Livewire\Client;
 use App\Livewire\Dashboard;
@@ -29,7 +30,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', LandingPageController::class)->name('home');
 Route::get('posts/{id}', PostView::class)->name('post.id');
-Route::post('reset-password' , [ResetPasswordController::class, 'resetPassword'])->name('password.email');
+Route::post('reset-password', [ResetPasswordController::class, 'resetPassword'])->name('password.email');
 
 Route::middleware([
     'auth:sanctum',
@@ -47,4 +48,5 @@ Route::middleware([
     Route::get('trash', DeletedRecords::class)->name('trash');
     Route::get('backup', Backup::class)->name('backup');
     Route::get('appointments', AppointmentsComponent::class)->name('appointments');
+    Route::get('binnacle', Binnacle::class)->name('binnacle');
 });

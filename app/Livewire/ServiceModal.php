@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Enum\Service\TypeEnum;
+use App\Models\Binnacle;
 use App\Models\Employee;
 use App\Models\Service;
 use App\Rules\Text;
@@ -72,8 +73,7 @@ class ServiceModal extends Component
         $this->validate();
         $path = $this->image->store('public/services');
 
-
-        Service::create([
+        $service = Service::create([
             'name' => $this->name,
             'description' => $this->description,
             'active' => 1,
@@ -81,6 +81,12 @@ class ServiceModal extends Component
             'type' => TypeEnum::from($this->type),
             'image' => $path,
             'user_id' => auth()->user()->id
+        ]);
+
+        Binnacle::create([
+            'user_id' => auth()->id(),
+            'status' => 'success',
+            'message' => "Se registró el servicio {$service->name}"
         ]);
 
         $this->resetUI();
@@ -127,6 +133,12 @@ class ServiceModal extends Component
             'active' => $this->active,
         ]);
 
+        Binnacle::create([
+            'user_id' => auth()->id(),
+            'status' => 'success',
+            'message' => "Se actualizó el servicio {$service->name}"
+        ]);
+
         $this->resetUI();
     }
 
@@ -134,6 +146,12 @@ class ServiceModal extends Component
     {
         Storage::disk('public')->delete($record->image);
         $record->delete();
+
+        Binnacle::create([
+            'user_id' => auth()->id(),
+            'status' => 'warning',
+            'message' => "Se eliminó el servicio {$record->name}"
+        ]);
         $this->resetUI();
     }
 
@@ -141,6 +159,13 @@ class ServiceModal extends Component
     {
         $service->update([
             'active' => ! $service->active
+        ]);
+
+        $message = $service->active ? 'activó' : 'desactivó';
+        Binnacle::create([
+            'user_id' => auth()->id(),
+            'status' => 'info',
+            'message' => "Se {$message} el servicio {$service->name}"
         ]);
 
         $this->dispatch('refreshParent')->to(Services::class);

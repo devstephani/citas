@@ -99,6 +99,16 @@
             @endrole
             @role('admin')
                 <li>
+                    <a href="{{ route('binnacle') }}" @class([
+                        'flex items-center p-2 rounded-lg hover:bg-neutral-200',
+                        'bg-neutral-200' => Route::is('binnacle'),
+                    ])>
+
+                        <x-lucide-file-clock class="size-5 " />
+                        <span class="ms-3 ">Bitácora</span>
+                    </a>
+                </li>
+                <li>
                     <a href="{{ route('backup') }}" @class([
                         'flex items-center p-2 rounded-lg hover:bg-neutral-200',
                         'bg-neutral-200' => Route::is('backup'),

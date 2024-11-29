@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Appointment;
+use App\Models\Binnacle;
 use App\Models\Comment;
 use App\Models\Employee;
 use App\Models\Package;
@@ -55,6 +56,12 @@ class DeletedRecords extends Component
                 # code...
                 break;
         }
+
+        Binnacle::create([
+            'user_id' => auth()->id(),
+            'status' => 'info',
+            'message' => "Se recuperó un registro ({$model})"
+        ]);
     }
 
     public function mount()

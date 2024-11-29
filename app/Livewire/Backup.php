@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Binnacle;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Response;
@@ -38,6 +39,12 @@ class Backup extends Component
 
         File::ensureDirectoryExists($this->destination_path);
         shell_exec("$this->dump_path -h localhost -u root manicurista > $this->destination_path/$file_name.sql");
+
+        Binnacle::create([
+            'user_id' => auth()->id(),
+            'status' => 'info',
+            'message' => "Se guardó un respaldo de la base de datos"
+        ]);
     }
 
     public function download($record)
@@ -48,6 +55,12 @@ class Backup extends Component
         if ($disk->exists($file_name)) {
             $stream = $disk->readStream($file_name);
             $download_file_name = explode('/', $file_name)[1];
+
+            Binnacle::create([
+                'user_id' => auth()->id(),
+                'status' => 'info',
+                'message' => "Se descargó un respaldo de la base de datos"
+            ]);
 
             return Response::stream(function () use ($stream) {
                 fpassthru($stream);

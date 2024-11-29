@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Enum\Payment\CurrencyEnum;
 use App\Enum\Payment\TypeEnum;
 use App\Models\Appointment;
+use App\Models\Binnacle;
 use App\Models\Package;
 use App\Models\Payment;
 use App\Models\Service;
@@ -185,6 +186,12 @@ class AppointmentsComponent extends Component
             });
         }
 
+        Binnacle::create([
+            'user_id' => auth()->id(),
+            'status' => 'success',
+            'message' => "Se actualizó la cita de {$record->user->name}"
+        ]);
+
         $this->dispatch(event: 'refreshParent')->to(AppointmentsCalendar::class);
         $this->resetUI();
     }
@@ -253,7 +260,7 @@ class AppointmentsComponent extends Component
         if (!$occupied) {
             $this->validate();
 
-            Appointment::create([
+            $record = Appointment::create([
                 'status' => 0,
                 'user_id' => $this->client_id ?? Auth::user()->id,
                 'service_id' => $this->selected_service ?? null,
@@ -266,6 +273,12 @@ class AppointmentsComponent extends Component
                 'type' => $this->type,
                 'ref' => $this->ref,
                 'currency_api' => $this->currency_api
+            ]);
+
+            Binnacle::create([
+                'user_id' => auth()->id(),
+                'status' => 'success',
+                'message' => "Se registró la cita de {$record->user->name}"
             ]);
 
             $this->resetUI();
@@ -283,6 +296,12 @@ class AppointmentsComponent extends Component
     {
         $record = Appointment::find($this->id);
         $record->delete();
+
+        Binnacle::create([
+            'user_id' => auth()->id(),
+            'status' => 'success',
+            'message' => "Se eliminó la cita de {$record->user->name}"
+        ]);
 
         $this->show_modal = false;
         $this->dispatch(event: 'refreshParent')->to(AppointmentsCalendar::class);
@@ -309,7 +328,6 @@ class AppointmentsComponent extends Component
 
     public function getAvailableHours($today)
     {
-        $currentTimeFormatted = now()->format('H:i:s');
         $availableHours = [];
 
         if ($today === 0) {

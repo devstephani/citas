@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Appointment;
+use App\Models\Binnacle;
 use App\Models\User;
 use App\Rules\Text;
 use Illuminate\Support\Facades\App;
@@ -73,6 +74,12 @@ class ClientModal extends Component
             'password' => Hash::make($this->password),
         ])->assignRole('client');
 
+        Binnacle::create([
+            'user_id' => auth()->id(),
+            'status' => 'success',
+            'message' => "Se registró el cliente {$this->name}"
+        ]);
+
         $this->resetUI();
     }
 
@@ -106,12 +113,24 @@ class ClientModal extends Component
             'active' => $this->active
         ]);
 
+        Binnacle::create([
+            'user_id' => auth()->id(),
+            'status' => 'success',
+            'message' => "Se actualizó el cliente {$user->name}"
+        ]);
+
         $this->resetUI();
     }
 
     public function delete(User $record)
     {
         $record->delete();
+
+        Binnacle::create([
+            'user_id' => auth()->id(),
+            'status' => 'warning',
+            'message' => "Se eliminó el cliente {$record->name}"
+        ]);
         $this->resetUI();
     }
 
@@ -119,6 +138,13 @@ class ClientModal extends Component
     {
         $user->update([
             'active' => ! $user->active
+        ]);
+
+        $message = $user->active ? 'activó' : 'desactivó';
+        Binnacle::create([
+            'user_id' => auth()->id(),
+            'status' => 'info',
+            'message' => "Se {$message} el cliente {$user->name}"
         ]);
 
         $this->dispatch('refreshParent')->to(Client::class);

@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Binnacle;
 use App\Models\Post as MPost;
 use App\Rules\Text;
 use Illuminate\Support\Facades\Storage;
@@ -74,6 +75,12 @@ class PostModal extends Component
             'user_id' => auth()->user()->id
         ]);
 
+        Binnacle::create([
+            'user_id' => auth()->id(),
+            'status' => 'success',
+            'message' => "Se registró la publicación {$this->title}"
+        ]);
+
         $this->resetUI();
         $this->dispatch('clean', ['content' => '']);
     }
@@ -120,12 +127,24 @@ class PostModal extends Component
             'description' => $this->description
         ]);
 
+        Binnacle::create([
+            'user_id' => auth()->id(),
+            'status' => 'success',
+            'message' => "Se actualizó la publicación {$post->title}"
+        ]);
+
         $this->resetUI();
     }
 
     public function delete(MPost $record)
     {
         $record->delete();
+
+        Binnacle::create([
+            'user_id' => auth()->id(),
+            'status' => 'warning',
+            'message' => "Se eliminó la publicación {$record->title}"
+        ]);
         $this->resetUI();
     }
 
@@ -133,6 +152,13 @@ class PostModal extends Component
     {
         $record->update([
             'active' => ! $record->active
+        ]);
+
+        $message = $record->active ? 'activó' : 'desactivó';
+        Binnacle::create([
+            'user_id' => auth()->id(),
+            'status' => 'info',
+            'message' => "Se {$message} la publicación {$record->title}"
         ]);
 
         $this->dispatch('refreshParent')->to(Post::class);

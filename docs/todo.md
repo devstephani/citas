@@ -20,8 +20,6 @@
 - Añadir funcion de ver en inputs password
 - sistema de puntuación para servicios y paquetes
 
-- bitacora
-
 # DONE
 ----------------------------------------------------------------------------------------
 ✔ Facturacion (7$)
