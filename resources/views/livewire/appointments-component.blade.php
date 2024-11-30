@@ -5,7 +5,7 @@
 
     <div class="p-8 mt-20">
         <div x-data="{ open: @entangle('show_modal'), selectedService: false, selectedPackage: false }">
-            <x-modal id="appointment-modal" maxWidth="md" wire:click="show_modal = true" wire:model="show_modal"
+            <x-modal id="appointment-modal" maxWidth="md" wire:click="show_modal = true" wire:model.self="show_modal"
                 class="mt-16 backdrop-brightness-100">
                 <div class="px-6 py-4">
                     <div class="text-lg font-medium text-gray-900">
@@ -232,9 +232,10 @@
                                     :disabled="Auth::user()->hasRole(['admin', 'employee']) && $id > 0" />
                                 <x-input-error for="payed" class="mt-2" />
                             </div>
+                            @if ($type === 'MOBILE' || $type === 'PAYPAL')
                             <div class="col-span-full sm:col-span-1">
                                 <x-label value="Referencia" for="ref" />
-                                <x-input wire:model.lazy="ref" placeholder="Ej: 0000" id="ref" name="ref"
+                                <x-input wire:model.lazy="ref" type="number" placeholder="Ej: 0000" id="ref" name="ref"
                                     @class([
                                         'w-full',
                                         'bg-neutral-200' =>
@@ -242,6 +243,7 @@
                                     ]) :disabled="Auth::user()->hasRole(['admin', 'employee']) && $id > 0" />
                                 <x-input-error for="ref" class="mt-2" />
                             </div>
+                            @endif
                         </article>
 
                         @if ($id >= 1)

@@ -78,6 +78,12 @@
                             <x-input-error for="email" class="mt-2" />
                         </div>
                         <div class="block">
+                            <x-label value="Teléfono" for="phone" />
+                            <x-input placeholder="Ej: 04125121212" wire:model.lazy="phone" type="number"
+                                id="phone" name="phone" class="w-full" autofocus autocomplete="off" required />
+                            <x-input-error for="phone" class="mt-2" />
+                        </div>
+                        <div class="block">
                             <x-label value="Contraseña" for="password" />
                             <x-input placeholder="Ej: *********" wire:model.lazy="password" type="password"
                                 id="password" name="password" required autocomplete="off" class="w-full" />

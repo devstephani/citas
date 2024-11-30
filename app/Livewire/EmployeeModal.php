@@ -22,7 +22,7 @@ class EmployeeModal extends Component
 
     public $showModal = false, $show_attendance_modal = false;
     public $id = null, $employee_attendances, $employee;
-    public $name, $email, $password, $active, $prevImg, $description, $available_services = [], $service_ids = [], $services = [];
+    public $name, $email, $password, $active, $phone, $prevImg, $description, $available_services = [], $service_ids = [], $services = [];
     public $current_date, $initial_date, $attendance_date;
     public $photo;
 
@@ -32,6 +32,7 @@ class EmployeeModal extends Component
     {
         return [
             'name' => ['required', 'min:4', 'max:80', new Text()],
+            'phone' => ['required', 'numeric', 'digits:11'],
             'description' => ['required', 'min:8', 'max:120', new Text()],
             'email' => ['required', 'email', Rule::unique('users')->where(function ($query) {
                 return $query->where('email', $this->email);
@@ -78,6 +79,9 @@ class EmployeeModal extends Component
             'photo.max' => 'Debe pesar máximo 1 MB',
             'photo.mimes' => 'Debe tener formato JPG',
             'photo.extensions' => 'Debe tener formato JPG',
+            'phone.required' => 'Debe indicar el teléfono',
+            'phone.numeric' => 'Debe ser un número',
+            'phone.digits' => 'Debe contener 11 dígitos',
         ];
     }
 
@@ -90,6 +94,7 @@ class EmployeeModal extends Component
             'name' => $this->name,
             'email' => $this->email,
             'password' => Hash::make($this->password),
+            'phone' => $this->phone
         ])->assignRole('employee');
 
         $employee = $user->employee()
@@ -121,6 +126,7 @@ class EmployeeModal extends Component
         $this->id = $record->id;
         $this->name = $record->user->name;
         $this->email = $record->user->email;
+        $this->phone = $record->user->phone;
         $this->active = $record->user->active;
         $this->description = $record->description;
         $this->photo = $record->photo;
@@ -151,7 +157,8 @@ class EmployeeModal extends Component
         $employee->user->update([
             'name' => $this->name,
             'email' => $this->email,
-            'active' => $this->active
+            'active' => $this->active,
+            'phone' => $this->phone
         ]);
 
         if (!empty($this->password)) {
@@ -242,6 +249,7 @@ class EmployeeModal extends Component
         $this->email = '';
         $this->password = '';
         $this->active = '';
+        $this->phone = '';
         $this->id = '';
         $this->showModal = false;
         $this->photo = '';

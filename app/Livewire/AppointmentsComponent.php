@@ -84,7 +84,7 @@ class AppointmentsComponent extends Component
             ],
             'ref' => [
                 'sometimes',
-                Rule::when($this->type === 'PagoMóvil' || $this->type === 'Paypal', 'required|min:3|max:8|regex:/^[0-9]+$/')
+                Rule::when($this->type === 'MOBILE' || $this->type === 'PAYPAL', 'required|digits_between:3,8|regex:/^[0-9]+$/')
             ]
         ];
     }
@@ -108,8 +108,7 @@ class AppointmentsComponent extends Component
             'payed.max' => 'Debe ser máximo :min',
             'payed.numeric' => 'Debe ser un número',
             'ref.required' => 'Debe indicar el número de referencia',
-            'ref.min' => 'Debe ser al menos :min dígitos',
-            'ref.max' => 'Debe ser máximo :min dígitos',
+            'ref.digits_between' => 'Debe entre :min y :max dígitos',
             'ref.regex' => 'Debe ser un número',
         ];
     }
@@ -248,6 +247,10 @@ class AppointmentsComponent extends Component
     {
         $this->selected_date = $date;
         $today = now()->format('Y-m-d');
+        $selected_date = \Carbon\Carbon::createFromFormat('Y-m-d', $date)
+            ->dayOfWeek;
+
+        $this->hours = $this->getAvailableHours($selected_date);
 
         $date > $today
             ? $this->currentTimeFormatted = null
@@ -258,17 +261,21 @@ class AppointmentsComponent extends Component
     {
         $final_date = "$this->selected_date $this->selected_time";
 
-        $occupied = Appointment::where(function ($query) {
-            $query->where('service_id', $this->selected_service)
-                ->orWhere('package_id', $this->selected_package);
-        })->where('picked_date', '=', $final_date)
+        $occupied = Appointment::where('picked_date', '=', $final_date)
+            ->where(function ($query) {
+                $query->whereNotNull('service_id')
+                ->where('service_id', $this->selected_service)
+                ->orWhere(function ($query) {
+                    $query->whereNotNull('package_id')
+                        ->where('package_id', $this->selected_package);
+                });
+            })
             ->exists();
 
         if (!$occupied) {
             $this->validate();
 
             $user = User::find($this->client_id ?? Auth::user()->id);
-
             Appointment::create([
                 'status' => 0,
                 'user_id' => $user->id,
@@ -334,6 +341,8 @@ class AppointmentsComponent extends Component
         $this->type = null;
         $this->ref = null;
         $this->modifying = null;
+        $this->service_id = null;
+        $this->package_id = null;
     }
 
     public function getAvailableHours($today)
@@ -382,12 +391,17 @@ class AppointmentsComponent extends Component
         $user = auth()->user();
         $this->services = $user->hasRole('admin')
             ? Service::where('active', 1)->get()
-            : Service::with('employees')
-            ->whereHas('employees', function ($query) use ($user) {
-                $query->where('employee_id', $user->employee->id);
-            })
-            ->where('active', 1)
-            ->get();
+            :
+            (
+                $user->hasRole('employees')
+                    ? Service::with('employees')
+                    ->whereHas('employees', function ($query) use ($user) {
+                        $query->where('employee_id', $user->employee->id);
+                    })
+                    ->where('active', 1)
+                    ->get()
+                    : Service::where('active', 1)->get()
+            );
         $this->packages = Package::where('active', 1)->get();
 
         $user_appointments = Payment::whereHas('appointment', function ($query) {
