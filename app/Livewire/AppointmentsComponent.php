@@ -23,12 +23,12 @@ use Snowfire\Beautymail\Beautymail;
 class AppointmentsComponent extends Component
 {
     #[Url]
-    public $service_id, $package_id, $currentTimeFormatted;
-    public $show_modal = false, $discount = false;
+    public $service_id, $package_id;
+    public $show_modal = false, $discount = false, $currentTimeFormatted, $modifying;
     public $id = 0, $currency_api = 0, $client_name, $client_id = null, $clients, $services, $packages, $selected_service = 0, $selected_package = 0, $m_service, $m_package, $selected_date, $selected_time, $status, $registered_local, $type, $currency, $payed, $ref, $frequent_appointments, $selected_frequent_appointment, $note = null;
 
     private $pagination = 20;
-    protected $listeners = ['toggle', 'set_selected_day', 'edit', 'delete', 'set_appointment', 'rate'];
+    protected $listeners = ['toggle', 'set_selected_day', 'edit', 'delete', 'set_appointment', 'rate', 'confirm', 'modify'];
 
     public $hours = [
         ['value' => '08:00:00', 'text' => '08:00 am'],
@@ -151,6 +151,7 @@ class AppointmentsComponent extends Component
         $this->ref = $record->payment->ref;
         $this->currency = $record->payment->currency->value;
         $this->type = $record->payment->type->value;
+        $this->modifying = $record->re_assigned;
     }
 
     public function update()
@@ -164,7 +165,8 @@ class AppointmentsComponent extends Component
             'package' => $this->selected_package ?? null,
             'picked_date' => "$date $this->selected_time",
             'status' => $this->status,
-            'note' => $this->note
+            'note' => $this->note,
+            're_assigned' => 0,
         ]);
         $record->payment()->update([
             'payed' => $this->payed,
@@ -245,6 +247,11 @@ class AppointmentsComponent extends Component
     public function set_selected_day($date)
     {
         $this->selected_date = $date;
+        $today = now()->format('Y-m-d');
+
+        $date > $today
+            ? $this->currentTimeFormatted = null
+            : $this->currentTimeFormatted = now()->format('H:i:s');
     }
 
     public function save()
@@ -326,6 +333,7 @@ class AppointmentsComponent extends Component
         $this->payed = null;
         $this->type = null;
         $this->ref = null;
+        $this->modifying = null;
     }
 
     public function getAvailableHours($today)
@@ -371,7 +379,15 @@ class AppointmentsComponent extends Component
         $today = now()->today()->dayOfWeek;
         $this->hours = $this->getAvailableHours($today);
 
-        $this->services = Service::where('active', 1)->get();
+        $user = auth()->user();
+        $this->services = $user->hasRole('admin')
+            ? Service::where('active', 1)->get()
+            : Service::with('employees')
+            ->whereHas('employees', function ($query) use ($user) {
+                $query->where('employee_id', $user->employee->id);
+            })
+            ->where('active', 1)
+            ->get();
         $this->packages = Package::where('active', 1)->get();
 
         $user_appointments = Payment::whereHas('appointment', function ($query) {
@@ -379,9 +395,8 @@ class AppointmentsComponent extends Component
         })->count();
 
         $this->discount = $user_appointments % 4 === 0;
-        $this->currentTimeFormatted = now()->format('H:i:s');
 
-        if (Auth::user()->hasAnyRole('admin', 'employee')) {
+        if ($user->hasAnyRole('admin', 'employee')) {
             $this->clients = User::whereHas('roles', function ($query) {
                 $query->where('name', 'client');
             })->get();
@@ -390,9 +405,17 @@ class AppointmentsComponent extends Component
 
     public function rate(int $stars, Appointment $record)
     {
-        $record->update([
-            'stars' => $stars
-        ]);
+        $record->update(['stars' => $stars]);
+    }
+
+    public function confirm(Appointment $record)
+    {
+        $record->update(['accepted' => 1]);
+    }
+
+    public function modify(Appointment $record)
+    {
+        $record->update(['re_assigned' => 1]);
     }
 
     #[Layout('layouts.app')]
@@ -427,9 +450,26 @@ class AppointmentsComponent extends Component
         $user = auth()->user();
         if ($user->hasRole('admin')) {
             $appointments = Appointment::with('payment')
+                ->where(function ($query) {
+                    $query->whereNull('re_assigned')
+                        ->orWhere('re_assigned', 0);
+                })
                 ->orderByDesc('created_at')
                 ->paginate($this->pagination);
         }
+
+        if ($user->hasRole('employee')) {
+            $appointments = Appointment::with(['payment', 'service', 'service.employees'])
+                ->whereHas('service', function ($query) use ($user) {
+                    $query->whereHas('employees', function ($query) use ($user) {
+                        $query->where('employee_id', $user->employee->id);
+                    });
+                })
+                ->orderByDesc('created_at')
+                ->paginate($this->pagination);
+        }
+
+
         if ($user->hasRole('client')) {
             $appointments = Appointment::with('payment')
                 ->where('user_id', $user->id)

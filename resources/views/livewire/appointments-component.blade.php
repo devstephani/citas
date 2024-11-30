@@ -85,8 +85,10 @@
                                         name="selected_service" required @class([
                                             'w-full',
                                             'bg-neutral-200' =>
-                                                !Auth::user()->hasAnyRole(['admin', 'employee']) && $id > 0,
-                                        ]) :disabled="!Auth::user()->hasAnyRole(['admin', 'employee']) && $id > 0">
+                                                (!Auth::user()->hasAnyRole(['admin', 'employee']) && $id > 0) ||
+                                                $modifying > 0,
+                                        ]) :disabled="(!Auth::user()->hasAnyRole(['admin', 'employee']) && $id > 0) ||
+                                            $modifying > 0">
                                         @foreach ($services as $service)
                                             <option value="{{ $service->id }}"
                                                 {{ $selected_service === $service->id ? 'selected' : '' }}>
@@ -97,25 +99,27 @@
                                     <x-input-error for="selected_service" class="mt-2" />
                                 </div>
                             @endif
-                            @if (is_null($selected_service))
-                                <div class="col-span-full">
-                                    <x-label value="Paquetes" for="selected_package" />
-                                    <x-select wire:model.live="selected_package" id="selected_package"
-                                        name="selected_package" required @class([
-                                            'w-full',
-                                            'bg-neutral-200' =>
-                                                !Auth::user()->hasAnyRole(['admin', 'employee']) && $id > 0,
-                                        ]) :disabled="!Auth::user()->hasAnyRole(['admin', 'employee']) && $id > 0">
-                                        @foreach ($packages as $package)
-                                            <option value="{{ $package->id }}"
-                                                {{ $selected_package === $package->id ? 'selected' : '' }}>
-                                                {{ $package->name }}
-                                            </option>
-                                        @endforeach
-                                    </x-select>
-                                    <x-input-error for="selected_package" class="mt-2" />
-                                </div>
-                            @endif
+                            @hasanyrole(['admin', 'client'])
+                                @if (is_null($selected_service))
+                                    <div class="col-span-full">
+                                        <x-label value="Paquetes" for="selected_package" />
+                                        <x-select wire:model.live="selected_package" id="selected_package"
+                                            name="selected_package" required @class([
+                                                'w-full',
+                                                'bg-neutral-200' =>
+                                                    !Auth::user()->hasAnyRole(['admin', 'employee']) && $id > 0,
+                                            ]) :disabled="!Auth::user()->hasAnyRole(['admin', 'employee']) && $id > 0">
+                                            @foreach ($packages as $package)
+                                                <option value="{{ $package->id }}"
+                                                    {{ $selected_package === $package->id ? 'selected' : '' }}>
+                                                    {{ $package->name }}
+                                                </option>
+                                            @endforeach
+                                        </x-select>
+                                        <x-input-error for="selected_package" class="mt-2" />
+                                    </div>
+                                @endif
+                            @endhasanyrole
                             <div class="col-span-full">
                                 <x-label value="Hora" for="selected_time" />
                                 <x-select wire:model.live="selected_time" id="selected_time" name="selected_time"
@@ -126,7 +130,7 @@
                                     ])>
                                     @foreach ($hours as $hour)
                                         <option value="{{ $hour['value'] }}"
-                                            {{ $currentTimeFormatted > $hour['value'] ? 'disabled' : '' }}>
+                                            {{ !is_null($currentTimeFormatted) && $currentTimeFormatted > $hour['value'] ? 'disabled' : '' }}>
                                             {{ $hour['text'] }}</option>
                                     @endforeach
 
@@ -138,7 +142,7 @@
                                 <div class="col-span-full">
                                     <x-label value="Estado" for="status" />
                                     <x-select wire:model.live="status" id="status" name="status" required
-                                        class="w-full">
+                                        @class(['w-full', 'bg-neutral-200' => $modifying > 0]) :disabled="$modifying > 0">
                                         <option value="0" {{ $status === 0 ? 'selected' : '' }}>Pendiente</option>
                                         <option value="1" {{ $status === 1 ? 'selected' : '' }}>Pagado</option>
                                         <option value="2" {{ $status === 2 ? 'selected' : '' }}>Cancelado</option>
@@ -266,7 +270,7 @@
         <livewire:appointments-calendar week-starts-at="1" day-of-week-view="components/calendar-days-header"
             day-view="components/calendar-day" before-calendar-view="components/before-calendar-view" />
 
-        @if (Auth::user()->hasRole('admin'))
+        @if (Auth::user()->hasAnyRole(['admin', 'employee']))
             <div class="p-4 overflow-x-auto shadow-md">
                 <table class="w-full text-sm text-left text-gray-400 bg-white rounded-md border border-neutral-400">
                     <thead class="border-b text-xs text-gray-700 uppercase bg-gray-50">
@@ -299,8 +303,16 @@
                                 Referencia
                             </th>
                             <th scope="col" class="px-6 py-3">
+                                Confirmada
+                            </th>
+                            <th scope="col" class="px-6 py-3">
                                 Cita para
                             </th>
+                            @role('admin')
+                                <th scope="col" class="px-6 py-3">
+                                    Acciones
+                                </th>
+                            @endrole
                         </tr>
                     </thead>
                     <tbody class="divide-y -space-x-2">
@@ -350,8 +362,24 @@
                                     {{ $appointment->payment->ref ?? '' }}
                                 </td>
                                 <td class="px-6 py-4">
+                                    <p @class([
+                                        'text-green-400' => $appointment->accepted,
+                                        'text-red-400' => !$appointment->accepted,
+                                    ])>
+                                        {{ $appointment->accepted ? 'Si' : 'No' }}
+                                    </p>
+                                </td>
+                                <td class="px-6 py-4">
                                     {{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $appointment->picked_date)->translatedFormat('l, d F Y') }}
                                 </td>
+                                @role('admin')
+                                    @if ($appointment->accepted)
+                                        <td class="px-6 py-4">
+                                            <x-button wire:click="confirm({{ $appointment->id }})">Confirmar</x-button>
+                                            <x-button wire:click="modify({{ $appointment->id }})">Re-agendar</x-button>
+                                        </td>
+                                    @endif
+                                @endrole('admin')
                             </tr>
                         @endforeach
                     </tbody>

@@ -25,7 +25,7 @@ class CreateNewUser implements CreatesNewUsers
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => $this->passwordRules(),
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
-        ])->validate();
+        ], $this->messages())->validate();
 
         return User::create([
             'name' => $input['name'],
@@ -33,5 +33,24 @@ class CreateNewUser implements CreatesNewUsers
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
         ])->assignRole('client');
+    }
+
+    public function messages()
+    {
+        return [
+            'name.required' => 'Debe indicar el nombre',
+            'name.string' => 'Debe ser un texto',
+            'name.max' => 'Debe contener máximo :max caracteres',
+            'phone.required' => 'Debe indicar el teléfono',
+            'phone.numeric' => 'Debe ser un número',
+            'phone.digits' => 'Debe contener 11 dígitos',
+            'email.required' => 'Debe indicar el correo electrónico',
+            'email.string' => 'Debe ser un texto',
+            'email.email' => 'Debe ser un correo electrónico válido',
+            'email.max' => 'Debe contener máximo :max caracteres',
+            'email.unique' => 'Este correo ya se encuentra registrado',
+            'password.required' => 'Debe indicar la contraseña',
+            'password.string' => 'Debe ser un texto',
+        ];
     }
 }

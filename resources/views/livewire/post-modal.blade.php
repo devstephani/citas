@@ -73,6 +73,9 @@
                         Publicar
                     </x-button>
                 @endif
+                <x-button type="button" @click="show = false">
+                    Cerrar
+                </x-button>
             </div>
         </div>
     </x-modal>

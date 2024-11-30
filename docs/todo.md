@@ -13,22 +13,9 @@
   - Observer?
 - Re-name (modules, views)
 
-- Cita
-  - mostrar solo servicios del empleado, ocultar paquetes
-  - validar cita solo cuando es el mismo día, fecha posterior no tiene validación de hora.
-  - citas en tabla, acciones.
-    - confirmar
-    - re-agendar
-      - horas y nota (editable)
 - Modals
   - Se cierra al limpiar un campo
   - Añadir botón para cerrar
-- Servicios
-  - Asignar empleado (admin)
-- Empleados
-  - Editar y no publicar (solo en blog)
-- CreateNewUser
-  - Custom messages
 
 # DONE
 ----------------------------------------------------------------------------------------

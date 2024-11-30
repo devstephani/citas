@@ -15,7 +15,8 @@
                     @foreach ($services as $service)
                         <div class="col-lg-4 col-sm-6">
                             <div class="single-exclusive-four">
-                                <img src="{{ asset('storage/' . $service->image) }}" alt="Image" class="h-[30.5rem] w-[31rem]">
+                                <img src="{{ asset('storage/' . $service->image) }}" alt="Image"
+                                    class="h-[30.5rem] w-[31rem]">
                                 <div class="exclusive-content">
                                     <h3>{{ $service->name }}</h3>
                                     <span class="review">
@@ -52,6 +53,10 @@
     @endrole
 
     @hasanyrole(['admin', 'employee'])
+        @php
+
+            $user = auth()->user();
+        @endphp
         <div class="relative overflow-x-auto">
             <div class="flex flex-col sm:flex-row justify-between gap-3">
 
@@ -74,9 +79,11 @@
                             <th scope="col" class="px-6 py-3">
                                 Descripción
                             </th>
-                            <th scope="col" class="px-6 py-3">
-                                Empleados
-                            </th>
+                            @role('admin')
+                                <th scope="col" class="px-6 py-3">
+                                    Empleados
+                                </th>
+                            @endrole
                             <th scope="col" class="px-6 py-3">
                                 Tipo
                             </th>
@@ -95,7 +102,21 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y -space-x-2">
+
                         @foreach ($services as $service)
+                            @php
+                                $match = $user->hasRole('admin');
+
+                                if (!$match) {
+                                    $employees = $service
+                                        ->employees()
+                                        ->where('employee_id', $user->employee->id)
+                                        ->pluck('employees.id')
+                                        ->toArray();
+
+                                    $match = in_array($user->employee->id, $employees);
+                                }
+                            @endphp
                             <tr class="">
                                 <th scope="row"
                                     class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -107,17 +128,19 @@
                                 <td class="px-6 py-4">
                                     {{ $service->description }}
                                 </td>
-                                <td class="px-6 py-4">
-                                    @if (count($service->employees) > 0)
-                                        <ul class="flex flex-col gap-2">
-                                            @foreach ($service->employees as $employee)
-                                                <li class="list-disc">{{ $employee->user->name }}</li>
-                                            @endforeach
-                                        </ul>
-                                    @else
-                                        <p class="text-gray-600">Sin empleados</p>
-                                    @endif
-                                </td>
+                                @role('admin')
+                                    <td class="px-6 py-4">
+                                        @if (count($service->employees) > 0)
+                                            <ul class="flex flex-col gap-2">
+                                                @foreach ($service->employees as $employee)
+                                                    <li class="list-disc">{{ $employee->user->name }}</li>
+                                                @endforeach
+                                            </ul>
+                                        @else
+                                            <p class="text-gray-600">Sin empleados</p>
+                                        @endif
+                                    </td>
+                                @endrole
                                 <td class="px-6 py-4">
                                     {{ $service->type->name }}
                                 </td>
@@ -149,9 +172,12 @@
                                 </td>
                                 <td class="px-6 py-4">
                                     <div class="flex gap-3">
-                                        <x-lucide-pencil class="size-5 hover:text-blue-600 cursor-pointer"
-                                            wire:click="$dispatch('edit', { record: {{ $service->id }}})"
-                                            title="Editar" />
+
+                                        @if ($user->hasAnyRole(['admin', 'employee']) && $match)
+                                            <x-lucide-pencil class="size-5 hover:text-blue-600 cursor-pointer"
+                                                wire:click="$dispatch('edit', { record: {{ $service->id }}})"
+                                                title="Editar" />
+                                        @endif
                                         @role('admin')
                                             <x-lucide-trash class="size-5 hover:text-blue-600 cursor-pointer"
                                                 onclick="delete_alert({{ $service->id }})" title="Eliminar" />

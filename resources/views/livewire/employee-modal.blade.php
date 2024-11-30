@@ -1,23 +1,23 @@
 <div class="py-4 px-4 sm:p-4">
-    @if ($show_attendance_modal)
-        <div x-data="{ open: @entangle('show_attendance_modal') }">
-            <x-modal id="attendance-modal" maxWidth="md" wire:click.away="show_attendance_modal = false"
-                wire:model="show_attendance_modal">
-                <div class="px-6 py-4">
-                    <div class="text-lg font-medium text-gray-900">
-                        Asistencia de {{ $name }}
-                    </div>
+    <div x-data="{ open: @entangle('show_attendance_modal') }">
+        <x-modal id="attendance-modal" maxWidth="md" wire:click.away="show_attendance_modal = false"
+            wire:model="show_attendance_modal">
+            <div class="px-6 py-4">
+                <div class="text-lg font-medium text-gray-900">
+                    Asistencia de {{ $name }}
+                </div>
 
-                    <x-label for="attendance_date" value="{{ __('Fecha a buscar') }}" />
-                    <x-input wire:model.live="attendance_date" type="date" :min="$initial_date" :max="$current_date"
-                        class="w-full mt-2" />
+                <x-label for="attendance_date" value="{{ __('Fecha a buscar') }}" />
+                <x-input wire:model.live="attendance_date" type="date" :min="$initial_date" :max="$current_date"
+                    class="w-full mt-2" />
 
-                    <div wire:loading wire:target="attendance_date">
-                        <p class="text-gray-600">Cargando asistencias, por favor espere...</p>
-                    </div>
+                <div wire:loading wire:target="attendance_date">
+                    <p class="text-gray-600">Cargando asistencias, por favor espere...</p>
+                </div>
 
-                    <div class="mt-4 text-sm text-gray-600">
-                        <ul class="mb-4 grid grid-cols-5 gap-4">
+                <div class="mt-4 text-sm text-gray-600">
+                    <ul class="mb-4 grid grid-cols-5 gap-4">
+                        @if (!is_null($employee_attendances))
                             @foreach ($employee_attendances as $attendance)
                                 <li class="col-span-1">
                                     <span class="font-bold">
@@ -28,16 +28,16 @@
                                     {{ $attendance->created_at->translatedFormat('l, d F Y - h:i:s a') }}
                                 </li>
                             @endforeach
-                        </ul>
+                        @endif
+                    </ul>
 
-                        <x-button type="button" wire:click="show_attendance_modal = false">
-                            Cerrar
-                        </x-button>
-                    </div>
+                    <x-button type="button" wire:click="show_attendance_modal = false">
+                        Cerrar
+                    </x-button>
                 </div>
-            </x-modal>
-        </div>
-    @endif
+            </div>
+        </x-modal>
+    </div>
 
     <div x-data="{ open: @entangle('showModal') }">
         <x-button wire:click="$dispatch('pdf')" class="w-full sm:w-fit gap-3" title="Imprimir reporte">
@@ -134,12 +134,15 @@
                         <x-button type="button" wire:click="update()" wire:loading.attr="disabled">
                             Actualizar
                         </x-button>
+                    @else
+                        <x-button type="button" wire:click="save()" wire:loading.attr="disabled">
+                            Registrar
+                        </x-button>
+                    @endif
+                    <x-button type="button" @click="show = false">
+                        Cerrar
+                    </x-button>
                 </div>
-            @else
-                <x-button type="button" wire:click="save()" wire:loading.attr="disabled">
-                    Registrar
-                </x-button>
-                @endif
             </div>
         </x-modal>
     </div>

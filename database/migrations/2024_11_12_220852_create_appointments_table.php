@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->boolean('discount')->default(false);
             $table->boolean('registered_local');
+            $table->boolean('accepted')->nullable();
+            $table->boolean('re_assigned')->nullable();
             $table->integer('status');
             $table->integer('stars')->nullable();
             $table->datetime('picked_date');

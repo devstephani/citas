@@ -18,7 +18,7 @@ class ServiceModal extends Component
 
     public $showModal = false;
     public $id = null;
-    public $name, $description, $active, $price, $type, $prevImg;
+    public $name, $description, $active, $price, $type, $prevImg, $available_employees = [], $employee_ids = [], $employees = [];
     public $image;
 
     protected $listeners = ['edit', 'toggle', 'toggle_active', 'delete'];
@@ -37,6 +37,10 @@ class ServiceModal extends Component
                 'nullable',
                 Rule::when(!is_string($this->image), 'required|image|max:1024|mimes:jpg')
             ],
+            'employee_ids' => [
+                'nullable',
+                Rule::when($this->id > 0 && count($this->employee_ids), 'required|exists:employees,id')
+            ]
         ];
     }
 
@@ -83,6 +87,9 @@ class ServiceModal extends Component
             'user_id' => auth()->user()->id
         ]);
 
+        $service->employees()->sync($this->employee_ids);
+
+
         Binnacle::create([
             'user_id' => auth()->id(),
             'status' => 'success',
@@ -109,6 +116,8 @@ class ServiceModal extends Component
         $this->image = $record->image;
         $this->prevImg = $record->image;
         $this->active = $record->active;
+        $this->employees = $record->employees()->pluck('employees.id')->toArray();
+        $this->employee_ids = $this->employees;
     }
 
     public function update()
@@ -132,6 +141,9 @@ class ServiceModal extends Component
             'type' => TypeEnum::from($this->type->value),
             'active' => $this->active,
         ]);
+
+        $service->employees()->sync($this->employee_ids);
+
 
         Binnacle::create([
             'user_id' => auth()->id(),
@@ -182,16 +194,19 @@ class ServiceModal extends Component
         $this->image = '';
         $this->prevImg = '';
         $this->active = '';
+        $this->available_employees = [];
         $this->showModal = false;
         $this->dispatch('refreshParent')->to(Services::class);
     }
 
     public function render()
     {
-        $employees = Employee::get();
+        $this->available_employees = Employee::with('user')
+            ->whereHas('user', function ($query) {
+                $query->where('active', 1);
+            })
+            ->get();
 
-        return view('livewire.service-modal', [
-            'employees' => $employees
-        ]);
+        return view('livewire.service-modal');
     }
 }

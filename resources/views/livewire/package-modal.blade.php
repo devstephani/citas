@@ -4,10 +4,10 @@
         Reportes
     </x-button>
     @if (auth()->user()->hasRole('admin'))
-    <x-button wire:click="toggle" class="w-full sm:w-fit gap-3" title="Registrar paquete">
-        <x-lucide-plus class="size-5" />
-        Paquete
-    </x-button>
+        <x-button wire:click="toggle" class="w-full sm:w-fit gap-3" title="Registrar paquete">
+            <x-lucide-plus class="size-5" />
+            Paquete
+        </x-button>
     @endif
 
     <x-modal id="package-modal" maxWidth="md" wire:model="showModal">
@@ -89,6 +89,9 @@
                         Registrar
                     </x-button>
                 @endif
+                <x-button type="button" @click="show = false">
+                    Cerrar
+                </x-button>
             </div>
         </div>
     </x-modal>

@@ -4,10 +4,10 @@
         Reportes
     </x-button>
     @role('admin')
-    <x-button wire:click="toggle" class="w-full sm:w-fit gap-3" title="Registrar servicio">
-        <x-lucide-plus class="size-5" />
-        Servicio
-    </x-button>
+        <x-button wire:click="toggle" class="w-full sm:w-fit gap-3" title="Registrar servicio">
+            <x-lucide-plus class="size-5" />
+            Servicio
+        </x-button>
     @endrole
 
     <x-modal id="service-modal" maxWidth="md" wire:model="showModal">
@@ -51,6 +51,21 @@
                         </x-select>
                         <x-input-error for="type" class="mt-2" />
                     </div>
+                    @role('admin')
+                        <div class="block">
+                            <x-label value="Empleados" for="employee_ids" />
+                            <x-select wire:model.lazy="employee_ids" id="employee_ids" name="employee_ids[]" multiple
+                                required class="w-full" no_default>
+                                @foreach ($available_employees as $employee)
+                                    <option value="{{ $employee->id }}"
+                                        {{ in_array($employee->id, $employees) ? 'selected' : '' }}>
+                                        {{ $employee->user->name }}
+                                    </option>
+                                @endforeach
+                            </x-select>
+                            <x-input-error for="service_ids" class="mt-2" />
+                        </div>
+                    @endrole
                     @if ($id > 0)
                         <div class="block">
                             <x-label value="Activo" for="active" />
@@ -87,6 +102,9 @@
                         Registrar
                     </x-button>
                 @endif
+                <x-button type="button" @click="show = false">
+                    Cerrar
+                </x-button>
             </div>
         </div>
     </x-modal>
