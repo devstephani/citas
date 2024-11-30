@@ -34,7 +34,7 @@ class EmployeeModal extends Component
             'name' => ['required', 'min:4', 'max:80', new Text()],
             'description' => ['required', 'min:8', 'max:120', new Text()],
             'email' => ['required', 'email', Rule::unique('users')->where(function ($query) {
-                return $query->where('email', $this->id);
+                return $query->where('email', $this->email);
             })->ignore($this->id)],
             'active' => ['boolean', Rule::excludeIf($this->id == null)],
             'password' => [

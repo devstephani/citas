@@ -13,10 +13,6 @@
   - Observer?
 - Re-name (modules, views)
 
-- Modals
-  - Se cierra al limpiar un campo
-  - Añadir botón para cerrar
-
 # DONE
 ----------------------------------------------------------------------------------------
 ✔ Facturacion (7$)

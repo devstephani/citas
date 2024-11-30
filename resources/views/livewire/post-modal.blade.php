@@ -4,7 +4,7 @@
         Publicación
     </x-button>
 
-    <x-modal id="service-modal" maxWidth="lg" wire:model="showModal">
+    <x-modal id="service-modal" maxWidth="lg" wire:model.self="showModal">
         <div class="px-6 py-4">
             <div class="text-lg font-medium text-gray-900">
                 Nueva publicación

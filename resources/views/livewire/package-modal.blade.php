@@ -10,7 +10,7 @@
         </x-button>
     @endif
 
-    <x-modal id="package-modal" maxWidth="md" wire:model="showModal">
+    <x-modal id="package-modal" maxWidth="md" wire:model.self="showModal">
         <div class="px-6 py-4">
             <div class="text-lg font-medium text-gray-900">
                 @if ($id > 0)

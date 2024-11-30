@@ -1,7 +1,7 @@
 <div class="py-4 px-4 sm:p-4">
     <div x-data="{ open: @entangle('show_attendance_modal') }">
         <x-modal id="attendance-modal" maxWidth="md" wire:click.away="show_attendance_modal = false"
-            wire:model="show_attendance_modal">
+            wire:model.self="show_attendance_modal">
             <div class="px-6 py-4">
                 <div class="text-lg font-medium text-gray-900">
                     Asistencia de {{ $name }}
@@ -40,16 +40,18 @@
     </div>
 
     <div x-data="{ open: @entangle('showModal') }">
-        <x-button wire:click="$dispatch('pdf')" class="w-full sm:w-fit gap-3" title="Imprimir reporte">
+        <x-button type="button" wire:click="$dispatch('pdf')" class="w-full sm:w-fit gap-3" title="Imprimir reporte">
             <x-lucide-file-text class="size-5" />
-            Asistencias
+            Reportes
         </x-button>
-        <x-button wire:click="toggle" class="w-full sm:w-fit gap-3" title="Registrar empleado">
-            <x-lucide-plus class="size-5" />
-            Empleado
-        </x-button>
+        @role('admin')
+            <x-button wire:click="toggle" class="w-full sm:w-fit gap-3" title="Registrar empleado">
+                <x-lucide-plus class="size-5" />
+                Empleado
+            </x-button>
+        @endrole
 
-        <x-modal id="employees-modal" maxWidth="md" wire:model="showModal">
+        <x-modal id="service-modal" maxWidth="md" wire:model.self="showModal">
             <div class="px-6 py-4">
                 <div class="text-lg font-medium text-gray-900">
                     @if ($id > 0)
@@ -68,11 +70,11 @@
                             <x-input-error for="name" class="mt-2" />
                         </div>
                         <div class="block">
-                            <x-label value="Correo" for="email" />
-                            <input type="email" name="email" style="display:none">
+                            <x-label value="Correo" for="correo" />
+                            <input type="email" style="display:none">
 
-                            <x-input placeholder="Ej: correo@email.com" wire:model.lazy="email" type="email"
-                                id="email" name="email" class="w-full" autocomplete="new-password" required />
+                            <x-input placeholder="Ej: correo@email.com" type="email" wire:model.lazy="email"
+                                name="correo" class="w-full" required />
                             <x-input-error for="email" class="mt-2" />
                         </div>
                         <div class="block">
@@ -146,4 +148,5 @@
             </div>
         </x-modal>
     </div>
+
 </div>
