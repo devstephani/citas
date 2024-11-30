@@ -22,10 +22,14 @@ class AppointmentsCalendar extends LivewireCalendar
                 ? Appointment::where(function ($query) {
                     $query->whereNot('status', 0)
                         ->whereHas('service', function ($q) {
-                            $q->where('employee_id', Auth::user()->employee->id);
+                            $q->whereHas('employees', function ($q) {
+                                $q->where('employee_id', Auth::user()->employee->id);
+                            });
                         })->orWhereHas('package', function ($q) {
                             $q->whereHas('services', function ($q) {
-                                $q->where('employee_id', Auth::user()->employee->id);
+                                $q->whereHas('employees', function ($q) {
+                                    $q->where('employee_id', Auth::user()->employee->id);
+                                });
                             });
                         });
                 })->get()

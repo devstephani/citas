@@ -84,7 +84,7 @@
                                     @endif
                                 @endrole
                                 @role('employee')
-                                    @if ($service->active)
+                                    @if ($post->active)
                                         <x-lucide-circle-check class="size-5 text-green-700" />
                                     @else
                                         <x-lucide-circle-slash class="size-5 text-red-700" />
@@ -99,9 +99,11 @@
                                     <a href="{{ route('post.id', $post->id) }}" title="Ver publicación">
                                         <x-lucide-eye class="size-5 hover:text-blue-600 cursor-pointer" />
                                     </a>
+                                    @if (auth()->user()->hasRole('employee') && $post->user_id === auth()->id())
                                     <x-lucide-pencil class="size-5 hover:text-blue-600 cursor-pointer"
                                         wire:click="$dispatch('edit', { record: {{ $post->id }}})"
                                         title="Editar" />
+                                        @endif
                                     @role('admin')
                                         <x-lucide-trash class="size-5 hover:text-blue-600 cursor-pointer"
                                             onclick="delete_alert({{ $post->id }})" title="Eliminar" />

@@ -12,7 +12,7 @@
                     <div class="single-news">
                         <div class="news-img">
                             <div class="flex justify-center">
-                                <img style="width: 50%; border-radius: 10px;" class="h-[200px]"
+                                <img style="width: 50%; border-radius: 10px;" class="h-[18rem]"
                                     src="{{ $employee->get_image() }}" alt="Image">
                             </div>
 

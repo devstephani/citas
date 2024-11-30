@@ -15,7 +15,7 @@
                     @foreach ($services as $service)
                         <div class="col-lg-4 col-sm-6">
                             <div class="single-exclusive-four">
-                                <img src="{{ asset('storage/' . $service->image) }}" alt="Image">
+                                <img src="{{ asset('storage/' . $service->image) }}" alt="Image" class="h-[30.5rem] w-[31rem]">
                                 <div class="exclusive-content">
                                     <h3>{{ $service->name }}</h3>
                                     <span class="review">

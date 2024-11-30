@@ -15,7 +15,7 @@
                     @foreach ($packages as $package)
                         <div class="col-lg-4 col-sm-6">
                             <div class="single-exclusive-four">
-                                <img src="{{ asset('storage/' . $package->image) }}" alt="Image">
+                                <img src="{{ asset('storage/' . $package->image) }}" alt="Image" class="h-[30.5rem] w-[31rem]">
                                 <div class="exclusive-content">
                                     <h3>{{ $package->name }}</h3>
                                     <span class="review">
@@ -86,9 +86,11 @@
                             <th scope="col" class="px-6 py-3">
                                 Activo
                             </th>
+                            @role('admin')
                             <th scope="col" class="px-6 py-3">
                                 Acciones
                             </th>
+                            @endrole
                         </tr>
                     </thead>
                     <tbody>
@@ -137,17 +139,17 @@
                                         @endif
                                     @endrole
                                 </td>
+                                @role('admin')
                                 <td class="px-6 py-4">
                                     <div class="flex gap-3">
                                         <x-lucide-pencil class="size-5 hover:text-blue-600 cursor-pointer"
                                             wire:click="$dispatch('edit', { record: {{ $package->id }}})"
                                             title="Editar" />
-                                        @role('admin')
                                             <x-lucide-trash class="size-5 hover:text-blue-600 cursor-pointer"
                                                 onclick="delete_alert({{ $package->id }})" title="Eliminar" />
+                                            </div>
+                                        </td>
                                         @endrole
-                                    </div>
-                                </td>
                             </tr>
                         @endforeach
                     </tbody>

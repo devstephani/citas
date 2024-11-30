@@ -19,7 +19,7 @@
 
                     <div class="mt-4 text-sm text-gray-600">
                         <article class="mb-4 grid grid-cols-2 gap-4">
-                            @if (!$registered_local && $id === 0 && $frequent_appointments->count() > 0)
+                            @if (!$registered_local && $id === 0 && !is_null($frequent_appointments) && $frequent_appointments->count() > 0)
                                 <div class="col-span-full flex flex-col w-full overflow-x-auto">
                                     <p class="flex-auto">
                                         Citas frecuentes

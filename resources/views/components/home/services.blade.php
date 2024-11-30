@@ -12,7 +12,7 @@
             <div class="row">
                 @foreach ($packages as $package)
                     <a href="{{ route('packages') }}">
-                        <div class="col-4">
+                        <div class="col-4 mt-2">
                             <ul class="tabs">
                                 <li class="single-rooms rounded-md">
                                     <img loading="lazy" src="{{ asset('storage/' . $package->image) }}" alt="Image">

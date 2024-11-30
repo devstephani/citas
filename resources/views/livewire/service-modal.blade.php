@@ -3,10 +3,12 @@
         <x-lucide-file-text class="size-5" />
         Reportes
     </x-button>
+    @role('admin')
     <x-button wire:click="toggle" class="w-full sm:w-fit gap-3" title="Registrar servicio">
         <x-lucide-plus class="size-5" />
         Servicio
     </x-button>
+    @endrole
 
     <x-modal id="service-modal" maxWidth="md" wire:model="showModal">
         <div class="px-6 py-4">
