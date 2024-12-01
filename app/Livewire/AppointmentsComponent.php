@@ -11,6 +11,7 @@ use App\Models\Payment;
 use App\Models\Service;
 use App\Models\User;
 use App\Rules\OneRequired;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
@@ -421,6 +422,15 @@ class AppointmentsComponent extends Component
     public function rate(int $stars, Appointment $record)
     {
         $record->update(['stars' => $stars]);
+        $date = Carbon::createFromFormat('Y-m-d H:i:s', $record->picked_date)
+            ->format('d-m-Y h:i:s a');
+        $name = $record->service->name ?? $record->package->name;
+
+        Binnacle::create([
+            'user_id' => auth()->id(),
+            'status' => 'info',
+            'message' => "Puntuó la cita de {$name} del día {$date}"
+        ]);
     }
 
     public function confirm(Appointment $record)
