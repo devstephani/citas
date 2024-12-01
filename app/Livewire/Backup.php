@@ -19,7 +19,7 @@ class Backup extends Component
 
     protected $dump_path;
     protected $destination_path;
-    protected $listeners = ['save', 'download'];
+    protected $listeners = ['save', 'download', 'delete'];
 
     public function get_size($size)
     {
@@ -46,7 +46,7 @@ class Backup extends Component
         $this->destination_path = config('custom_backup.destination_path');
 
         File::ensureDirectoryExists($this->destination_path);
-        $db_name = env('DB_DATABASE');
+        $db_name = config('custom_backup.db_name');
         shell_exec("$this->dump_path -h localhost -u root $db_name > $this->destination_path/$file_name.sql 2>&1");
 
         Binnacle::create([
@@ -54,6 +54,15 @@ class Backup extends Component
             'status' => 'info',
             'message' => "Se guardó un respaldo de la base de datos"
         ]);
+    }
+
+    public function delete($record)
+    {
+        $disk = Storage::disk('backups');
+
+        if ($disk->exists($record)) {
+            $disk->delete($record);
+        }
     }
 
     public function download($record)
