@@ -376,9 +376,11 @@
                                     {{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $appointment->picked_date)->translatedFormat('l, d F Y') }}
                                 </td>
                                 @role('admin')
-                                    @if ($appointment->accepted)
+                                    @if ($appointment->status === 1)
                                         <td class="px-6 py-4">
+                                            @if (!$appointment->accepted)
                                             <x-button wire:click="confirm({{ $appointment->id }})">Confirmar</x-button>
+                                            @endif
                                             <x-button wire:click="modify({{ $appointment->id }})">Re-agendar</x-button>
                                         </td>
                                     @endif

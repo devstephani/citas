@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Enum\Payment\CurrencyEnum;
 use App\Enum\Payment\TypeEnum;
+use App\Mail\AppointmentReminder;
 use App\Models\Appointment;
 use App\Models\Binnacle;
 use App\Models\Package;
@@ -15,6 +16,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Url;
@@ -177,15 +179,16 @@ class AppointmentsComponent extends Component
         ]);
 
         if ($this->status === '1') {
-            $beautymail = app()->make(Beautymail::class);
-            $beautymail->send('emails.appointment-payed', [
-                'appointment' => $record
-            ], function ($message) use ($record) {
-                $message
-                    ->from(env('MAIL_FROM_ADDRESS'))
-                    ->to($record->user->email)
-                    ->subject('Cita finalizada y pagada');
-            });
+            Mail::send(new AppointmentReminder($record));
+            // $beautymail = app()->make(Beautymail::class);
+            // $beautymail->send('emails.appointment-payed', [
+            //     'appointment' => $record
+            // ], function ($message) use ($record) {
+            //     $message
+            //         ->from(env('MAIL_FROM_ADDRESS'))
+            //         ->to($record->user->email)
+            //         ->subject('Cita finalizada y pagada');
+            // });
         }
 
         Binnacle::create([
@@ -441,6 +444,7 @@ class AppointmentsComponent extends Component
     public function modify(Appointment $record)
     {
         $record->update(['re_assigned' => 1]);
+        $this->dispatch(event: 'refreshParent')->to(AppointmentsCalendar::class);
     }
 
     #[Layout('layouts.app')]

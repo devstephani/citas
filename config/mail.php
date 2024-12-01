@@ -94,9 +94,9 @@ return [
                 'postmark',
             ],
         ],
-        'resend' => [
-            'transport' => 'resend'
-        ]
+        // 'resend' => [
+        //     'transport' => 'resend'
+        // ]
     ],
 
     /*
