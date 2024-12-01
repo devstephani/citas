@@ -1,3 +1,7 @@
+@section('page-title')
+    Recuperar contraseña
+@endsection
+
 <x-guest-layout>
     <main>
         <div class="contenedor__todo">
@@ -18,10 +22,17 @@
                 <form method="POST" action="{{ route('password.email') }}">
                     @csrf
                     <h2>Recuperar contraseña</h2>
+                    <input type="email" style="display:none">
 
-                    <x-label for="email" value="{{ __('Email') }}" />
-                    <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')"
-                        required autofocus autocomplete="username" />
+                    @if (session()->has('success'))
+                        <p class="text-green-500">{{ session('success') }}</p>
+                    @endif
+
+                    <x-label for="correo" value="{{ __('Email') }}" />
+                    <x-input id="correo" placeholder="Ej: correo@email.com" class="block mt-1 w-full" type="email"
+                        name="correo" :value="old('correo')" required autofocus />
+                    <x-input-error for="email" class="mt-2" />
+
                     <div class="text-center">
                         <a class="font-italic isai5" href="{{ route('login') }}">Iniciar sesión </a>
                     </div>

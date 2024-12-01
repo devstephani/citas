@@ -1,3 +1,7 @@
+@section('page-title')
+    Restaurar contraseña
+@endsection
+
 <x-guest-layout>
     <main>
         <div class="contenedor__todo">
@@ -15,8 +19,9 @@
             <!--Formulario de Login y registro-->
             <div class="contenedor__login-register">
                 <!--Login-->
-                <form method="POST" action="{{ route('password.update') }}">
+                <form method="POST" action="{{ route('user-password.update') }}">
                     @csrf
+                    @method('PUT')
 
                     <input type="hidden" name="token" value="{{ $request->route('token') }}">
                     <h2>Restaurar contraseña</h2>

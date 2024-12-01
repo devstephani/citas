@@ -1,48 +1,41 @@
-<x-guest-layout>
-    <main>
-        <div class="contenedor__todo">
-            <div class="mt-5 caja__trasera">
-                <div class="h-60 w-96 caja__trasera-login">
-                    {{-- <h3>¿Ya tienes una cuenta?</h3>
-                    <p>Inicia sesión para entrar en la página</p>
-                    <button id="btn__iniciar-sesion">Iniciar Sesión</button> --}}
-                </div>
-                <div class="caja__trasera-register">
-                    <p>Indique su nueva contraseña para acceder a su cuenta.</p>
-                </div>
-            </div>
+@extends('beautymail::templates.minty')
 
-            <!--Formulario de Login y registro-->
-            <div class="contenedor__login-register">
-                <!--Login-->
-                <form method="POST" action="{{ route('password.update') }}">
-                    @csrf
+@section('content')
 
-                    <input type="hidden" name="token" value="{{ $request->route('token') }}">
-                    <h2>Restaurar contraseña</h2>
+    @include('beautymail::templates.minty.contentStart')
+    <tr>
+        <td class="title">
+            Un cordial saludo, {{ $user }}.
+        </td>
+    </tr>
+    <tr>
+        <td width="100%" height="10"></td>
+    </tr>
+    <tr>
+        <td class="paragraph">
+            Hemos enviado este correo para que pueda recuperar su cuenta en nuestros servicios. A continuación se encuentra
+            el enlace para actualizar la contraseña:
+        </td>
+    </tr>
+    <tr>
+        <td width="100%" height="25"></td>
+    </tr>
+    <tr>
+        <td class="paragraph">
+            <a href="{{ url('password/reset', $token) }}?email={{ urlencode($email) }}">Restablecer mi contraseña</a>
+        </td>
+    </tr>
+    <tr>
+        <td width="100%" height="25"></td>
+    </tr>
+    <tr>
+        <td class="title">
+            Atte: {{ env('APP_NAME') }}
+        </td>
+    </tr>
+    <tr>
+        <td width="100%" height="25"></td>
+    </tr>
+    @include('beautymail::templates.minty.contentEnd')
 
-                    <div class="block">
-                        <x-input id="email" class="block w-full" type="email" name="email" :value="old('email', $request->email)"
-                            placeholder="usuario@email.com" required autofocus autocomplete="username" />
-                    </div>
-
-                    <div class="mt-4">
-                        <x-input id="password" class="block w-full" type="password" name="password" required
-                            placeholder="********" autocomplete="new-password" />
-                    </div>
-
-                    <div class="mt-4">
-                        <x-input id="password_confirmation" placeholder="********" class="block w-full" type="password"
-                            name="password_confirmation" required autocomplete="new-password" />
-                    </div>
-                    <div class="text-center">
-                        <a class="font-italic isai5" href="{{ route('login') }}">Iniciar sesión </a>
-                    </div>
-                    <button>Enviar</button>
-                </form>
-
-            </div>
-
-        </div>
-    </main>
-</x-guest-layout>
+@stop
