@@ -157,8 +157,8 @@
                                 </div>
                             @endif
                             @php
-                                $service_price = $m_service->price ?? 0;
-                                $package_price = $m_package->price ?? 0;
+                                $service_price = $m_service->price ?? null;
+                                $package_price = $m_package->price ?? null;
                                 $base_price = ($service_price ?? $package_price) * ($this->discount ? 0.95 : 1);
                                 $price_to_bs = round($base_price * $currency_api, 2);
                             @endphp

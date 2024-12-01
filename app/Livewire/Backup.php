@@ -46,7 +46,8 @@ class Backup extends Component
         $this->destination_path = config('custom_backup.destination_path');
 
         File::ensureDirectoryExists($this->destination_path);
-        shell_exec("$this->dump_path -h localhost -u root manicurista > $this->destination_path/$file_name.sql 2>&1");
+        $db_name = env('DB_DATABASE');
+        shell_exec("$this->dump_path -h localhost -u root $db_name > $this->destination_path/$file_name.sql 2>&1");
 
         Binnacle::create([
             'user_id' => auth()->id(),

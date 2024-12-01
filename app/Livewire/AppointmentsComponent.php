@@ -4,7 +4,7 @@ namespace App\Livewire;
 
 use App\Enum\Payment\CurrencyEnum;
 use App\Enum\Payment\TypeEnum;
-use App\Mail\AppointmentReminder;
+use App\Mail\AppointmentPayed;
 use App\Models\Appointment;
 use App\Models\Binnacle;
 use App\Models\Package;
@@ -179,7 +179,7 @@ class AppointmentsComponent extends Component
         ]);
 
         if ($this->status === '1') {
-            Mail::send(new AppointmentReminder($record));
+            Mail::send(new AppointmentPayed($record));
             // $beautymail = app()->make(Beautymail::class);
             // $beautymail->send('emails.appointment-payed', [
             //     'appointment' => $record
@@ -222,6 +222,8 @@ class AppointmentsComponent extends Component
         $this->hours = array_filter($this->hours, function ($hour) use ($hours) {
             if (!in_array($hour['value'], $hours)) return $hour;
         });
+
+        $this->m_package = Package::find($this->selected_package);
     }
 
     public function updatedSelectedService()
@@ -245,6 +247,8 @@ class AppointmentsComponent extends Component
         $this->hours = array_filter($this->hours, function ($hour) use ($hours) {
             if (!in_array($hour['value'], $hours)) return $hour;
         });
+
+        $this->m_service = Service::find($this->selected_service);
     }
 
     public function set_selected_day($date)
