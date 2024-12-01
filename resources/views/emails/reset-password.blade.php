@@ -1,116 +1,48 @@
-<html dir="ltr" xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<x-guest-layout>
+    <main>
+        <div class="contenedor__todo">
+            <div class="mt-5 caja__trasera">
+                <div class="h-60 w-96 caja__trasera-login">
+                    {{-- <h3>¿Ya tienes una cuenta?</h3>
+                    <p>Inicia sesión para entrar en la página</p>
+                    <button id="btn__iniciar-sesion">Iniciar Sesión</button> --}}
+                </div>
+                <div class="caja__trasera-register">
+                    <p>Indique su nueva contraseña para acceder a su cuenta.</p>
+                </div>
+            </div>
 
-<head>
-    <meta charset="UTF-8">
-    <meta content="width=device-width, initial-scale=1" name="viewport">
-    <meta name="x-apple-disable-message-reformatting">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta content="telephone=no" name="format-detection">
-    <title></title>
-    <td align="center" class="esd-block-image es-p10t es-p10b" style="font-size: 0px">
-        <a target="_blank">
-            <img src="https://elwasxh.stripocdn.email/content/guids/CABINET_54100624d621728c49155116bef5e07d/images/84141618400759579.png" alt="" width="100" style="display:flex">
-        </a>
-    </td>
-    </tr>
-    <tr>
-        <td align="center" class="esd-block-text es-p10b">
-            <h1 class="es-m-txt-c" style="font-size: 46px; line-height: 100%">
-                Verificar codigo
-            </h1>
-        </td>
-    </tr>
-    <tr>
-        <td align="center" class="esd-block-text es-p5t es-p5b es-p40r es-p40l es-m-p0r es-m-p0l">
-            <p>
-                Gracias por registrarte. Para completar tu proceso de verificación, usa el siguiente código:
-            </p>
-        </td>
-    </tr>
-    </tbody>
-    </table>
-    </td>
-    </tr>
-    </tbody>
-    </table>
-    </td>
-    </tr>
-    <tr>
-        <td align="left" class="esd-structure es-p10t es-p10b es-p20r es-p20l">
-            <table cellpadding="0" cellspacing="0" width="100%">
-                <tbody>
-                    <tr>
-                        <td width="560" align="center" valign="top" class="esd-container-frame">
-                            <table cellpadding="0" cellspacing="0" width="100%"
-                                style="border-radius: 5px; border-collapse: separate; border: 2px dashed #cccccc">
-                                <tbody>
-                                    <tr>
-                                        <td align="center" class="esd-block-text es-p20t es-p20r es-p20l">
-                                            <h2 class="es-m-txt-c">
-                                                Su código
-                                            </h2>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td align="center" esd-links-underline="none"
-                                            class="esd-block-text es-p10t es-p20b es-p20r es-p20l">
-                                            <h1 class="es-m-txt-c" style="color: #5c68e2">
-                                                <strong>Aqui va el codigo</strong>
-                                            </h1>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </td>
-    </tr>
-    </tbody>
-    </table>
-    </td>
-    </tr>
-    </tbody>
-    </table>
-    <!--<![endif]-->
-    <table cellpadding="0" cellspacing="0" align="center" class="es-content esd-footer-popover">
-        <tbody>
-            <tr>
-                <td align="center" class="esd-stripe esd-synchronizable-module">
-                    <table align="center" cellpadding="0" cellspacing="0" width="600" bgcolor="rgba(0, 0, 0, 0)"
-                        class="es-content-body" style="background-color:transparent">
-                        <tbody>
-                            <tr>
-                                <td align="left" class="esd-structure es-p20">
-                                    <table cellpadding="0" cellspacing="0" width="100%">
-                                        <tbody>
-                                            <tr>
-                                                <td width="560" align="center" valign="top"
-                                                    class="esd-container-frame">
-                                                    <table cellpadding="0" cellspacing="0" width="100%">
-                                                        <tbody>
-                                                            <tr>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    </td>
-    </tr>
-    </tbody>
-    </table>
-    </div>
-    </body>
+            <!--Formulario de Login y registro-->
+            <div class="contenedor__login-register">
+                <!--Login-->
+                <form method="POST" action="{{ route('password.update') }}">
+                    @csrf
 
-</html>
+                    <input type="hidden" name="token" value="{{ $request->route('token') }}">
+                    <h2>Restaurar contraseña</h2>
+
+                    <div class="block">
+                        <x-input id="email" class="block w-full" type="email" name="email" :value="old('email', $request->email)"
+                            placeholder="usuario@email.com" required autofocus autocomplete="username" />
+                    </div>
+
+                    <div class="mt-4">
+                        <x-input id="password" class="block w-full" type="password" name="password" required
+                            placeholder="********" autocomplete="new-password" />
+                    </div>
+
+                    <div class="mt-4">
+                        <x-input id="password_confirmation" placeholder="********" class="block w-full" type="password"
+                            name="password_confirmation" required autocomplete="new-password" />
+                    </div>
+                    <div class="text-center">
+                        <a class="font-italic isai5" href="{{ route('login') }}">Iniciar sesión </a>
+                    </div>
+                    <button>Enviar</button>
+                </form>
+
+            </div>
+
+        </div>
+    </main>
+</x-guest-layout>
