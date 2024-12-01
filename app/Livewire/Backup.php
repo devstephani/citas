@@ -9,11 +9,16 @@ use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Livewire\WithPagination;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 
 class Backup extends Component
 {
-    protected $dump_path = "C:/xampp/mysql/bin/mysqldump";
-    protected $destination_path = "C:/xampp/htdocs/Citas/storage/app/public/backups";
+    use WithPagination;
+
+    protected $dump_path;
+    protected $destination_path;
     protected $listeners = ['save', 'download'];
 
     public function get_size($size)
@@ -37,8 +42,11 @@ class Backup extends Component
     {
         $file_name = Carbon::now()->format('Y-m-d-H-i-s');
 
+        $this->dump_path = config('custom_backup.dump_path');
+        $this->destination_path = config('custom_backup.destination_path');
+
         File::ensureDirectoryExists($this->destination_path);
-        shell_exec("$this->dump_path -h localhost -u root manicurista > $this->destination_path/$file_name.sql");
+        shell_exec("$this->dump_path -h localhost -u root manicurista > $this->destination_path/$file_name.sql 2>&1");
 
         Binnacle::create([
             'user_id' => auth()->id(),
@@ -51,6 +59,9 @@ class Backup extends Component
     {
         $file_name = $record;
         $disk = Storage::disk('backups');
+
+        $this->dump_path = config('custom_backup.dump_path');
+        $this->destination_path = config('custom_backup.destination_path');
 
         if ($disk->exists($file_name)) {
             $stream = $disk->readStream($file_name);
@@ -88,24 +99,32 @@ class Backup extends Component
     #[Layout('layouts.app')]
     public function render()
     {
-        $backups = [];
         $disk = Storage::disk('backups');
         $files = $disk->files('/backups');
 
-        foreach ($files as $key => $file) {
+        // Create a collection from the files
+        $backups = collect($files)->map(function ($file) use ($disk) {
             $data = explode('/', $file);
             $date = explode('.', $data[1])[0];
 
-            $backups[$key] = [
-                'index' => ++$key,
+            return [
                 'key' => $file,
                 'date' => Carbon::createFromFormat('Y-m-d-H-i-s', $date)->format('d/m/Y - h:i a'),
                 'size' => $this->get_size($disk->size($file))
             ];
-        }
+        })->reverse();
+
+        $perPage = 10;
+        $currentPage = Paginator::resolveCurrentPage();
+        $currentItems = $backups->slice(($currentPage - 1) * $perPage, $perPage)->all();
+
+        $paginatedBackups = new LengthAwarePaginator($currentItems, $backups->count(), $perPage, $currentPage, [
+            'path' => Paginator::resolveCurrentPath(),
+            'query' => request()->query(),
+        ]);
 
         return view('livewire.backup', [
-            'backups' => $backups,
+            'backups' => $paginatedBackups,
             'title' => 'Respaldo'
         ]);
     }

@@ -13,6 +13,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         $schedule->command('appointments:send-reminders --silence-logs')->daily()->at('00');
+        $schedule->command('app:backup')->daily()->at('00');
     }
 
     /**

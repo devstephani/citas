@@ -20,7 +20,7 @@ class Employee extends Model
     {
         $path = $this->photo;
 
-        $src = in_array($path, ['jose.jpg', 'stefy.jpg'])
+        $src = in_array($path, ['jose.jpg', 'stefy.jpg', 'alexandra.jpg'])
             ? asset('img/presentacion/' . $this->photo)
             : asset('storage/' . $this->photo);
 

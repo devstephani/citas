@@ -30,7 +30,7 @@ class EmployeeSeeder extends Seeder
                 'photo' => 'stefy.jpg'
             ]);
 
-        $user->services()->sync($services->filter(function ($service) {
+        $user->employee->services()->sync($services->filter(function ($service) {
             return in_array($service->name, ['Cejas', 'Pestañas', 'Depilación']);
         }));
 
@@ -62,7 +62,7 @@ class EmployeeSeeder extends Seeder
                 'photo' => 'alexandra.jpg'
             ]);
 
-        $user->services()->sync($services->filter(function ($service) {
+        $user->employee->services()->sync($services->filter(function ($service) {
             return in_array($service->name, ['Trenzado']);
         }));
     }

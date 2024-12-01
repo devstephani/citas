@@ -233,16 +233,17 @@
                                 <x-input-error for="payed" class="mt-2" />
                             </div>
                             @if ($type === 'MOBILE' || $type === 'PAYPAL')
-                            <div class="col-span-full sm:col-span-1">
-                                <x-label value="Referencia" for="ref" />
-                                <x-input wire:model.lazy="ref" type="number" placeholder="Ej: 0000" id="ref" name="ref"
-                                    @class([
-                                        'w-full',
-                                        'bg-neutral-200' =>
-                                            Auth::user()->hasAnyRole(['admin', 'employee']) && $id > 0,
-                                    ]) :disabled="Auth::user()->hasRole(['admin', 'employee']) && $id > 0" />
-                                <x-input-error for="ref" class="mt-2" />
-                            </div>
+                                <div class="col-span-full sm:col-span-1">
+                                    <x-label value="Referencia" for="ref" />
+                                    <x-input wire:model.lazy="ref" type="number" placeholder="Ej: 0000"
+                                        id="ref" name="ref" @class([
+                                            'w-full',
+                                            'bg-neutral-200' =>
+                                                Auth::user()->hasAnyRole(['admin', 'employee']) && $id > 0,
+                                        ])
+                                        :disabled="Auth::user()->hasRole(['admin', 'employee']) && $id > 0" />
+                                    <x-input-error for="ref" class="mt-2" />
+                                </div>
                             @endif
                         </article>
 

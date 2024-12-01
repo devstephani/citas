@@ -48,6 +48,7 @@
                     @endforeach
                 </tbody>
             </table>
+            {{ $backups->links() }}
             @if (count($backups) === 0)
                 <p class="text-center">No se encontraron registros</p>
             @endif

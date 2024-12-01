@@ -264,11 +264,11 @@ class AppointmentsComponent extends Component
         $occupied = Appointment::where('picked_date', '=', $final_date)
             ->where(function ($query) {
                 $query->whereNotNull('service_id')
-                ->where('service_id', $this->selected_service)
-                ->orWhere(function ($query) {
-                    $query->whereNotNull('package_id')
-                        ->where('package_id', $this->selected_package);
-                });
+                    ->where('service_id', $this->selected_service)
+                    ->orWhere(function ($query) {
+                        $query->whereNotNull('package_id')
+                            ->where('package_id', $this->selected_package);
+                    });
             })
             ->exists();
 
@@ -298,6 +298,8 @@ class AppointmentsComponent extends Component
             ]);
 
             $this->resetUI();
+            $this->package_id = null;
+            $this->service_id = null;
             $this->dispatch(event: 'refreshParent')->to(AppointmentsCalendar::class);
         } else {
             $selected = $this->selected_service
@@ -341,8 +343,8 @@ class AppointmentsComponent extends Component
         $this->type = null;
         $this->ref = null;
         $this->modifying = null;
-        $this->service_id = null;
-        $this->package_id = null;
+        // $this->service_id = null;
+        // $this->package_id = null;
     }
 
     public function getAvailableHours($today)
@@ -391,16 +393,15 @@ class AppointmentsComponent extends Component
         $user = auth()->user();
         $this->services = $user->hasRole('admin')
             ? Service::where('active', 1)->get()
-            :
-            (
+            : (
                 $user->hasRole('employees')
-                    ? Service::with('employees')
-                    ->whereHas('employees', function ($query) use ($user) {
-                        $query->where('employee_id', $user->employee->id);
-                    })
-                    ->where('active', 1)
-                    ->get()
-                    : Service::where('active', 1)->get()
+                ? Service::with('employees')
+                ->whereHas('employees', function ($query) use ($user) {
+                    $query->where('employee_id', $user->employee->id);
+                })
+                ->where('active', 1)
+                ->get()
+                : Service::where('active', 1)->get()
             );
         $this->packages = Package::where('active', 1)->get();
 
@@ -436,10 +437,10 @@ class AppointmentsComponent extends Component
 
     public function render()
     {
-        if (!is_null($this->package_id)) {
+        if (!is_null($this->package_id) && $this->package_id !== '') {
             $this->selected_package = $this->package_id;
         }
-        if (!is_null($this->service_id)) {
+        if (!is_null($this->service_id) && $this->service_id !== '') {
             $this->selected_service = $this->service_id;
         }
 
