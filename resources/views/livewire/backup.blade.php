@@ -42,6 +42,9 @@
                                     <x-lucide-cloud-download class="size-5 hover:text-blue-600 cursor-pointer"
                                         wire:click="$dispatch('download', { record: '{{ $backup['key'] }}'})"
                                         title="Descargar" />
+                                    <x-lucide-trash class="size-5 hover:text-blue-600 cursor-pointer"
+                                        wire:click="$dispatch('delete', { record: '{{ $backup['key'] }}'})"
+                                        title="Eliminar" />
                                 </div>
                             </td>
                         </tr>

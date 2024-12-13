@@ -21,7 +21,7 @@
                 {{ $appointment->package ? "el paquete {$appointment->package->name}" : "la cita {$appointment->service->name}" }}
             </b>
             para el día
-            {{ Carbon::createFromFormat('Y-m-d h:i:s', $appointment->picked_date)->format('d-m-Y h:i a') }}
+            {{ Carbon::createFromFormat('Y-m-d H:i:s', $appointment->picked_date)->format('d-m-Y h:i a') }}
         </td>
     </tr>
     <tr>

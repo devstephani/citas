@@ -35,7 +35,8 @@ class MakeBackup extends Command
         $file_name = Carbon::now()->format('Y-m-d-H-i-s');
 
         File::ensureDirectoryExists($destination_path);
-        $output = shell_exec("$dump_path -h localhost -u root manicurista > $destination_path/$file_name.sql 2>&1");
+        $db_name = config('custom_backup.db_name');
+        $output = shell_exec("$dump_path -h localhost -u root $db_name > $destination_path/$file_name.sql 2>&1");
         if ($output) {
             $this->info("Fallo al intentar hacer el respaldo de base de datos, error: $output");
             return;

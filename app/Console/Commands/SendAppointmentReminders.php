@@ -2,8 +2,10 @@
 
 namespace App\Console\Commands;
 
+use App\Mail\AppointmentReminder;
 use App\Models\Appointment;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Mail;
 use Snowfire\Beautymail\Beautymail;
 
 class SendAppointmentReminders extends Command
@@ -45,19 +47,13 @@ class SendAppointmentReminders extends Command
         }
 
         foreach ($appointments as $appointment) {
-            $beautymail = app()->make(Beautymail::class);
-            $beautymail->send('emails.reminder', [
-                'appointment' => $appointment
-            ], function ($message) use ($appointment) {
-                $message
-                    ->from(env('MAIL_FROM_ADDRESS'))
-                    ->to($appointment->user->email)
-                    ->subject('Recordatorio de cita');
-            });
+            Mail::send(new AppointmentReminder($appointment));
 
             if (!$this->option('silence-logs')) {
                 $this->info("Reminder sent to {$appointment->user->email}");
             }
+
+            sleep(2);
         }
 
         $end_time = microtime(true);
