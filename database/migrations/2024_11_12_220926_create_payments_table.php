@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('appointment_id')->constrained();
             $table->float('currency_api', 5, 2);
-            $table->float('payed', 5, 2);
             $table->enum('type', ['FULL', 'MOBILE', 'PAYPAL']);
             $table->enum('currency', ['CASH', 'DOLLAR']);
             $table->string('ref')->nullable();

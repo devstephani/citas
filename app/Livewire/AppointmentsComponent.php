@@ -26,7 +26,7 @@ class AppointmentsComponent extends Component
     #[Url]
     public $service_id, $package_id;
     public $show_modal = false, $discount = false, $currentTimeFormatted, $modifying;
-    public $id = 0, $currency_api = 0, $client_name, $client_id = null, $clients, $services, $packages, $selected_service = 0, $selected_package = 0, $m_service, $m_package, $selected_date, $selected_time, $status, $registered_local, $type, $currency, $payed, $ref, $frequent_appointments, $selected_frequent_appointment, $note = null;
+    public $id = 0, $currency_api = 0, $client_name, $client_id = null, $clients, $services, $packages, $selected_service = 0, $selected_package = 0, $m_service, $m_package, $selected_date, $selected_time, $status, $registered_local, $type, $currency, $ref, $frequent_appointments, $selected_frequent_appointment, $note = null;
 
     private $pagination = 20;
     protected $listeners = ['toggle', 'set_selected_day', 'edit', 'delete', 'set_appointment', 'rate', 'confirm', 'modify'];
@@ -79,10 +79,6 @@ class AppointmentsComponent extends Component
                     Rule::in(array_column(CurrencyEnum::cases(), 'value'))
                 ]),
             ],
-            'payed' => [
-                'sometimes',
-                Rule::when($this->status === '1', 'required|min:0.1|max:1000|numeric')
-            ],
             'ref' => [
                 'sometimes',
                 Rule::when($this->type === 'MOBILE' || $this->type === 'PAYPAL', 'required|digits_between:3,8|regex:/^[0-9]+$/')
@@ -104,10 +100,6 @@ class AppointmentsComponent extends Component
             'type.in' => 'Debe seleccionar una opción de la lista',
             'currency.required' => 'Debe indicar el tipo de moneda',
             'currency.in' => 'Debe seleccionar una opción de la lista',
-            'payed.required' => 'Debe indicar el monto pagado',
-            'payed.min' => 'Debe ser al menos :min',
-            'payed.max' => 'Debe ser máximo :min',
-            'payed.numeric' => 'Debe ser un número',
             'ref.required' => 'Debe indicar el número de referencia',
             'ref.digits_between' => 'Debe entre :min y :max dígitos',
             'ref.regex' => 'Debe ser un número',
@@ -147,7 +139,6 @@ class AppointmentsComponent extends Component
         $this->status = $record->status;
         $this->note = $record->note;
         $this->registered_local = $record->registered_local;
-        $this->payed = $record->payment->payed;
         $this->ref = $record->payment->ref;
         $this->currency = $record->payment->currency->value;
         $this->type = $record->payment->type->value;
@@ -169,7 +160,6 @@ class AppointmentsComponent extends Component
             're_assigned' => 0,
         ]);
         $record->payment()->update([
-            'payed' => $this->payed,
             'currency' => $this->currency,
             'type' => $this->type,
             'ref' => $this->ref,
@@ -285,7 +275,6 @@ class AppointmentsComponent extends Component
                 'picked_date' => $final_date,
                 'discount' => $this->discount
             ])->payment()->create([
-                'payed' => $this->payed,
                 'currency' => $this->currency,
                 'type' => $this->type,
                 'ref' => $this->ref,
@@ -340,12 +329,9 @@ class AppointmentsComponent extends Component
         $this->status = 0;
         $this->note = null;
         $this->currency = null;
-        $this->payed = null;
         $this->type = null;
         $this->ref = null;
         $this->modifying = null;
-        // $this->service_id = null;
-        // $this->package_id = null;
     }
 
     public function getAvailableHours($today)
