@@ -55,6 +55,14 @@
                             'text-red-600' => $my_rate === 0,
                         ]) />
                     </x-button>
+                    <x-button type="button" wire:click="dispatch('mark_favorite')"
+                        class="bg-transparent border focus:ring-0 border-neutral-400 !rounded-full">
+                        <x-lucide-star @class([
+                            'size-5',
+                            'text-black' => !$post->favorites()->exists('user_id', auth()->id()),
+                            'text-yellow-600' => $post->favorites()->exists('user_id', auth()->id()),
+                        ]) />
+                    </x-button>
                 </div>
             @endif
         </div>

@@ -34,6 +34,11 @@ class Post extends Model
         return $this->hasMany(Reaction::class);
     }
 
+    public function favorites()
+    {
+        return $this->hasMany(Favorite::class);
+    }
+
     public function get_reactions()
     {
         $reactions = $this->reactions;

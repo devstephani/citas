@@ -22,7 +22,7 @@ class Binnacle extends Component
 
     public function render()
     {
-        $logs = ModelsBinnacle::paginate(20);
+        $logs = ModelsBinnacle::paginate(perPage: 20);
         return view('livewire.binnacle', [
             'logs' => $logs
         ]);
