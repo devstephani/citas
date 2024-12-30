@@ -340,7 +340,7 @@
                                     {{ $price ? "$price$" : '' }}
                                 </td>
                                 <td @class([
-                                    'px-6 py-4',
+                                    'px-6 py-4 font-bold',
                                     'text-green-500' => $appointment->status === 1,
                                     'text-red-500' => $appointment->status === 0,
                                 ])>
@@ -366,6 +366,7 @@
                                 </td>
                                 <td class="px-6 py-4">
                                     <p @class([
+                                        'font-bold',
                                         'text-green-400' => $appointment->accepted,
                                         'text-red-400' => !$appointment->accepted,
                                     ])>
@@ -379,7 +380,8 @@
                                     @if ($appointment->status === 1)
                                         <td class="px-6 py-4">
                                             @if (!$appointment->accepted)
-                                            <x-button wire:click="confirm({{ $appointment->id }})">Confirmar</x-button>
+                                                <x-button
+                                                    wire:click="confirm({{ $appointment->id }})">Confirmar</x-button>
                                             @endif
                                             <x-button wire:click="modify({{ $appointment->id }})">Re-agendar</x-button>
                                         </td>
