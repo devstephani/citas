@@ -1,7 +1,7 @@
-<div class="flex flex-col sm:flex-row justify-between mb-4">
-    <div class="flex justify-start gap-3 font-bold text-xl">
-        <p>{{ ucfirst($startsAt->translatedFormat('F')) }}</p>
-        <p>{{ $startsAt->translatedFormat('Y') }}</p>
+<div class="grid grid-cols-1 sm:grid-cols-2 mb-4">
+    <div class="flex justify-center gap-3">
+        <p class="text-4xl font-extrabold">{{ ucfirst($startsAt->translatedFormat('F')) }}</p>
+        <p class="text-4xl font-extrabold">{{ $startsAt->translatedFormat('Y') }}</p>
     </div>
     <div class="flex gap-3  justify-end">
         <x-button wire:click="goToPreviousMonth">

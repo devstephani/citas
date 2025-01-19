@@ -282,7 +282,7 @@ class AppointmentsComponent extends Component
                 'picked_date' => $final_date,
                 'discount' => $this->discount
             ])->payment()->create([
-                'currency' => $this->currency,
+                'currency' => $this->type === 'FULL' ? 'CASH' : $this->currency,
                 'type' => $this->type,
                 'ref' => $this->ref,
                 'currency_api' => $this->currency_api
