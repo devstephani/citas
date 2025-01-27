@@ -30,13 +30,12 @@ class EmployeeModal extends Component
 
     public function rules()
     {
+        $employee_user = MEmployee::find($this->id)->user;
         return [
             'name' => ['required', 'min:4', 'max:80', new Text()],
             'phone' => ['required', 'numeric', 'digits:11'],
             'description' => ['required', 'min:8', 'max:120', new Text()],
-            'email' => ['required', 'email', Rule::unique('users')->where(function ($query) {
-                return $query->where('email', $this->email);
-            })->ignore($this->id)],
+            'email' => ['required', 'email', 'unique:users,email,' . $employee_user->id],
             'active' => ['boolean', Rule::excludeIf($this->id == null)],
             'password' => [
                 'nullable',

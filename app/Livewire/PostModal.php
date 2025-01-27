@@ -25,8 +25,8 @@ class PostModal extends Component
     {
         return [
             'title' => ['required', 'min:4', 'max:80', new Text()],
-            'description' => ['required', 'min:12', 'max:2000', new Text()],
-            'message' => 'required|min:10|max:150',
+            'description' => ['required', 'min:12', 'max:400', new Text()],
+            'message' => 'required|min:10|max:2000',
             'active' => ['boolean', Rule::excludeIf($this->id == null)],
             'image'  => [
                 'nullable',
@@ -50,9 +50,6 @@ class PostModal extends Component
             'message.regex' => 'Solo se aceptan letras',
             'message.min' => 'Debe contener al menos :min caracteres',
             'message.max' => 'Debe contener máximo :max caracteres',
-            'email.required' => 'Debe indicar el correo',
-            'email.email' => 'Debe ser un correo válido',
-            'email.unique' => 'Este correo se encuentra registrado',
             'active.required' => 'Debe seleccionar alguna opción',
             'active.boolean' => 'La opción seleccionada debe ser "Si" o "No"',
             'image.required' => 'Debe añadir una imágen',

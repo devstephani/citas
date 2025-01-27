@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Appointment;
+use App\Models\Service;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -41,12 +42,16 @@ class AppointmentsCalendar extends LivewireCalendar
 
         return $query
             ->map(function (Appointment $appointment) {
-                return [
-                    'id' => $appointment->id,
-                    'title' => $appointment->service->name ?? $appointment->package->name,
-                    'description' => Carbon::createFromFormat('Y-m-d H:i:s', $appointment->picked_date)->format('h:i:s a'),
-                    'date' => $appointment->picked_date,
-                ];
+                $option = $appointment->service ?? $appointment->package;
+
+                if (!is_null($option)) {
+                    return [
+                        'id' => $appointment->id,
+                        'title' => $option->name,
+                        'description' => Carbon::createFromFormat('Y-m-d H:i:s', $appointment->picked_date)->format('h:i:s a'),
+                        'date' => $appointment->picked_date,
+                    ];
+                }
             });
     }
 

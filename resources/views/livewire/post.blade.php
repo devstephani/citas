@@ -99,7 +99,7 @@
                                     <a href="{{ route('post.id', $post->id) }}" title="Ver publicación">
                                         <x-lucide-eye class="size-5 hover:text-blue-600 cursor-pointer" />
                                     </a>
-                                    @if (auth()->user()->hasRole('employee') && $post->user_id === auth()->id())
+                                    @if (auth()->user()->hasRole('employee') && $post->user_id === auth()->id() || auth()->user()->hasRole('admin'))
                                     <x-lucide-pencil class="size-5 hover:text-blue-600 cursor-pointer"
                                         wire:click="$dispatch('edit', { record: {{ $post->id }}})"
                                         title="Editar" />

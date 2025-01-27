@@ -123,7 +123,10 @@ class DeletedRecords extends Component
             $data[] = ['id' => $comment->id, 'model' => 'Comentario', 'title' => $comment->content, 'deleted_at' => $comment->deleted_at];
         }
         foreach ($appointments as $appointment) {
-            $data[] = ['id' => $appointment->id, 'model' => 'Cita', 'title' => $appointment->service->name ?? $appointment->package->name, 'deleted_at' => $appointment->deleted_at];
+            $option = $appointment->service ?? $appointment->package;
+            if (!is_null($option)) {
+                $data[] = ['id' => $appointment->id, 'model' => 'Cita', 'title' => $appointment->service->name ?? $appointment->package->name, 'deleted_at' => $appointment->deleted_at];
+            }
         }
 
         return view('livewire.deleted-records', [

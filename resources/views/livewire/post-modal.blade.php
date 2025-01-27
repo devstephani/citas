@@ -50,6 +50,7 @@
                         <div wire:ignore>
                             <textarea id="message" wire:model.lazy="message"></textarea>
                         </div>
+                        <x-input-error for="message" class="mt-2" />
                     </div>
 
                     @if ($id > 0)
