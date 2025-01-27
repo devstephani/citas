@@ -59,6 +59,7 @@ class AppointmentsCalendar extends LivewireCalendar
     {
         $today = now()->yesterday()->format('Y-m-d');
         $day = $day < 10 ? "0$day" : $day;
+        $month = $month < 10 ? "0$month" : $month;
         $date = "$year-$month-$day";
 
         if ($date > $today) {

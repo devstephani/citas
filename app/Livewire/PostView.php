@@ -12,7 +12,7 @@ use Livewire\Component;
 class PostView extends Component
 {
     public $post, $my_rate, $user_id, $comment, $comment_id, $first_comment, $can_comment;
-    protected $listeners = ['toggle_rate', 'delete', 'toggle_comment_active', 'update_comment'];
+    protected $listeners = ['toggle_rate', 'delete', 'toggle_comment_active', 'update_comment', 'mark_favorite'];
 
     public function rules()
     {
@@ -120,6 +120,19 @@ class PostView extends Component
         $record->delete();
         $this->can_comment = true;
         $this->first_comment = true;
+    }
+
+    public function mark_favorite()
+    {
+        $exist = $this->post->favorites()->where('user_id', $this->user_id)->first();
+
+        if ($exist) {
+            $exist->delete();
+        } else {
+            $this->post->favorites()->create([
+                'user_id' => $this->user_id,
+            ]);
+        }
     }
 
     #[Layout('layouts.app')]

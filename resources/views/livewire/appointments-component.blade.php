@@ -201,37 +201,28 @@
                                 </x-select>
                                 <x-input-error for="type" class="mt-2" />
                             </div>
-                            <div class="col-span-full sm:col-span-1">
-                                <x-label value="Tipo de moneda" for="currency" />
-                                <x-select wire:model.live="currency" id="currency" name="currency" required
-                                    @class([
-                                        'w-full',
-                                        'bg-neutral-200' =>
-                                            Auth::user()->hasAnyRole(['admin', 'employee']) && $id > 0,
-                                    ]) :disabled="Auth::user()->hasRole(['admin', 'employee']) && $id > 0">
-                                    @foreach (App\Enum\Payment\CurrencyEnum::cases() as $enum)
-                                        @if ($type === 'Paypal' && $enum->name === 'Bs')
-                                            @continue
-                                        @endif
-                                        <option value="{{ $enum->value }}"
-                                            {{ $enum->value === $currency ? 'selected' : '' }}>
-                                            {{ $enum->name }}
-                                        </option>
-                                    @endforeach
-                                </x-select>
-                                <x-input-error for="currency" class="mt-2" />
-                            </div>
-                            <div class="col-span-full sm:col-span-1">
-                                <x-label value="Pago" for="payed" />
-                                <x-input wire:model.lazy="payed" type="number" id="payed" name="payed"
-                                    required placeholder="Ej: 4" @class([
-                                        'w-full',
-                                        'bg-neutral-200' =>
-                                            Auth::user()->hasAnyRole(['admin', 'employee']) && $id > 0,
-                                    ]) step="0.02"
-                                    :disabled="Auth::user()->hasRole(['admin', 'employee']) && $id > 0" />
-                                <x-input-error for="payed" class="mt-2" />
-                            </div>
+                            @if ($type === 'FULL')
+                                <div class="col-span-full sm:col-span-1">
+                                    <x-label value="Tipo de moneda" for="currency" />
+                                    <x-select wire:model.live="currency" id="currency" name="currency" required
+                                        @class([
+                                            'w-full',
+                                            'bg-neutral-200' =>
+                                                Auth::user()->hasAnyRole(['admin', 'employee']) && $id > 0,
+                                        ]) :disabled="Auth::user()->hasRole(['admin', 'employee']) && $id > 0">
+                                        @foreach (App\Enum\Payment\CurrencyEnum::cases() as $enum)
+                                            @if ($type === 'Paypal' && $enum->name === 'Bs')
+                                                @continue
+                                            @endif
+                                            <option value="{{ $enum->value }}"
+                                                {{ $enum->value === $currency ? 'selected' : '' }}>
+                                                {{ $enum->name }}
+                                            </option>
+                                        @endforeach
+                                    </x-select>
+                                    <x-input-error for="currency" class="mt-2" />
+                                </div>
+                            @endif
                             @if ($type === 'MOBILE' || $type === 'PAYPAL')
                                 <div class="col-span-full sm:col-span-1">
                                     <x-label value="Referencia" for="ref" />
@@ -276,7 +267,7 @@
         @if (Auth::user()->hasAnyRole(['admin', 'employee']))
             <div class="p-4 overflow-x-auto shadow-md">
                 <table class="w-full text-sm text-left text-gray-400 bg-white rounded-md border border-neutral-400">
-                    <thead class="border-b text-xs text-gray-700 uppercase bg-gray-50">
+                    <thead class="border-b text-xs text-gray-700 uppercase bg-gray-50 font-extrabold">
                         <tr>
                             <th scope="col" class="px-6 py-3">
                                 Cita
@@ -321,7 +312,7 @@
                             @endrole
                         </tr>
                     </thead>
-                    <tbody class="divide-y -space-x-2">
+                    <tbody class="divide-y -space-x-2 font-extrabold text-neutral-700">
                         @foreach ($appointments as $appointment)
                             @php
                                 $payed = 0;
@@ -343,7 +334,7 @@
                                     {{ $price ? "$price$" : '' }}
                                 </td>
                                 <td @class([
-                                    'px-6 py-4',
+                                    'px-6 py-4 font-bold',
                                     'text-green-500' => $appointment->status === 1,
                                     'text-red-500' => $appointment->status === 0,
                                 ])>
@@ -372,6 +363,7 @@
                                 </td>
                                 <td class="px-6 py-4">
                                     <p @class([
+                                        'font-bold',
                                         'text-green-400' => $appointment->accepted,
                                         'text-red-400' => !$appointment->accepted,
                                     ])>
@@ -385,7 +377,8 @@
                                     @if ($appointment->status === 1)
                                         <td class="px-6 py-4">
                                             @if (!$appointment->accepted)
-                                            <x-button wire:click="confirm({{ $appointment->id }})">Confirmar</x-button>
+                                                <x-button
+                                                    wire:click="confirm({{ $appointment->id }})">Confirmar</x-button>
                                             @endif
                                             <x-button wire:click="modify({{ $appointment->id }})">Re-agendar</x-button>
                                         </td>
@@ -404,7 +397,7 @@
         @if (Auth::user()->hasRole('client'))
             <div class="p-4 overflow-x-auto shadow-md">
                 <table class="w-full text-sm text-left text-gray-400 bg-white rounded-md border border-neutral-400">
-                    <thead class="border-b text-xs text-gray-700 uppercase bg-gray-50">
+                    <thead class="border-b text-xs text-gray-700 uppercase bg-gray-50 font-extrabold">
                         <tr>
                             <th scope="col" class="px-6 py-3">
                                 Cita
@@ -444,7 +437,7 @@
                             </th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y -space-x-2">
+                    <tbody class="divide-y -space-x-2 font-extrabold text-neutral-700">
                         @foreach ($appointments as $appointment)
                             @php
                                 $payed = 0;

@@ -14,7 +14,6 @@ class Payment extends Model
     protected $fillable = [
         'appointment_id',
         'type',
-        'payed',
         'currency',
         'currency_api',
         'ref'
